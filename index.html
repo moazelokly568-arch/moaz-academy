@@ -170,6 +170,14 @@
           <span>📐</span>
           <span>الوظائف وهندسة المساحة</span>
         </button>
+        <button type="button" data-tab="expressions5000" class="nav-tab px-3 py-1.5 rounded-xl text-xs font-extrabold transition flex items-center gap-1.5 bg-teal-950/80 text-teal-300 border border-teal-500/40 hover:border-teal-400">
+          <span>💡</span>
+          <span>5000 عبارة وتعبيرات الأعمال واليومية</span>
+        </button>
+        <button type="button" data-tab="dialogues5000" class="nav-tab px-3 py-1.5 rounded-xl text-xs font-extrabold transition flex items-center gap-1.5 bg-sky-950/80 text-sky-300 border border-sky-500/40 hover:border-sky-400">
+          <span>💬</span>
+          <span>5000 محادثة شاملة بالمستويات (A1-C2)</span>
+        </button>
         <button type="button" data-tab="wordgame" class="nav-tab px-3 py-1.5 rounded-xl text-xs font-extrabold transition flex items-center gap-1.5 bg-purple-950/80 text-purple-300 border border-purple-500/40 hover:border-purple-400">
           <span>🎮</span>
           <span>لعبة الكلمات وأمثلة غزيرة</span>
@@ -359,6 +367,14 @@
               <button type="button" id="btn-hero-jobs" class="px-4 py-3 rounded-2xl bg-amber-500/30 hover:bg-amber-500/50 text-amber-200 font-black text-sm border border-amber-400/50 transition flex items-center gap-2">
                 <span>📐</span>
                 <span>جميع الوظائف وهندسة المساحة</span>
+              </button>
+              <button type="button" id="btn-hero-expressions5000" class="px-4 py-3 rounded-2xl bg-teal-500/30 hover:bg-teal-500/50 text-teal-200 font-black text-sm border border-teal-400/50 transition flex items-center gap-2">
+                <span>💡</span>
+                <span>5000 عبارة وتعبيرات الأعمال واليومية</span>
+              </button>
+              <button type="button" id="btn-hero-dialogues5000" class="px-4 py-3 rounded-2xl bg-sky-500/30 hover:bg-sky-500/50 text-sky-200 font-black text-sm border border-sky-400/50 transition flex items-center gap-2">
+                <span>💬</span>
+                <span>5000 محادثة مقسمة على المستويات</span>
               </button>
               <button type="button" id="btn-hero-wordgame" class="px-4 py-3 rounded-2xl bg-purple-600/30 hover:bg-purple-600/50 text-purple-200 font-black text-sm border border-purple-400/40 transition flex items-center gap-2">
                 <span>🎮</span>
@@ -739,8 +755,13 @@
             <h2 id="stage4-heading" class="text-xl sm:text-2xl font-extrabold text-slate-900 mt-1">💬 المرحلة 4: المحادثات التفاعلية الناطقة الخاصة بالمستوى</h2>
             <p class="text-xs sm:text-sm text-slate-600">استمع للمحادثات المعتمدة لمستواك الحالي مع النطق التقريبي والترجمة، واضغط "إتمام المحادثة" لحفظ تقدمك.</p>
           </div>
-          <div class="flex flex-wrap gap-1.5" id="stage4-level-pills">
-            <!-- Rendered by JS -->
+          <div class="flex flex-wrap items-center gap-2">
+            <button type="button" id="btn-jump-d5000-from-stage4" class="px-3.5 py-2 rounded-xl bg-sky-600 hover:bg-sky-700 text-white text-xs font-extrabold shadow-sm transition">
+              💬 افتح موسوعة الـ 5000 محادثة شاملة بالمستويات (A1 → C2)
+            </button>
+            <div class="flex flex-wrap gap-1.5" id="stage4-level-pills">
+              <!-- Rendered by JS -->
+            </div>
           </div>
         </div>
 
@@ -1523,42 +1544,169 @@
         <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-6 pb-5 border-b border-slate-800">
           <div>
             <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 text-xs font-black mb-2">
-              <span>🧭</span>
-              <span>قائمة اختيار الوظائف التفاعلية: اختر وظيفتك لفتح منهجها الكامل المستقل</span>
+              <span>💼</span>
+              <span>دليل الوظائف المستقلة (75 وظيفة وتخصص): كل وظيفة في بطاقة ومنهج مستقل تماماً</span>
             </span>
-            <h2 class="text-2xl md:text-3xl font-black text-white">قائمة الوظائف التخصصية وهندسة المساحة بالإنجليزية</h2>
-            <p class="text-slate-300 text-sm mt-1">اختر القطاع المهني ثم اختر <strong class="text-amber-300">الوظيفة التي تريد دراستها من القائمة</strong> ليتم عرض منهجها الخاص فقط (المهام، المصطلحات والأدوات، الجمل اليومية، وتدريب خاص بالوظيفة) بدون خلط الوظائف ببعضها.</p>
+            <h2 class="text-2xl md:text-3xl font-black text-white">قائمة الوظائف المستقلة — اختر الوظيفة التي تريد دراستها</h2>
+            <p class="text-slate-300 text-sm mt-1">كل وظيفة معروضة لوحدها بشكل مستقل تماماً؛ اضغط على <strong class="text-amber-300">الوظيفة التي تريد دراستها</strong> لفتح صفحتها الدراسية الكاملة (المسمى، المهام، المصطلحات والأدوات، الجمل اليومية، محادثة الوظيفة، والاختبار الخاص بها) ويمكنك العودة للقائمة في أي وقت.</p>
           </div>
-          <div class="w-full lg:w-80">
-            <label for="jobs-search-input" class="block text-xs font-black text-amber-300 mb-1.5">🔍 ابحث بسرعة عن اسم الوظيفة بالعربية أو الإنجليزية:</label>
-            <input id="jobs-search-input" type="text" placeholder="مثال: مهندس مساحة، محاسب، طبيب، مبرمج..." class="w-full px-4 py-2.5 rounded-xl bg-slate-950/90 border border-slate-700 text-xs sm:text-sm text-white focus:border-amber-400 focus:outline-none">
+          <div class="w-full lg:w-80 space-y-2">
+            <label for="jobs-search-input" class="block text-xs font-black text-amber-300">🔍 ابحث عن اسم الوظيفة بالعربية أو الإنجليزية:</label>
+            <input id="jobs-search-input" type="text" placeholder="مثال: مهندس مساحة، محاسب، طبيب، مبرمج، محامي..." class="w-full px-4 py-2.5 rounded-xl bg-slate-950/90 border border-slate-700 text-xs sm:text-sm text-white focus:border-amber-400 focus:outline-none">
+          </div>
+        </div>
+
+        <!-- View Mode Bar: Directory List View vs. Single Job Study View -->
+        <div class="flex flex-wrap items-center justify-between gap-3 mb-5 p-3.5 rounded-2xl bg-slate-950/90 border border-slate-800">
+          <div class="flex flex-wrap items-center gap-2">
+            <button type="button" id="btn-jobs-view-directory" class="px-4 py-2.5 rounded-xl text-xs sm:text-sm font-black bg-amber-500 text-slate-950 shadow-md transition flex items-center gap-2">
+              <span>📋</span>
+              <span>عرض قائمة كل الوظائف (اختيار وظيفة)</span>
+            </button>
+            <button type="button" id="btn-jobs-view-study" class="px-4 py-2.5 rounded-xl text-xs sm:text-sm font-black bg-slate-900 text-amber-300 border border-amber-500/40 hover:border-amber-400 transition flex items-center gap-2">
+              <span>📖</span>
+              <span id="btn-jobs-study-label">دراسة الوظيفة المختارة حالياً</span>
+            </button>
+          </div>
+          <div class="flex items-center gap-2 w-full md:w-auto">
+            <label for="job-selector-dropdown" class="text-xs font-bold text-slate-300 shrink-0">انتقال سريع للوظيفة:</label>
+            <select id="job-selector-dropdown" class="w-full md:w-80 px-3.5 py-2 rounded-xl bg-slate-900 border border-amber-400/70 text-white text-xs font-black focus:outline-none"></select>
           </div>
         </div>
 
         <!-- Step 1: Sector Filter Buttons -->
-        <div class="mb-5">
-          <label class="block text-xs sm:text-sm font-black text-sky-300 mb-2.5">1️⃣ الخطوة الأولى: اختر القطاع المهني لتصفية القائمة (أو اتركه على جميع القطاعات):</label>
-          <div id="jobs-sector-buttons" class="flex flex-wrap gap-2"></div>
-        </div>
-
-        <!-- Step 2: Job Selection List (Dropdown + Interactive Job Selector Pills) -->
-        <div class="p-5 rounded-3xl bg-slate-950/90 border border-amber-500/40 mb-6">
-          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
-            <div>
-              <label for="job-selector-dropdown" class="block text-sm font-black text-amber-300">2️⃣ الخطوة الثانية: اختر الوظيفة التي تريد دراستها من القائمة المنسدلة أو من البطاقات بالأسفل:</label>
-              <p class="text-xs text-slate-400 mt-0.5">عند اختيار أي وظيفة، يظهر لك بالأسفل محتوى دراسة هذه الوظيفة فقط بالتفصيل الممل.</p>
-            </div>
-            <div class="w-full md:w-96">
-              <select id="job-selector-dropdown" class="w-full px-4 py-3 rounded-2xl bg-slate-900 border-2 border-amber-400 text-white text-xs sm:text-sm font-black focus:outline-none shadow-lg"></select>
-            </div>
+        <div id="jobs-directory-container" class="space-y-5">
+          <div>
+            <label class="block text-xs sm:text-sm font-black text-sky-300 mb-2.5">1️⃣ صفِّ قائمة الوظائف حسب القطاع المهني (أو استعرض جميع القطاعات):</label>
+            <div id="jobs-sector-buttons" class="flex flex-wrap gap-2"></div>
           </div>
 
-          <!-- Interactive Job Pills List -->
-          <div id="jobs-selectable-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2.5 max-h-72 overflow-y-auto custom-scrollbar p-1"></div>
+          <!-- Step 2: Standalone Cards List for Each Individual Job -->
+          <div class="p-5 rounded-3xl bg-slate-950/90 border border-amber-500/40">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+              <div>
+                <h3 class="text-base sm:text-lg font-black text-amber-300">2️⃣ قائمة الوظائف المتاحة (كل وظيفة لوحدها — اضغط على أي وظيفة لبدء دراستها فوراً):</h3>
+                <p id="jobs-count-subtitle" class="text-xs text-slate-400 mt-0.5">اختر الوظيفة التي تود التركيز عليها ليتم فتح منهجها الكامل لوحده.</p>
+              </div>
+            </div>
+
+            <!-- Interactive Job Cards Grid -->
+            <div id="jobs-selectable-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5"></div>
+          </div>
         </div>
 
         <!-- Step 3: Dedicated Study Workspace for the SINGLE Selected Job -->
-        <div id="selected-job-study-workspace" class="space-y-6"></div>
+        <div id="selected-job-study-workspace" class="hidden space-y-6"></div>
+      </div>
+    </section>
+
+    <!-- ==================== TAB: 5000 EXPRESSIONS (BUSINESS & DAILY IDIOMS) ==================== -->
+    <section id="tab-expressions5000" class="tab-panel hidden space-y-6">
+      <div class="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200 shadow-sm space-y-5">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-slate-100 pb-4">
+          <div class="space-y-1">
+            <div class="inline-flex flex-wrap items-center gap-2">
+              <span class="px-3 py-1 rounded-lg bg-teal-600 text-white text-xs font-extrabold">5000 Business & Daily Expressions</span>
+              <span id="e5000-mastered-pill" class="px-3 py-1 rounded-lg bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-extrabold">تم إتقان: 0 / 5000 عبارة</span>
+            </div>
+            <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 mt-1">💡 موسوعة الـ 5000 عبارة شاملة (تعبيرات الأعمال، الاجتماعات، والتعبيرات اليومية)</h2>
+            <p class="text-xs sm:text-sm text-slate-600">تشمل 5000 عبارة وتعبير اصطلاحي (Idioms & Business Expressions) مقسمة حسب المواقف (تعبيرات الأعمال والشركات، الاجتماعات والتفاوض، المراسلات والإيميلات، المواقف اليومية، السفر، وهندسة المساحة والمواقع) وموزعة على المستويات (A1 إلى C2).</p>
+          </div>
+          <div class="flex flex-wrap items-center gap-2">
+            <button type="button" id="btn-e5000-play-page" class="px-4 py-2.5 rounded-xl bg-teal-600 hover:bg-teal-700 text-white text-xs font-extrabold shadow-sm transition">
+              🔊 استمع لعبارات الصفحة
+            </button>
+            <button type="button" id="btn-e5000-random" class="px-3.5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-extrabold shadow-sm transition">
+              🎲 مجموعة عشوائية
+            </button>
+            <button type="button" id="btn-e5000-mark-page" class="px-3.5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-extrabold shadow-sm transition">
+              ✅ إتقان عبارات الصفحة
+            </button>
+          </div>
+        </div>
+
+        <!-- Category Filter Pills -->
+        <div class="flex items-center gap-1.5 overflow-x-auto custom-scrollbar pb-1" id="e5000-cat-pills"></div>
+
+        <!-- Filters: Level, Batch (1..100), and Search -->
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-3 items-center bg-slate-50 p-4 rounded-2xl border border-slate-200">
+          <div class="md:col-span-5 flex items-center gap-1.5 overflow-x-auto custom-scrollbar pb-1" id="e5000-level-pills"></div>
+          <div class="md:col-span-3">
+            <select id="e5000-batch-select" class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white text-xs sm:text-sm font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-teal-500"></select>
+          </div>
+          <div class="md:col-span-4 relative">
+            <input id="e5000-search-input" type="text" placeholder="ابحث في الـ 5000 عبارة (أعمال، يومي، إيميل، رقم العبارة)..." class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs sm:text-sm font-bold focus:outline-none focus:ring-2 focus:ring-teal-500" />
+          </div>
+        </div>
+
+        <!-- Pagination Header -->
+        <div class="flex flex-wrap items-center justify-between gap-2 text-xs font-bold text-slate-600">
+          <span id="e5000-range-label" class="text-teal-900 font-extrabold">عرض العبارات 1 - 50 من إجمالي 5000 عبارة</span>
+          <div class="flex items-center gap-2">
+            <button type="button" id="btn-e5000-prev-batch" class="px-3.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold transition">➡️ المجموعة السابقة</button>
+            <span id="e5000-page-indicator" class="px-3 py-1.5 rounded-xl bg-teal-50 text-teal-800 font-extrabold">المجموعة 1 / 100</span>
+            <button type="button" id="btn-e5000-next-batch" class="px-3.5 py-1.5 rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-bold transition">المجموعة التالية ⬅️</button>
+          </div>
+        </div>
+
+        <!-- Expressions Grid -->
+        <div id="e5000-grid" class="grid grid-cols-1 md:grid-cols-2 gap-3.5"></div>
+      </div>
+    </section>
+
+    <!-- ==================== TAB: 5000 DIALOGUES DIVIDED BY CEFR LEVELS (A1-C2) ==================== -->
+    <section id="tab-dialogues5000" class="tab-panel hidden space-y-6">
+      <div class="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200 shadow-sm space-y-5">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-slate-100 pb-4">
+          <div class="space-y-1">
+            <div class="inline-flex flex-wrap items-center gap-2">
+              <span class="px-3 py-1 rounded-lg bg-sky-600 text-white text-xs font-extrabold">5000 Complete Dialogues by Level (A1 → C2)</span>
+              <span id="d5000-mastered-pill" class="px-3 py-1 rounded-lg bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-extrabold">تم إتقان: 0 / 5000 محادثة</span>
+            </div>
+            <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 mt-1">💬 موسوعة الـ 5000 محادثة شاملة مقسمة على المستويات (كل مستوى وما يناسبه)</h2>
+            <p class="text-xs sm:text-sm text-slate-600">اختر مستواك (A1, A2, B1, B2, C1, C2) لتصفح المحادثات المصممة خصيصاً لمفردات وقواعد ومواقف هذا المستوى (تعارف، مطاعم، تسوق، سفر، عمل، اجتماعات، هندسة مساحة، ومؤتمرات أكاديمية) مع النطق الكامل لكل حوار.</p>
+          </div>
+          <div class="flex flex-wrap items-center gap-2">
+            <button type="button" id="btn-d5000-random" class="px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-extrabold shadow-sm transition">
+              🎲 مجموعة محادثات عشوائية
+            </button>
+            <button type="button" id="btn-d5000-mark-page" class="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-extrabold shadow-sm transition">
+              ✅ إتقان محادثات هذه الصفحة
+            </button>
+          </div>
+        </div>
+
+        <!-- Level Selector Banner (Strictly Divided by Level A1 -> C2) -->
+        <div class="p-4 rounded-2xl bg-gradient-to-l from-sky-950 via-indigo-950 to-slate-900 text-white space-y-3">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <span class="text-xs sm:text-sm font-extrabold text-sky-200">🎯 اختر المستوى لعرض المحادثات التي تناسبه في الكلمات والقواعد:</span>
+            <span id="d5000-level-desc-badge" class="text-xs font-extrabold text-amber-300 bg-white/10 px-3 py-1 rounded-full">جميع المستويات (5000 محادثة)</span>
+          </div>
+          <div class="flex flex-wrap gap-2" id="d5000-level-pills"></div>
+        </div>
+
+        <!-- Filters: Batch Selector (25 dialogues per batch) & Search -->
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-3 items-center bg-slate-50 p-4 rounded-2xl border border-slate-200">
+          <div class="md:col-span-5">
+            <select id="d5000-batch-select" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-xs sm:text-sm font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-sky-500"></select>
+          </div>
+          <div class="md:col-span-7 relative">
+            <input id="d5000-search-input" type="text" placeholder="ابحث في الـ 5000 محادثة (موضوع المحادثة، شركة، مطار، مطعم، مساحة، أو رقم المحادثة)..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm font-bold focus:outline-none focus:ring-2 focus:ring-sky-500" />
+          </div>
+        </div>
+
+        <!-- Pagination Header -->
+        <div class="flex flex-wrap items-center justify-between gap-2 text-xs font-bold text-slate-600">
+          <span id="d5000-range-label" class="text-sky-900 font-extrabold">عرض المحادثات 1 - 25 من إجمالي 5000 محادثة</span>
+          <div class="flex items-center gap-2">
+            <button type="button" id="btn-d5000-prev-batch" class="px-3.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold transition">➡️ المجموعة السابقة</button>
+            <span id="d5000-page-indicator" class="px-3 py-1.5 rounded-xl bg-sky-50 text-sky-800 font-extrabold">المجموعة 1 / 200</span>
+            <button type="button" id="btn-d5000-next-batch" class="px-3.5 py-1.5 rounded-xl bg-sky-600 hover:bg-sky-700 text-white font-bold transition">المجموعة التالية ⬅️</button>
+          </div>
+        </div>
+
+        <!-- Dialogues List Container -->
+        <div id="d5000-list" class="grid grid-cols-1 lg:grid-cols-2 gap-4"></div>
       </div>
     </section>
 
@@ -2789,6 +2937,13 @@
       s5000Level: 'all',
       s5000Batch: 1,
       s5000Search: '',
+      e5000Level: 'all',
+      e5000Cat: 'all',
+      e5000Batch: 1,
+      e5000Search: '',
+      d5000Level: 'all',
+      d5000Batch: 1,
+      d5000Search: '',
       ytTrackFilter: 'all',
       activeYtCourseId: 'yt_auc_1'
     };
@@ -3423,6 +3578,12 @@
           break;
         case 'sentences5000':
           renderSentences5000Module();
+          break;
+        case 'expressions5000':
+          renderExpressions5000Module();
+          break;
+        case 'dialogues5000':
+          renderDialogues5000Module();
           break;
         case 'ytcourses':
           renderYoutubeCoursesModule();
@@ -5083,6 +5244,831 @@
     }
 
     // ==================== YOUTUBE COURSES MODULE (AUC COURSE & LISTENING/READING) ====================
+    
+    // ==================== TOP 5000 EXPRESSIONS (BUSINESS, DAILY IDIOMS & WORKPLACE) ENGINE ====================
+    const EXPRESSION_5000_CATEGORIES = [
+      { id: 'all', label: '💡 كل الـ 5000 عبارة وتعبير' },
+      { id: 'business', label: '💼 تعبيرات الأعمال والشركات (Business)' },
+      { id: 'meetings', label: '🤝 الاجتماعات والتفاوض (Meetings)' },
+      { id: 'emails', label: '📧 الإيميلات والمراسلات (Emails)' },
+      { id: 'daily', label: '☀️ التعبيرات اليومية والاجتماعية (Daily)' },
+      { id: 'idioms', label: '🔥 المصطلحات والأمثال الشائعة (Idioms)' },
+      { id: 'engineering', label: '📐 عبارات الهندسة والمساحة والمشاريع' }
+    ];
+
+    const EXPRESSION_5000_PATTERNS = [
+      // Business & Corporate (8 patterns)
+      { cat: 'business', catAr: 'تعبيرات الأعمال والشركات', level: 'B1', enTpl: 'We need to stay on track with {ctxEn}.', pronTpl: 'وي نيد تو ستاي أون تراك وِذ {ctxPron}', arTpl: 'نحتاج للبقاء على المسار الصحيح فيما يخص {ctxAr}.', usageAr: 'تعبير أعمال شائع لمتابعة خطة العمل دون تأخير' },
+      { cat: 'business', catAr: 'تعبيرات الأعمال والشركات', level: 'B1', enTpl: 'Let us keep the big picture in mind regarding {ctxEn}.', pronTpl: 'ليت أس كيب ذا بيج بيكتشر إن مايند ريجاردينج {ctxPron}', arTpl: 'دعونا نضع الصورة الكبيرة (الهدف الشامل) في الاعتبار بخصوص {ctxAr}.', usageAr: 'يُستخدم في التخطيط والإدارة للتركيز على الهدف الأهم' },
+      { cat: 'business', catAr: 'تعبيرات الأعمال والشركات', level: 'B2', enTpl: 'Our top priority right now is to streamline {ctxEn}.', pronTpl: 'أور توب برايوريتي رايت ناو إز تو ستريم-لاين {ctxPron}', arTpl: 'أولويتنا القصوى الآن هي تبسيط وتسريع {ctxAr}.', usageAr: 'تعبير احترافي لتحسين الكفاءة في الشركات' },
+      { cat: 'business', catAr: 'تعبيرات الأعمال والشركات', level: 'B2', enTpl: 'This strategy will give us a competitive edge in {ctxEn}.', pronTpl: 'ذِس ستراتيجي ويل جيڤ أس أ كومبيتيتيڤ إيدج إن {ctxPron}', arTpl: 'ستمنحنا هذه الاستراتيجية ميزة تنافسية في {ctxAr}.', usageAr: 'تعبير أعمال قوي للتميز في السوق والعمل' },
+      { cat: 'business', catAr: 'تعبيرات الأعمال والشركات', level: 'C1', enTpl: 'We must allocate sufficient resources to scale up {ctxEn}.', pronTpl: 'وي مَست ألوكيت سَفيشنت ريسورسز تو سكيل أب {ctxPron}', arTpl: 'يجب علينا تخصيص موارد كافية لتوسيع نطاق {ctxAr}.', usageAr: 'تعبير إداري وتنفيذي لتوسيع المشاريع' },
+      { cat: 'business', catAr: 'تعبيرات الأعمال والشركات', level: 'C1', enTpl: 'From a cost-benefit perspective, {ctxEn} is highly lucrative.', pronTpl: 'فروم أ كوست-بينيفِت بيرسبيكتيڤ، {ctxPron} إز هايلي لوكراتيڤ', arTpl: 'من منظور التكلفة والعائد، يُعد {ctxAr} مجدياً ومربحاً للغاية.', usageAr: 'تعبير مالي وإداري لتقييم جدوى القرارات' },
+      { cat: 'business', catAr: 'تعبيرات الأعمال والشركات', level: 'C2', enTpl: 'Establishing a benchmark of excellence in {ctxEn} is non-negotiable.', pronTpl: 'إستابليشينج أ بينتش-مارك أوف إكسيلنس إن {ctxPron} إز نون-نيجوشيابل', arTpl: 'إن إرساء معيار للتميز في {ctxAr} أمر لا يقبل المساومة.', usageAr: 'تعبير قيادي حاسم لضبط معايير الجودة' },
+      { cat: 'business', catAr: 'تعبيرات الأعمال والشركات', level: 'A2', enTpl: 'We are working hard to meet the target for {ctxEn}.', pronTpl: 'وي آر ووركينج هارد تو ميت ذا تارجت فور {ctxPron}', arTpl: 'نحن نعمل بجد لتحقيق الهدف المطلوب في {ctxAr}.', usageAr: 'عبارة عمل يومية واضحة ومباشرة' },
+
+      // Meetings & Negotiations (8 patterns)
+      { cat: 'meetings', catAr: 'الاجتماعات والتفاوض', level: 'B1', enTpl: 'Let us get the ball rolling by discussing {ctxEn}.', pronTpl: 'ليت أس جيت ذا بول رولينج باي ديسكَسينج {ctxPron}', arTpl: 'دعونا نبدأ العمل فوراً بمناقشة {ctxAr}.', usageAr: 'تعبير شهير لافتتاح الاجتماعات وبدء النقاش' },
+      { cat: 'meetings', catAr: 'الاجتماعات والتفاوض', level: 'B1', enTpl: 'Are we all on the same page about {ctxEn}?', pronTpl: 'آر وي أول أون ذا سيم بيج أباوت {ctxPron}؟', arTpl: 'هل نحن جميعاً متفقون وعلى نفس الفهم بخصوص {ctxAr}؟', usageAr: 'من أشهر تعبيرات الاجتماعات للتأكد من اتفاق الفريق' },
+      { cat: 'meetings', catAr: 'الاجتماعات والتفاوض', level: 'B2', enTpl: 'I would like to play devil’s advocate regarding {ctxEn}.', pronTpl: 'آي وُد لايك تو بلاي ديڤلز أدڤوكيت ريجاردينج {ctxPron}', arTpl: 'أود أن أطرح الرأي المخالف لاختبار قوة الحجة بخصوص {ctxAr}.', usageAr: 'تعبير تفاوضي لاختبار جميع الثغرات المحتملة في الفكرة' },
+      { cat: 'meetings', catAr: 'الاجتماعات والتفاوض', level: 'B2', enTpl: 'Let us reach a win-win agreement on {ctxEn}.', pronTpl: 'ليت أس ريتش أ وين-وين أجريمنت أون {ctxPron}', arTpl: 'دعونا نتوصل إلى اتفاق رابح للطرفين بشأن {ctxAr}.', usageAr: 'تعبير أساسي في مفاوضات العقود والمبيعات' },
+      { cat: 'meetings', catAr: 'الاجتماعات والتفاوض', level: 'C1', enTpl: 'To wrap up today’s meeting, let us summarize the action items for {ctxEn}.', pronTpl: 'تو راب أب تودايز ميتينج، ليت أس سَمارايز ذي أكشن آيتمز فور {ctxPron}', arTpl: 'لختام اجتماع اليوم، دعونا نلخص مهام التنفيذ الخاصة بـ {ctxAr}.', usageAr: 'تعبير احترافي لإنهاء الاجتماعات وتوزيع المهام' },
+      { cat: 'meetings', catAr: 'الاجتماعات والتفاوض', level: 'C2', enTpl: 'With all due respect, we need to address the elephant in the room concerning {ctxEn}.', pronTpl: 'وِذ أول ديو ريسبكت، وي نيد تو أدريس ذي إليفانت إن ذا روم كونسيرنينج {ctxPron}', arTpl: 'مع كامل الاحترام، نحتاج لمواجهة المشكلة الواضحة التي يتجنبها الجميع بخصوص {ctxAr}.', usageAr: 'تعبير بلاغي قوي في الاجتماعات الحاسمة' },
+      { cat: 'meetings', catAr: 'الاجتماعات والتفاوض', level: 'A2', enTpl: 'Excuse me, may I share my opinion about {ctxEn}?', pronTpl: 'إكسكيوز مي، ماي آي شير ماي أوبينيون أباوت {ctxPron}؟', arTpl: 'عفواً، هل يمكنني مشاركة رأيي حول {ctxAr}؟', usageAr: 'عبارة مهذبة لطلب الكلمة في الاجتماع' },
+      { cat: 'meetings', catAr: 'الاجتماعات والتفاوض', level: 'B1', enTpl: 'Let us table {ctxEn} until our next meeting.', pronTpl: 'ليت أس تيبل {ctxPron} أنتيل أور نيكست ميتينج', arTpl: 'دعونا نؤجل البت في {ctxAr} حتى اجتماعنا القادم.', usageAr: 'تعبير اجتماعات رسمي لتأجيل نقطة نقاش' },
+
+      // Emails & Professional Correspondence (8 patterns)
+      { cat: 'emails', catAr: 'الإيميلات والمراسلات الرسمية', level: 'A2', enTpl: 'I am writing to follow up on {ctxEn}.', pronTpl: 'آي آم رايتينج تو فولو أب أون {ctxPron}', arTpl: 'أكتب إليكم لمتابعة ما تم بخصوص {ctxAr}.', usageAr: 'الجملة الافتتاحية الأشهر في إيميلات المتابعة' },
+      { cat: 'emails', catAr: 'الإيميلات والمراسلات الرسمية', level: 'B1', enTpl: 'Please find attached the updated report on {ctxEn}.', pronTpl: 'بليز فايند أتاتشد ذي أبديتد ريبورت أون {ctxPron}', arTpl: 'يرجى الاطلاع على التقرير المحدث المرفق بخصوص {ctxAr}.', usageAr: 'العبارة القياسية لإرفاق الملفات في البريد الرسمي' },
+      { cat: 'emails', catAr: 'الإيميلات والمراسلات الرسمية', level: 'B1', enTpl: 'Could you please keep me in the loop regarding {ctxEn}?', pronTpl: 'كود يو بليز كيب مي إن ذا لوب ريجاردينج {ctxPron}؟', arTpl: 'هل يمكنك إبقائي على اطلاع دائم بالمستجدات حول {ctxAr}؟', usageAr: 'تعبير شائع جداً في مراسلات فرق العمل (Keep me in the loop)' },
+      { cat: 'emails', catAr: 'الإيميلات والمراسلات الرسمية', level: 'B2', enTpl: 'We appreciate your prompt attention to {ctxEn}.', pronTpl: 'وي أبريشييت يور برومبت أتينشن تو {ctxPron}', arTpl: 'نقدّر اهتمامكم السريع والعاجل بموضوع {ctxAr}.', usageAr: 'عبارة ختامية راقية في المراسلات الرسمية' },
+      { cat: 'emails', catAr: 'الإيميلات والمراسلات الرسمية', level: 'C1', enTpl: 'Should you require any further clarification regarding {ctxEn}, please do not hesitate to reach out.', pronTpl: 'شود يو ريكواير إني فيرذر كلاريفيكيشن ريجاردينج {ctxPron}، بليز دو نوت هيزيتيت تو ريتش أوت', arTpl: 'إذا كنتم بحاجة لأي توضيح إضافي بخصوص {ctxAr}، يرجى عدم التردد في التواصل معنا.', usageAr: 'أرقى صيغة ختامية في الإيميلات الرسمية والعقود' },
+      { cat: 'emails', catAr: 'الإيميلات والمراسلات الرسمية', level: 'A1', enTpl: 'Thank you very much for your email about {ctxEn}.', pronTpl: 'ثانك يو ڤيري مَتش فور يور إيميل أباوت {ctxPron}', arTpl: 'شكراً جزيلاً على رسالتك الإلكترونية بخصوص {ctxAr}.', usageAr: 'رد تأسيسي مهذب في بداية البريد' },
+      { cat: 'emails', catAr: 'الإيميلات والمراسلات الرسمية', level: 'B2', enTpl: 'As per our telephone conversation, we have confirmed {ctxEn}.', pronTpl: 'آز بير أور تيليفون كونڤرسيشن، وي هاڤ كونفيرمد {ctxPron}', arTpl: 'بناءً على مكالمتنا الهاتفية، قمنا بتأكيد {ctxAr}.', usageAr: 'لتوثيق المكالمات الهاتفية في إيميل رسمي' },
+      { cat: 'emails', catAr: 'الإيميلات والمراسلات الرسمية', level: 'C2', enTpl: 'We hereby submit our formal proposal concerning {ctxEn} for your perusal.', pronTpl: 'وي هير-باي سَبميت أور فورمال بروبوزال كونسيرنينج {ctxPron} فور يور بيروزال', arTpl: 'نتقدم بموجب هذا بمقترحنا الرسمي بخصوص {ctxAr} لاطلاعكم الكريم.', usageAr: 'صياغة دبلوماسية وقانونية رفيعة المستوى' },
+
+      // Daily & Social Expressions (9 patterns)
+      { cat: 'daily', catAr: 'التعبيرات اليومية والاجتماعية', level: 'A1', enTpl: 'Take your time with {ctxEn}; there is no rush.', pronTpl: 'تيك يور تايم وِذ {ctxPron}؛ ذير إز نو رَش', arTpl: 'خذ وقتك راحتك في {ctxAr}؛ لا داعي للاستعجال.', usageAr: 'تعبير يومي لطيف لطمأنة الطرف الآخر' },
+      { cat: 'daily', catAr: 'التعبيرات اليومية والاجتماعية', level: 'A1', enTpl: 'I am really looking forward to {ctxEn}.', pronTpl: 'آي آم ريلي لوكينج فوروورد تو {ctxPron}', arTpl: 'أنا متشوق ومتطلع جداً إلى {ctxAr}.', usageAr: 'تعبير يومي ومهني للتعبير عن الحماس' },
+      { cat: 'daily', catAr: 'التعبيرات اليومية والاجتماعية', level: 'A2', enTpl: 'By the way, did you hear the good news about {ctxEn}?', pronTpl: 'باي ذا واي، دِد يو هير ذا جود نيوز أباوت {ctxPron}؟', arTpl: 'على فكرة (بالمناسبة)، هل سمعت الأخبار السارة عن {ctxAr}؟', usageAr: 'تعبير (By the way) للانتقال لموضوع جديد في الحديث اليومي' },
+      { cat: 'daily', catAr: 'التعبيرات اليومية والاجتماعية', level: 'A2', enTpl: 'Make yourself at home while we prepare {ctxEn}.', pronTpl: 'ميك يورسيلف آت هوم وايل وي بريبير {ctxPron}', arTpl: 'اعتبر نفسك في بيتك ريثما نجهز {ctxAr}.', usageAr: 'تعبير ترحيب يومي بالضيوف والزملاء' },
+      { cat: 'daily', catAr: 'التعبيرات اليومية والاجتماعية', level: 'B1', enTpl: 'To be honest, {ctxEn} turned out much better than expected.', pronTpl: 'تو بي أونيست، {ctxPron} تيرند أوت مَتش بيتر ذان إكسبكتد', arTpl: 'بصراحة، سارت أمور {ctxAr} أفضل بكثير مما كان متوقعاً.', usageAr: 'تعبير يومي شائع (To be honest / Turned out)' },
+      { cat: 'daily', catAr: 'التعبيرات اليومية والاجتماعية', level: 'B1', enTpl: 'It goes without saying that {ctxEn} requires patience.', pronTpl: 'إت جوز وِذ-أوت سايينج ذات {ctxPron} ريكوايرز بيشنس', arTpl: 'من البديهي (غني عن القول) أن {ctxAr} يتطلب صبراً.', usageAr: 'تعبير طبيعي لتأكيد أمر بديهي' },
+      { cat: 'daily', catAr: 'التعبيرات اليومية والاجتماعية', level: 'B2', enTpl: 'Long story short, we managed to complete {ctxEn} on time.', pronTpl: 'لونج ستوري شورت، وي مانجد تو كومبليت {ctxPron} أون تايم', arTpl: 'باختصار شديد (خلاصة القول)، تمكنا من إنجاز {ctxAr} في الموعد.', usageAr: 'تعبير محادثة شهير لاختصار التفاصيل (Long story short)' },
+      { cat: 'daily', catAr: 'التعبيرات اليومية والاجتماعية', level: 'A1', enTpl: 'Never mind about {ctxEn}; everything is fine now.', pronTpl: 'نيڤر مايند أباوت {ctxPron}؛ إيفري-ثينج إز فاين ناو', arTpl: 'لا عليك (لا تشغل بالك) بخصوص {ctxAr}؛ كل شيء بخير الآن.', usageAr: 'تعبير يومي لقبول الاعتذار وتهدئة الموقف' },
+      { cat: 'daily', catAr: 'التعبيرات اليومية والاجتماعية', level: 'A2', enTpl: 'I will keep my fingers crossed for your success in {ctxEn}.', pronTpl: 'آي ويل كيب ماي فينجرز كروسد فور يور سَكسيس إن {ctxPron}', arTpl: 'أتمنى لك كل التوفيق والنجاح في {ctxAr}.', usageAr: 'تعبير ودّي لتمني الحظ الطيب' },
+
+      // Idioms & Phrasal Expressions (8 patterns)
+      { cat: 'idioms', catAr: 'المصطلحات والأمثال الشائعة (Idioms)', level: 'B1', enTpl: 'Once you practice daily, {ctxEn} becomes a piece of cake.', pronTpl: 'وَنس يو براكتس دايلي، {ctxPron} بيكَمز أ بيس أوف كيك', arTpl: 'بمجرد أن تتدرب يومياً، يصبح {ctxAr} سهلاً جداً (كقطعة الكعك).', usageAr: 'المصطلح الأشهر للتعبير عن السهولة (A piece of cake)' },
+      { cat: 'idioms', catAr: 'المصطلحات والأمثال الشائعة (Idioms)', level: 'B2', enTpl: 'You hit the nail on the head when you analyzed {ctxEn}.', pronTpl: 'يو هِت ذا نيل أون ذا هيد وين يو أنالايزد {ctxPron}', arTpl: 'لقد أصبت كبد الحقيقة تماماً عندما حللت {ctxAr}.', usageAr: 'مصطلح (Hit the nail on the head) بمعنى أصاب الهدف بدقة' },
+      { cat: 'idioms', catAr: 'المصطلحات والأمثال الشائعة (Idioms)', level: 'B2', enTpl: 'We had to think outside the box to solve {ctxEn}.', pronTpl: 'وي هاد تو ثينك أوت-سايد ذا بوكس تو سولڤ {ctxPron}', arTpl: 'كان علينا التفكير خارج الصندوق (بإبداع) لحل {ctxAr}.', usageAr: 'مصطلح إبداعي ومهني واسع الانتشار' },
+      { cat: 'idioms', catAr: 'المصطلحات والأمثال الشائعة (Idioms)', level: 'B2', enTpl: 'Our team went the extra mile to deliver {ctxEn}.', pronTpl: 'أور تيم وينت ذي إكسترا مايل تو ديليڤر {ctxPron}', arTpl: 'بذل فريقنا مجهوداً إضافياً فائقاً لتسليم {ctxAr}.', usageAr: 'مصطلح (Go the extra mile) لبذل أقصى جهد' },
+      { cat: 'idioms', catAr: 'المصطلحات والأمثال الشائعة (Idioms)', level: 'C1', enTpl: 'Do not cut corners when working on {ctxEn}; quality comes first.', pronTpl: 'دو نوت كَت كورنرز وين ووركينج أون {ctxPron}؛ كواليتي كَمز فيرست', arTpl: 'لا تستسهل على حساب الجودة عند العمل في {ctxAr}؛ الجودة أولاً.', usageAr: 'مصطلح (Cut corners) يعني التسرع وإهمال المعايير لتوفير الوقت' },
+      { cat: 'idioms', catAr: 'المصطلحات والأمثال الشائعة (Idioms)', level: 'C1', enTpl: 'Delayed maintenance is a blessing in disguise if it helps us upgrade {ctxEn}.', pronTpl: 'ديلايد مينتينانس إز أ بليسينج إن ديسجايز إف إت هيلبس أس أبجريد {ctxPron}', arTpl: 'قد يكون التأخير رُبّ ضارة نافعة إذا ساعدنا على ترقية {ctxAr}.', usageAr: 'مصطلح (A blessing in disguise) = رب ضارة نافعة' },
+      { cat: 'idioms', catAr: 'المصطلحات والأمثال الشائعة (Idioms)', level: 'C2', enTpl: 'Leaving no stone unturned, the committee scrutinized {ctxEn}.', pronTpl: 'ليڤينج نو ستون أن-تيرند، ذا كوميتي سكروتينايزد {ctxPron}', arTpl: 'بعد أن طرقت كل الأبواب وبحثت كل تفصيلة، دققت اللجنة في {ctxAr}.', usageAr: 'مصطلح بلاغي (Leave no stone unturned) لبذل كل مسعى ممكن' },
+      { cat: 'idioms', catAr: 'المصطلحات والأمثال الشائعة (Idioms)', level: 'C2', enTpl: 'That breakthrough in {ctxEn} is just the tip of the iceberg.', pronTpl: 'ذات بريك-ثرو إن {ctxPron} إز جَست ذا تيب أوف ذي آيس-بيرج', arTpl: 'إن هذا الإنجاز في {ctxAr} ليس سوى قمة جبل الجليد (بداية لما هو أكبر).', usageAr: 'مصطلح (Tip of the iceberg) للجزء الظاهر من أمر عظيم' },
+
+      // Engineering, Surveying & Field Operations (9 patterns)
+      { cat: 'engineering', catAr: 'عبارات الهندسة والمساحة والمشاريع', level: 'A1', enTpl: 'Always wear your safety gear before starting {ctxEn}.', pronTpl: 'أولويز وير يور سيفتي جير بيفور ستارتينج {ctxPron}', arTpl: 'ارتدِ دائماً مهمات السلامة قبل البدء في {ctxAr}.', usageAr: 'قاعدة سلامة أساسية في المواقع الهندسية' },
+      { cat: 'engineering', catAr: 'عبارات الهندسة والمساحة والمشاريع', level: 'A2', enTpl: 'Please double-check the measurements for {ctxEn} on site.', pronTpl: 'بليز دَبل-تشيك ذا ميجرمنتس فور {ctxPron} أون سايت', arTpl: 'من فضلك راجع القياسات مرتين لـ {ctxAr} في الموقع.', usageAr: 'تعبير يومي للمهندسين والمساحين في الموقع' },
+      { cat: 'engineering', catAr: 'عبارات الهندسة والمساحة والمشاريع', level: 'B1', enTpl: 'Make sure the error in {ctxEn} is within allowable tolerance.', pronTpl: 'ميك شور ذي إيرور إن {ctxPron} إز وِذ-إن ألاوابل توليرانس', arTpl: 'تأكد أن نسبة الخطأ في {ctxAr} تقع ضمن السماحية الهندسية المسموحة.', usageAr: 'تعبير هندسي ومساحي جوهري في استلام الأعمال' },
+      { cat: 'engineering', catAr: 'عبارات الهندسة والمساحة والمشاريع', level: 'B2', enTpl: 'We tied {ctxEn} to two certified geodetic benchmarks.', pronTpl: 'وي تايد {ctxPron} تو تو سيرتيفايد جيوديتيك بينتش-ماركس', arTpl: 'قمنا بربط {ctxAr} على روبيرين جيوديسيين معتمدين.', usageAr: 'تعبير تخصصي لمهندسي المساحة والجيوماتكس' },
+      { cat: 'engineering', catAr: 'عبارات الهندسة والمساحة والمشاريع', level: 'B2', enTpl: 'Let us verify the coordinates and elevations for {ctxEn} before pouring concrete.', pronTpl: 'ليت أس ڤيريفاي ذا كوأوردينيتس آند إليڤيشنز فور {ctxPron} بيفور بورينج كونكريت', arTpl: 'دعنا نتحقق من الإحداثيات والمناسيب الخاصة بـ {ctxAr} قبل صب الخرسانة.', usageAr: 'عبارة موقع يومية حاسمة قبل الصب' },
+      { cat: 'engineering', catAr: 'عبارات الهندسة والمساحة والمشاريع', level: 'C1', enTpl: 'The As-Built drawings for {ctxEn} were signed off by the consultant.', pronTpl: 'ذي آز-بيلت دروينجز فور {ctxPron} وير سايند أوف باي ذا كونسلتانت', arTpl: 'تم اعتماد والتوقيع النهائي على لوحات ما تم تنفيذه لـ {ctxAr} من الاستشاري.', usageAr: 'تعبير (Sign off) لاعتماد اللوحات والمستخلصات' },
+      { cat: 'engineering', catAr: 'عبارات الهندسة والمساحة والمشاريع', level: 'C1', enTpl: 'We calibrated the instruments prior to executing {ctxEn}.', pronTpl: 'وي كاليبريتد ذي إنسترومنتس برايور تو إكسكيوتينج {ctxPron}', arTpl: 'قمنا بمعايرة الأجهزة المساحية قبل تنفيذ {ctxAr}.', usageAr: 'عبارة ضبط جودة قياسية في المشاريع' },
+      { cat: 'engineering', catAr: 'عبارات الهندسة والمساحة والمشاريع', level: 'C2', enTpl: 'Sub-millimeter precision in {ctxEn} is paramount for structural integrity.', pronTpl: 'سَب-ميليميتر بريسيجن إن {ctxPron} إز باراماونت فور ستركتشورال إنتيجريتي', arTpl: 'الدقة بأجزاء الملليمتر في {ctxAr} ذات أهمية قصوى لسلامة المنشأ.', usageAr: 'عبارة هندسية رفيعة لتقارير الرصد الجيوديسي' },
+      { cat: 'engineering', catAr: 'عبارات الهندسة والمساحة والمشاريع', level: 'C2', enTpl: 'All spatial datasets for {ctxEn} have been integrated into our GIS digital twin.', pronTpl: 'أول سبيشال داتا-سِتس فور {ctxPron} هاڤ بين إنتيجريتد إنتو أور جي آي إس ديجيتال توين', arTpl: 'تم دمج جميع البيانات المكانية الخاصة بـ {ctxAr} في التوأم الرقمي لنظم المعلومات الجغرافية.', usageAr: 'عبارة متقدمة لمشاريع المدن الذكية والجيوماتكس' }
+    ];
+
+    let ALL_5000_EXPRESSIONS_CACHE = null;
+    function getAll5000Expressions() {
+      if (ALL_5000_EXPRESSIONS_CACHE) return ALL_5000_EXPRESSIONS_CACHE;
+      const list = [];
+      let eNum = 1;
+      for (let tIdx = 0; tIdx < SENTENCE_5000_TOPICS.length; tIdx++) {
+        const top = SENTENCE_5000_TOPICS[tIdx];
+        for (let pIdx = 0; pIdx < EXPRESSION_5000_PATTERNS.length; pIdx++) {
+          if (eNum > 5000) break;
+          const pat = EXPRESSION_5000_PATTERNS[pIdx];
+          list.push({
+            num: eNum,
+            id: `e5k_${eNum}`,
+            cat: pat.cat,
+            catAr: `${pat.catAr} • ${top.ar}`,
+            level: pat.level,
+            en: pat.enTpl.replace('{ctxEn}', top.en),
+            pron: pat.pronTpl.replace('{ctxPron}', top.pron),
+            ar: pat.arTpl.replace('{ctxAr}', top.ar),
+            usageAr: pat.usageAr
+          });
+          eNum++;
+        }
+      }
+      ALL_5000_EXPRESSIONS_CACHE = list;
+      return list;
+    }
+
+    function renderExpressions5000Module() {
+      const allExprs = getAll5000Expressions();
+      const catPillsEl = document.getElementById('e5000-cat-pills');
+      const lvPillsEl = document.getElementById('e5000-level-pills');
+      const selectEl = document.getElementById('e5000-batch-select');
+      const gridEl = document.getElementById('e5000-grid');
+      if (!catPillsEl || !lvPillsEl || !selectEl || !gridEl) return;
+
+      const masteredE5k = Object.keys(state.mastered).filter(k => k.startsWith('e5k_') && state.mastered[k]).length;
+      const mPill = document.getElementById('e5000-mastered-pill');
+      if (mPill) mPill.textContent = `تم إتقان: ${masteredE5k} / 5000 عبارة`;
+
+      // Category pills
+      catPillsEl.innerHTML = '';
+      EXPRESSION_5000_CATEGORIES.forEach(c => {
+        const isAct = state.e5000Cat === c.id;
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = isAct
+          ? 'px-3.5 py-2 rounded-xl text-xs font-extrabold bg-teal-600 text-white shrink-0 shadow-sm'
+          : 'px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 shrink-0';
+        b.textContent = c.label;
+        b.addEventListener('click', () => {
+          state.e5000Cat = c.id;
+          state.e5000Batch = 1;
+          renderExpressions5000Module();
+        });
+        catPillsEl.appendChild(b);
+      });
+
+      // Level pills
+      const lvOpts = [
+        { id: 'all', label: 'كل المستويات' },
+        { id: 'A1', label: '🌱 A1' },
+        { id: 'A2', label: '🧱 A2' },
+        { id: 'B1', label: '🗣️ B1' },
+        { id: 'B2', label: '💼 B2' },
+        { id: 'C1', label: '🎓 C1' },
+        { id: 'C2', label: '👑 C2' }
+      ];
+      lvPillsEl.innerHTML = '';
+      lvOpts.forEach(opt => {
+        const isAct = state.e5000Level === opt.id;
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = isAct
+          ? 'px-3 py-1.5 rounded-xl text-xs font-extrabold bg-teal-600 text-white shrink-0 shadow-sm'
+          : 'px-3 py-1.5 rounded-xl text-xs font-bold bg-white text-slate-700 hover:bg-slate-200 border border-slate-200 shrink-0';
+        b.textContent = opt.label;
+        b.addEventListener('click', () => {
+          state.e5000Level = opt.id;
+          state.e5000Batch = 1;
+          renderExpressions5000Module();
+        });
+        lvPillsEl.appendChild(b);
+      });
+
+      const q = (state.e5000Search || '').trim().toLowerCase();
+      const filtered = allExprs.filter(item => {
+        const matchCat = state.e5000Cat === 'all' || item.cat === state.e5000Cat;
+        const matchLv = state.e5000Level === 'all' || item.level === state.e5000Level;
+        const matchQ = !q ||
+          item.en.toLowerCase().includes(q) ||
+          item.ar.includes(q) ||
+          item.catAr.includes(q) ||
+          item.usageAr.includes(q) ||
+          String(item.num) === q;
+        return matchCat && matchLv && matchQ;
+      });
+
+      const pageSize = 50;
+      const totalBatches = Math.max(1, Math.ceil(filtered.length / pageSize));
+      if (state.e5000Batch > totalBatches) state.e5000Batch = 1;
+      if (state.e5000Batch < 1) state.e5000Batch = totalBatches;
+
+      selectEl.innerHTML = '';
+      for (let bIdx = 1; bIdx <= totalBatches; bIdx++) {
+        const sNum = (bIdx - 1) * pageSize + 1;
+        const eNum = Math.min(filtered.length, bIdx * pageSize);
+        const optEl = document.createElement('option');
+        optEl.value = String(bIdx);
+        optEl.textContent = `المجموعة ${bIdx} من ${totalBatches} (العبارات ${sNum} - ${eNum})`;
+        if (bIdx === state.e5000Batch) optEl.selected = true;
+        selectEl.appendChild(optEl);
+      }
+
+      const startIdx = (state.e5000Batch - 1) * pageSize;
+      const pageItems = filtered.slice(startIdx, startIdx + pageSize);
+
+      document.getElementById('e5000-range-label').textContent = filtered.length
+        ? `عرض العبارات ${startIdx + 1} - ${startIdx + pageItems.length} من إجمالي ${filtered.length} عبارة`
+        : 'لا توجد عبارات مطابقة لبحثك';
+      document.getElementById('e5000-page-indicator').textContent = `المجموعة ${state.e5000Batch} / ${totalBatches}`;
+
+      gridEl.innerHTML = '';
+      pageItems.forEach(item => {
+        const isDone = !!state.mastered[item.id];
+        const card = document.createElement('div');
+        card.className = `p-4 rounded-2xl border transition flex flex-col justify-between gap-2.5 ${
+          isDone ? 'bg-emerald-50/60 border-emerald-300' : 'bg-slate-50/80 hover:bg-white border-slate-200'
+        }`;
+        card.innerHTML = `
+          <div class="space-y-1.5">
+            <div class="flex items-center justify-between gap-2 flex-wrap">
+              <div class="flex items-center gap-1.5 flex-wrap">
+                <span class="font-en text-[11px] font-extrabold px-2 py-0.5 rounded bg-slate-900 text-teal-300">#${item.num}</span>
+                <span class="font-en text-[10px] font-extrabold px-2 py-0.5 rounded bg-indigo-100 text-indigo-800">${item.level}</span>
+                <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-teal-100 text-teal-900">${item.catAr}</span>
+              </div>
+              ${isDone ? '<span class="text-[11px] font-extrabold text-emerald-700">✅ متقنة</span>' : ''}
+            </div>
+            <p class="font-en text-sm sm:text-base font-extrabold text-slate-900 pt-0.5" dir="ltr">${item.en}</p>
+            <p class="text-xs font-bold text-teal-700">النطق: ${item.pron}</p>
+            <p class="text-xs sm:text-sm font-extrabold text-slate-800">${item.ar}</p>
+            <p class="text-[11px] text-slate-500 bg-white px-2.5 py-1 rounded-lg border border-slate-200/80">💡 الاستخدام: ${item.usageAr}</p>
+          </div>
+          <div class="flex items-center justify-between gap-2 pt-2 border-t border-slate-200/70">
+            <button type="button" class="btn-e5k-speak flex-1 py-2 px-3 rounded-xl bg-teal-600 hover:bg-teal-700 text-white text-xs font-bold transition">
+              🔊 استمع للعبارة
+            </button>
+            <button type="button" class="btn-e5k-slow py-2 px-2.5 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-800 text-xs font-bold transition">
+              🐢 ببطء
+            </button>
+            <button type="button" class="btn-e5k-master py-2 px-3 rounded-xl ${
+              isDone ? 'bg-emerald-100 text-emerald-800' : 'bg-emerald-600 hover:bg-emerald-700 text-white'
+            } text-xs font-bold transition">
+              ${isDone ? '✅ محفوظة' : '✔️ أتقنتها'}
+            </button>
+          </div>
+        `;
+        card.querySelector('.btn-e5k-speak').addEventListener('click', () => speakEnglish(item.en, 0.95));
+        card.querySelector('.btn-e5k-slow').addEventListener('click', () => speakEnglish(item.en, 0.68));
+        card.querySelector('.btn-e5k-master').addEventListener('click', () => {
+          markItemMastered(item.id, 5, `أتقنت العبارة #${item.num}`);
+          renderExpressions5000Module();
+        });
+        gridEl.appendChild(card);
+      });
+    }
+
+    // ==================== TOP 5000 DIALOGUES DIVIDED BY LEVEL (A1 -> C2) ENGINE ====================
+    const DIALOGUE_5000_TEMPLATES_BY_LEVEL = [
+      // ==================== A1 TEMPLATES (9 templates -> 900 dialogues) ====================
+      {
+        level: 'A1', settingAr: 'تعارف وبداية تعلم', speakerA: 'Ali (A1)', speakerB: 'Sam (A1)',
+        lines: [
+          { en: 'Hello! I want to learn about {ctxEn} today.', pron: 'هَلو! آي وونت تو ليرن أباوت {ctxPron} توداي', ar: 'مرحباً! أريد أن أتعلم عن {ctxAr} اليوم.' },
+          { en: 'Welcome! {ctxEn} is very easy and useful for beginners.', pron: 'ويلكم! {ctxPron} إز ڤيري إيزي آند يوسفل فور بيجينرز', ar: 'أهلاً بك! إن {ctxAr} سهل ومفيد جداً للمبتدئين.' },
+          { en: 'Can we practice two simple sentences together?', pron: 'كان وي براكتس تو سيمبل سينتنسز توجيذر؟', ar: 'هل يمكننا التدرب على جملتين بسيطتين معاً؟' },
+          { en: 'Yes, of course! Let us start step by step.', pron: 'يس، أوف كورس! ليت أس ستارت ستيب باي ستيب', ar: 'نعم بالطبع! دعنا نبدأ خطوة بخطوة.' }
+        ]
+      },
+      {
+        level: 'A1', settingAr: 'في الفصل الدراسي', speakerA: 'Student', speakerB: 'Teacher',
+        lines: [
+          { en: 'Excuse me teacher, what is the meaning of {ctxEn}?', pron: 'إكسكيوز مي تيتشر، وَت إز ذا مينينج أوف {ctxPron}؟', ar: 'لو سمحت يا معلمي، ما معنى {ctxAr}؟' },
+          { en: 'It is an important topic. Listen and repeat after me.', pron: 'إت إز آن إمبورتانت توبيك. لِسن آند ريبيت آفتر مي', ar: 'إنه موضوع مهم. استمع وكرر خلفي.' },
+          { en: 'Thank you! Now I can read and say {ctxEn} clearly.', pron: 'ثانك يو! ناو آي كان ريد آند ساي {ctxPron} كليرلي', ar: 'شكراً لك! الآن أستطيع قراءة ونطق {ctxAr} بوضوح.' }
+        ]
+      },
+      {
+        level: 'A1', settingAr: 'محادثة صباحية مع صديق', speakerA: 'Omar', speakerB: 'Karim',
+        lines: [
+          { en: 'Good morning Karim! Are you free this morning?', pron: 'جود مورنينج كريم! آر يو فري ذِس مورنينج؟', ar: 'صباح الخير يا كريم! هل أنت متفرغ هذا الصباح؟' },
+          { en: 'Good morning Omar! Yes, I am reading a book about {ctxEn}.', pron: 'جود مورنينج عمر! يس، آي آم ريدينج أ بوك أباوت {ctxPron}', ar: 'صباح النور يا عمر! نعم، أنا أقرأ كتاباً عن {ctxAr}.' },
+          { en: 'That is nice! Let us drink tea and study together.', pron: 'ذات إز نايس! ليت أس درينك تي آند ستَدي توجيذر', ar: 'هذا لطيف! دعنا نشرب الشاي ونذاكر معاً.' }
+        ]
+      },
+      {
+        level: 'A1', settingAr: 'في المكتبة', speakerA: 'Visitor', speakerB: 'Librarian',
+        lines: [
+          { en: 'Hello, do you have a beginner book on {ctxEn}?', pron: 'هلو، دو يو هاڤ أ بيجينر بوك أون {ctxPron}؟', ar: 'مرحباً، هل لديكم كتاب للمبتدئين عن {ctxAr}؟' },
+          { en: 'Yes, it is on the second table on the right.', pron: 'يس، إت إز أون ذا سيكند تيبل أون ذا رايت', ar: 'نعم، إنه على الطاولة الثانية على اليمين.' },
+          { en: 'Thank you very much for your help!', pron: 'ثانك يو ڤيري مَتش فور يور هيلب!', ar: 'شكراً جزيلاً لك على مساعدتك!' }
+        ]
+      },
+      {
+        level: 'A1', settingAr: 'السؤال عن المواعيد البسيطة', speakerA: 'Sara', speakerB: 'Mona',
+        lines: [
+          { en: 'When is our lesson about {ctxEn}?', pron: 'وين إز أور ليسون أباوت {ctxPron}؟', ar: 'متى يبدأ درسنا حول {ctxAr}؟' },
+          { en: 'It is at five o’clock this afternoon.', pron: 'إت إز آت فايڤ أوكلوك ذِس آفترنون', ar: 'إنه في الساعة الخامسة عصر اليوم.' },
+          { en: 'Great! I am ready with my notebook and pen.', pron: 'جريت! آي آم ريدي وِذ ماي نوت-بوك آند بين', ar: 'رائع! أنا جاهزة بدفتري وقلمي.' }
+        ]
+      },
+      {
+        level: 'A1', settingAr: 'حديث عائلي في المنزل', speakerA: 'Father', speakerB: 'Son',
+        lines: [
+          { en: 'What are you doing on your laptop, my son?', pron: 'وَت آر يو دوينج أون يور لابتوب، ماي سَن؟', ar: 'ماذا تفعل على حاسوبك المحمول يا بني؟' },
+          { en: 'I am watching a short English video about {ctxEn}.', pron: 'آي آم ووتشينج أ شورت إنجلش ڤيديو أباوت {ctxPron}', ar: 'أنا أشاهد فيديو إنجليزياً قصيراً عن {ctxAr}.' },
+          { en: 'Well done! I am proud of you.', pron: 'ويل دَن! آي آم براود أوف يو', ar: 'أحسنت! أنا فخور بك.' }
+        ]
+      },
+      {
+        level: 'A1', settingAr: 'التعرف على زميل جديد', speakerA: 'Nadia', speakerB: 'Salma',
+        lines: [
+          { en: 'Hi Salma! Is this your first day in the {ctxEn} class?', pron: 'هاي سلمى! إز ذِس يور فيرست داي إن ذا {ctxPron} كلاس؟', ar: 'أهلاً يا سلمى! هل هذا أول يوم لكِ في فصل {ctxAr}؟' },
+          { en: 'Yes, it is! Everyone here is very friendly.', pron: 'يس، إت إز! إيفري-وَن هير إز ڤيري فريندلي', ar: 'نعم، إنه كذلك! الجميع هنا ودودون للغاية.' },
+          { en: 'Welcome! You can sit next to me.', pron: 'ويلكم! يو كان سِت نيكست تو مي', ar: 'مرحباً بكِ! يمكنكِ الجلوس بجانبي.' }
+        ]
+      },
+      {
+        level: 'A1', settingAr: 'طلب مساعدة بسيطة', speakerA: 'Learner', speakerB: 'Partner',
+        lines: [
+          { en: 'Can you speak slowly about {ctxEn}, please?', pron: 'كان يو سبيك سلولي أباوت {ctxPron} بليز؟', ar: 'هل يمكنك التحدث ببطء عن {ctxAr} من فضلك؟' },
+          { en: 'Sure! I will repeat each word clearly for you.', pron: 'شور! آي ويل ريبيت إيتش وورد كليرلي فور يو', ar: 'بالتأكيد! سأكرر كل كلمة بوضوح من أجلك.' },
+          { en: 'You are a very kind friend. Thank you!', pron: 'يو آر أ ڤيري كايند فريند. ثانك يو!', ar: 'أنت صديق طيب جداً. شكراً لك!' }
+        ]
+      },
+      {
+        level: 'A1', settingAr: 'مراجعة نهاية اليوم', speakerA: 'Hany', speakerB: 'Tarek',
+        lines: [
+          { en: 'Did you like today’s lesson on {ctxEn}?', pron: 'دِد يو لايك تودايز ليسون أون {ctxPron}؟', ar: 'هل أعجبك درس اليوم عن {ctxAr}؟' },
+          { en: 'Yes, I learned ten new words and three sentences.', pron: 'يس، آي ليرند تين نيو ووردز آند ثري سينتنسز', ar: 'نعم، تعلمت عشر كلمات جديدة وثلاث جمل.' },
+          { en: 'Awesome! See you tomorrow morning.', pron: 'أوسَم! سي يو تومورو مورنينج', ar: 'ممتاز! أراك غداً صباحاً.' }
+        ]
+      },
+
+      // ==================== A2 TEMPLATES (9 templates -> 900 dialogues) ====================
+      {
+        level: 'A2', settingAr: 'التخطيط للأسبوع القادم', speakerA: 'Youssef', speakerB: 'Adel',
+        lines: [
+          { en: 'What are you going to do this weekend, Adel?', pron: 'وَت آر يو جوينج تو دو ذِس ويك-إند، عادل؟', ar: 'ماذا ستفعل في عطلة نهاية الأسبوع يا عادل؟' },
+          { en: 'I am going to attend a practical workshop on {ctxEn}.', pron: 'آي آم جوينج تو أتيند أ براكتيكال وورك-شوب أون {ctxPron}', ar: 'سأحضر ورشة عمل تطبيقية حول {ctxAr}.' },
+          { en: 'How much does the ticket cost? Can I join you?', pron: 'هاو مَتش دَز ذا تيكت كوست؟ كان آي جوين يو؟', ar: 'كم يبلغ سعر التذكرة؟ هل يمكنني الانضمام إليك؟' },
+          { en: 'It is free for academy students! Let us go together at 10 AM.', pron: 'إت إز فري فور أكاديمي ستيودنتس! ليت أس جو توجيذر آت تين إيه إم', ar: 'إنها مجانية لطلاب الأكاديمية! دعنا نذهب معاً الساعة العاشرة صباحاً.' }
+        ]
+      },
+      {
+        level: 'A2', settingAr: 'في مركز التدريب وخدمة العملاء', speakerA: 'Client', speakerB: 'Receptionist',
+        lines: [
+          { en: 'Good afternoon! I would like to register for the {ctxEn} course.', pron: 'جود آفترنون! آي وُد لايك تو ريجيستر فور ذا {ctxPron} كورس', ar: 'مساء الخير! أود التسجيل في دورة {ctxAr}.' },
+          { en: 'Certainly! Do you prefer the morning group or the evening group?', pron: 'سيرتنلي! دو يو بريفير ذا مورنينج جروب أور ذي إيڤنينج جروب؟', ar: 'بالتأكيد! هل تفضل المجموعة الصباحية أم المسائية؟' },
+          { en: 'The evening group is better for me because I work in the morning.', pron: 'ذي إيڤنينج جروب إز بيتر فور مي بيكوز آي وورك إن ذا مورنينج', ar: 'المجموعة المسائية أفضل لي لأنني أعمل في الصباح.' }
+        ]
+      },
+      {
+        level: 'A2', settingAr: 'الحديث عن تجربة بالأمس', speakerA: 'Mariam', speakerB: 'Laila',
+        lines: [
+          { en: 'Where were you yesterday evening, Laila? I called you.', pron: 'وير وير يو يسترداي إيڤنينج، ليلى؟ آي كولد يو', ar: 'أين كنتِ مساء أمس يا ليلى؟ لقد اتصلت بكِ.' },
+          { en: 'Sorry! I was practicing {ctxEn} in the quiet study hall.', pron: 'سوري! آي ووز براكتيسينج {ctxPron} إن ذا كوايت ستَدي هول', ar: 'عذراً! كنت أتدرب على {ctxAr} في قاعة المذاكرة الهادئة.' },
+          { en: 'Was it easier than last week’s topic?', pron: 'ووز إت إيزير ذان لاست ويكس توبيك؟', ar: 'هل كان أسهل من موضوع الأسبوع الماضي؟' },
+          { en: 'Yes, much clearer and more interesting!', pron: 'يس، مَتش كليرر آند مور إنتريستينج!', ar: 'نعم، أوضح بكثير وأكثر تشويقاً!' }
+        ]
+      },
+      {
+        level: 'A2', settingAr: 'في المقهى أثناء الاستراحة', speakerA: 'Colleague A', speakerB: 'Colleague B',
+        lines: [
+          { en: 'Would you like a cup of coffee before we start {ctxEn}?', pron: 'وُد يو لايك أ كَب أوف كوفي بيفور وي ستارت {ctxPron}؟', ar: 'هل تود فنجاناً من القهوة قبل أن نبدأ في {ctxAr}؟' },
+          { en: 'Yes, please! With a little milk and no sugar.', pron: 'يس بليز! وِذ أ ليتل مِلك آند نو شوجر', ar: 'نعم من فضلك! مع قليل من الحليب وبدون سكر.' },
+          { en: 'Here you are. We have twenty minutes before the session.', pron: 'هير يو آر. وي هاڤ توينتي مينيتس بيفور ذا سيشن', ar: 'تفضل. لدينا عشرون دقيقة قبل الجلسة.' }
+        ]
+      },
+      {
+        level: 'A2', settingAr: 'السؤال عن الطريق والمكان', speakerA: 'New Trainee', speakerB: 'Staff Member',
+        lines: [
+          { en: 'Excuse me, how can I get to the {ctxEn} department?', pron: 'إكسكيوز مي، هاو كان آي جيت تو ذا {ctxPron} ديبارتمنت؟', ar: 'عفواً لو سمحت، كيف يمكنني الوصول إلى قسم {ctxAr}؟' },
+          { en: 'Take the elevator to the third floor and turn left.', pron: 'تيك ذي إيليڤيتور تو ذا ثيرد فلور آند تيرن ليفت', ar: 'خذ المصعد إلى الطابق الثالث ثم اتجه يساراً.' },
+          { en: 'Thank you! Is it next to the meeting room?', pron: 'ثانك يو! إز إت نيكست تو ذا ميتينج روم؟', ar: 'شكراً لك! هل هو بجانب غرفة الاجتماعات؟' },
+          { en: 'Yes, right across from the main hall.', pron: 'يس، رايت أكروس فروم ذا مين هول', ar: 'نعم، مقابل القاعة الرئيسية مباشرة.' }
+        ]
+      },
+      {
+        level: 'A2', settingAr: 'مكالمة هاتفية سريعة', speakerA: 'Caller', speakerB: 'Assistant',
+        lines: [
+          { en: 'Hello, may I speak to the coordinator of {ctxEn}?', pron: 'هلو، ماي آي سبيك تو ذا كوأوردينيتور أوف {ctxPron}؟', ar: 'مرحباً، هل يمكنني التحدث إلى منسق {ctxAr}؟' },
+          { en: 'He is in a meeting right now. Can I take a message?', pron: 'هي إز إن أ ميتينج رايت ناو. كان آي تيك أ ميسج؟', ar: 'هو في اجتماع الآن. هل يمكنني أخذ رسالة له؟' },
+          { en: 'Yes, please ask him to call me back before four o’clock.', pron: 'يس، بليز آسك هيم تو كول مي باك بيفور فور أوكلوك', ar: 'نعم، من فضلك اطلب منه معاودة الاتصال بي قبل الساعة الرابعة.' }
+        ]
+      },
+      {
+        level: 'A2', settingAr: 'شراء أدوات وكتب تعليمية', speakerA: 'Customer', speakerB: 'Bookstore Clerk',
+        lines: [
+          { en: 'Do you have the new guide for {ctxEn} with audio files?', pron: 'دو يو هاڤ ذا نيو جايد فور {ctxPron} وِذ أوديو فايلز؟', ar: 'هل لديكم الدليل الجديد لـ {ctxAr} المزود بالملفات الصوتية؟' },
+          { en: 'Yes, we received the latest edition yesterday.', pron: 'يس، وي ريسيڤد ذا ليتست إديشن يسترداي', ar: 'نعم، استلمنا أحدث طبعة بالأمس.' },
+          { en: 'Wonderful! I will buy two copies—one for me and one for my brother.', pron: 'وَندرفل! آي ويل باي تو كوبيز — وَن فور مي آند وَن فور ماي برَذر', ar: 'رائع! سأشتري نسختين — واحدة لي وواحدة لأخي.' }
+        ]
+      },
+      {
+        level: 'A2', settingAr: 'نصيحة دراسية بين زميلين', speakerA: 'Hassan', speakerB: 'Mostafa',
+        lines: [
+          { en: 'How do you remember all the new terms in {ctxEn}?', pron: 'هاو دو يو ريممبر أول ذا نيو تيرمز إن {ctxPron}؟', ar: 'كيف تتذكر كل المصطلحات الجديدة في {ctxAr}؟' },
+          { en: 'You should use them in short sentences and listen to them daily.', pron: 'يو شود يوز ذيم إن شورت سينتنسز آند لِسن تو ذيم دايلي', ar: 'ينبغي أن تستخدمها في جمل قصيرة وتستمع إليها يومياً.' },
+          { en: 'That is great advice! I will start doing that tonight.', pron: 'ذات إز جريت أدڤايس! آي ويل ستارت دوينج ذات تونايت', ar: 'هذه نصيحة رائعة! سأبدأ في تطبيق ذلك الليلة.' }
+        ]
+      },
+      {
+        level: 'A2', settingAr: 'في موقع العمل الصباحي', speakerA: 'Supervisor', speakerB: 'Technician',
+        lines: [
+          { en: 'Did you check the equipment before starting {ctxEn}?', pron: 'دِد يو تشيك ذي إكويبمنت بيفور ستارتينج {ctxPron}؟', ar: 'هل فحصت المعدات قبل البدء في {ctxAr}؟' },
+          { en: 'Yes, all batteries are fully charged and ready.', pron: 'يس، أول باتريز آر فولي تشارجد آند ريدي', ar: 'نعم، جميع البطاريات مشحونة بالكامل وجاهزة.' },
+          { en: 'Good job! Remember to wear your safety helmet.', pron: 'جود جوب! ريممبر تو وير يور سيفتي هيلمت', ar: 'عمل جيد! تذكر ارتداء خوذة السلامة.' }
+        ]
+      },
+
+      // ==================== B1 TEMPLATES (9 templates -> 900 dialogues) ====================
+      {
+        level: 'B1', settingAr: 'التحدث عن الخبرات والمهارات', speakerA: 'Interviewer', speakerB: 'Applicant',
+        lines: [
+          { en: 'Have you ever worked on a project involving {ctxEn}?', pron: 'هاڤ يو إيڤر ووركد أون أ بروجيكت إنڤولڤينج {ctxPron}؟', ar: 'هل سبق لك العمل في مشروع يتضمن {ctxAr}؟' },
+          { en: 'Yes, I have worked in that field for three years with great results.', pron: 'يس، آي هاڤ ووركد إن ذات فيلد فور ثري ييرز وِذ جريت ريزلتس', ar: 'نعم، عملت في هذا المجال لمدة ثلاث سنوات بنتائج رائعة.' },
+          { en: 'What will you do if you face a tight deadline?', pron: 'وَت ويل يو دو إف يو فيس أ تايت ديدلاين؟', ar: 'ماذا ستفعل إذا واجهت موعداً نهائياً ضيقاً؟' },
+          { en: 'If we organize our tasks early, we will deliver on time without stress.', pron: 'إف وي أورجانايز أور تاسكس إيرلي، وي ويل ديليڤر أون تايم وِذ-أوت ستريس', ar: 'إذا نظمنا مهامنا مبكراً، سنسلّم في الموعد المحدد دون توتر.' }
+        ]
+      },
+      {
+        level: 'B1', settingAr: 'في المطار ورحلة عمل', speakerA: 'Traveler', speakerB: 'Colleague',
+        lines: [
+          { en: 'How long have you been waiting at the boarding gate?', pron: 'هاو لونج هاڤ يو بين ويتينج آت ذا بوردينج جيت؟', ar: 'منذ متى وأنت تنتظر عند بوابة صعود الطائرة؟' },
+          { en: 'I have been here for thirty minutes reviewing my slides on {ctxEn}.', pron: 'آي هاڤ بين هير فور ثيرتي مينيتس ريڤيوينج ماي سلايدز أون {ctxPron}', ar: 'أنا هنا منذ ثلاثين دقيقة أراجع شرائح العرض الخاصة بـ {ctxAr}.' },
+          { en: 'As soon as we land in London, we will head to the hotel to rest.', pron: 'آز سون آز وي لاند إن لندن، وي ويل هيد تو ذا هوتيل تو ريست', ar: 'بمجرد أن نهبط في لندن، سنتوجه إلى الفندق للراحة.' }
+        ]
+      },
+      {
+        level: 'B1', settingAr: 'تنسيق مهام بين المكتب والموقع', speakerA: 'Site Engineer', speakerB: 'Office Engineer',
+        lines: [
+          { en: 'Have you received the updated files for {ctxEn} yet?', pron: 'هاڤ يو ريسيڤد ذي أبديتد فايلز فور {ctxPron} يِت؟', ar: 'هل استلمت الملفات المحدثة الخاصة بـ {ctxAr} حتى الآن؟' },
+          { en: 'Yes, I have just downloaded them and checked all the numbers.', pron: 'يس، آي هاڤ جَست داونلودد ذيم آند تشيكد أول ذا نَمبرز', ar: 'نعم، لقد قمت بتحميلها للتو وفحصت جميع الأرقام.' },
+          { en: 'Great! Please send me the final summary before noon.', pron: 'جريت! بليز سيند مي ذا فاينال سَمري بيفور نون', ar: 'رائع! من فضلك أرسل لي الملخص النهائي قبل الظهر.' }
+        ]
+      },
+      {
+        level: 'B1', settingAr: 'مناقشة خطة تطوير الذات', speakerA: 'Mentor', speakerB: 'Trainee',
+        lines: [
+          { en: 'Your performance in {ctxEn} has improved significantly this month.', pron: 'يور بيرفورمانس إن {ctxPron} هاز إمبروڤد سيجنيفيكانتلي ذِس مَنث', ar: 'لقد تحسن أداؤك في {ctxAr} بشكل ملحوظ هذا الشهر.' },
+          { en: 'Thank you! I used to feel nervous, but now I am used to practicing daily.', pron: 'ثانك يو! آي يوزد تو فيل نيرڤس، بَت ناو آي آم يوزد تو براكتيسينج دايلي', ar: 'شكراً لك! اعتدت الشعور بالتوتر سابقاً، لكنني الآن معتاد على التدرب يومياً.' },
+          { en: 'Keep it up! Consistency is the key to fluency.', pron: 'كيب إت أب! كونسيستنسي إز ذا كي تو فلوينسي', ar: 'استمر على هذا المنوال! فالاستمرارية هي مفتاح الطلاقة.' }
+        ]
+      },
+      {
+        level: 'B1', settingAr: 'حل مشكلة فنية في العمل', speakerA: 'Team Leader', speakerB: 'Specialist',
+        lines: [
+          { en: 'We encountered a small issue while working on {ctxEn}.', pron: 'وي إنكاونترد أ سمول إيشو وايل ووركينج أون {ctxPron}', ar: 'واجهنا مشكلة صغيرة أثناء العمل على {ctxAr}.' },
+          { en: 'What happened? Did you check the main settings?', pron: 'وَت هابند؟ دِد يو تشيك ذا مين سيتينجز؟', ar: 'ماذا حدث؟ هل فحصتم الإعدادات الرئيسية؟' },
+          { en: 'After we had restarted the system, everything worked smoothly.', pron: 'آفتر وي هاد ريستارتد ذا سيستم، إيفري-ثينج ووركد سموذلي', ar: 'بعد أن أعدنا تشغيل النظام، عمل كل شيء بسلاسة.' }
+        ]
+      },
+      {
+        level: 'B1', settingAr: 'اقتراح فكرة جديدة للفريق', speakerA: 'Khaled', speakerB: 'Nour',
+        lines: [
+          { en: 'What do you think about using modern tools for {ctxEn}?', pron: 'وَت دو يو ثينك أباوت يوزينج مودرن تولز فور {ctxPron}؟', ar: 'ما رأيك في استخدام الأدوات الحديثة من أجل {ctxAr}؟' },
+          { en: 'In my opinion, it will save us time and reduce human errors.', pron: 'إن ماي أوبينيون، إت ويل سيڤ أس تايم آند ريديوس هيومان إيرورز', ar: 'في رأيي، سيوفر ذلك علينا الوقت ويقلل الأخطاء البشرية.' },
+          { en: 'I totally agree with you. Let us suggest it to the manager.', pron: 'آي توتالي أجري وِذ يو. ليت أس ساجيست إت تو ذا مانجر', ar: 'أتفق معك تماماً. دعنا نقترح ذلك على المدير.' }
+        ]
+      },
+      {
+        level: 'B1', settingAr: 'تأكيد حجز وموعد رسمي', speakerA: 'Organizer', speakerB: 'Guest Speaker',
+        lines: [
+          { en: 'We are delighted to invite you to speak about {ctxEn} next Tuesday.', pron: 'وي آر ديلايتد تو إنڤايت يو تو سبيك أباوت {ctxPron} نيكست تيوزداي', ar: 'يسعدنا دعوتك للتحدث حول {ctxAr} يوم الثلاثاء القادم.' },
+          { en: 'Thank you for the invitation! How long is the session?', pron: 'ثانك يو فور ذي إنڤيتيشن! هاو لونج إز ذا سيشن؟', ar: 'شكراً لكم على الدعوة! كم تبلغ مدة الجلسة؟' },
+          { en: 'It is forty-five minutes, followed by a short Q&A.', pron: 'إت إز فورتي-فايڤ مينيتس، فولود باي أ شورت كيو آند إيه', ar: 'مدتها خمس وأربعون دقيقة، تليها فقرة قصيرة للأسئلة والأجوبة.' }
+        ]
+      },
+      {
+        level: 'B1', settingAr: 'استلام أعمال بالموقع الهندسي', speakerA: 'Consultant', speakerB: 'Site Surveyor',
+        lines: [
+          { en: 'All points for {ctxEn} have been checked and verified.', pron: 'أول بوينتس فور {ctxPron} هاڤ بين تشيكد آند ڤيريفايد', ar: 'تم فحص والتحقق من جميع النقاط الخاصة بـ {ctxAr}.' },
+          { en: 'Are the elevations within the required tolerance, aren’t they?', pron: 'آر ذي إليڤيشنز وِذ-إن ذا ريكوايرد توليرانس، آرنت ذيه؟', ar: 'المناسيب تقع ضمن السماحية المطلوبة، أليس كذلك؟' },
+          { en: 'Yes, the maximum difference is less than two millimeters.', pron: 'يس، ذا ماكسيمم ديفرنس إز ليس ذان تو ميليميترز', ar: 'نعم، أقصى فرق أقل من ملليمترين اثنين.' }
+        ]
+      },
+      {
+        level: 'B1', settingAr: 'مراجعة قبل الاختبار', speakerA: 'Amr', speakerB: 'Ziad',
+        lines: [
+          { en: 'Have you finished revising the chapter on {ctxEn}?', pron: 'هاڤ يو فينيشد ريڤايزينج ذا تشابتر أون {ctxPron}؟', ar: 'هل انتهيت من مراجعة الفصل الخاص بـ {ctxAr}؟' },
+          { en: 'Almost! I have solved ten quizzes so that I can get a full mark.', pron: 'أولموست! آي هاڤ سولڤد تين كويزز سو ذات آي كان جيت أ فول مارك', ar: 'تقريباً! لقد حللت عشرة اختبارات قصيرة لكي أحصل على الدرجة النهائية.' },
+          { en: 'Good luck! You have prepared really well.', pron: 'جود لَك! يو هاڤ بريبيرد ريلي ويل', ar: 'بالتوفيق! لقد استعددت بشكل جيد حقاً.' }
+        ]
+      },
+
+      // ==================== B2 TEMPLATES (8 templates -> 800 dialogues) ====================
+      {
+        level: 'B2', settingAr: 'اجتماع إدارة المشاريع والتفاوض', speakerA: 'Project Manager', speakerB: 'Department Lead',
+        lines: [
+          { en: 'How would you handle the schedule if {ctxEn} took longer than planned?', pron: 'هاو وُد يو هاندل ذا سكيدجول إف {ctxPron} توك لونجر ذان بلاند؟', ar: 'كيف ستتعامل مع الجدول الزمني لو استغرق {ctxAr} وقتاً أطول من المخطط؟' },
+          { en: 'If I were in charge, I would prioritize critical tasks and allocate extra resources.', pron: 'إف آي وير إن تشارج، آي وُد برايوريتايز كريتيكال تاسكس آند ألوكيت إكسترا ريسورسز', ar: 'لو كنت المسؤول، لرتبت أولويات المهام الحرجة وخصصت موارد إضافية.' },
+          { en: 'Despite the recent challenges, our team productivity has increased by 20%.', pron: 'ديسبايت ذا ريسنت تشالينجز، أور تيم برودكتيڤيتي هاز إنكريسد باي توينتي بيرسنت', ar: 'بالرغم من التحديات الأخيرة، زادت إنتاجية فريقنا بنسبة 20%.' }
+        ]
+      },
+      {
+        level: 'B2', settingAr: 'مقابلة توظيف للشركات الدولية', speakerA: 'HR Director', speakerB: 'Senior Candidate',
+        lines: [
+          { en: 'What makes your background in {ctxEn} stand out from other candidates?', pron: 'وَت ميكس يور باك-جراوند إن {ctxPron} ستاند أوت فروم أذر كانديديتس؟', ar: 'ما الذي يجعل خلفيتك في {ctxAr} متميزة عن بقية المرشحين؟' },
+          { en: 'I combine technical accuracy with strong communication across multidisciplinary teams.', pron: 'آي كومباين تيكنيكال أكيوريسي وِذ سترونج كوميونيكيشن أكروس مَلتي-ديسيبلينري تيمز', ar: 'أجمع بين الدقة الفنية والتواصل القوي مع فرق العمل متعددة التخصصات.' },
+          { en: 'By the end of this quarter, what milestones will you have achieved?', pron: 'باي ذي إند أوف ذِس كوارتر، وَت مايل-ستونز ويل يو هاڤ أتشيڤد؟', ar: 'بحلول نهاية هذا الربع السنوي، ما الإنجازات التي ستكون قد حققتها؟' },
+          { en: 'We will have automated the entire workflow for {ctxEn}.', pron: 'وي ويل هاڤ أوتوميتد ذي إنتاير وورك-فلو فور {ctxPron}', ar: 'سنكون قد قمنا بأتمتة مسار العمل بالكامل لـ {ctxAr}.' }
+        ]
+      },
+      {
+        level: 'B2', settingAr: 'تقييم أداء ومراجعة أخطاء سابقة', speakerA: 'Quality Auditor', speakerB: 'Engineer',
+        lines: [
+          { en: 'If the team had verified {ctxEn} earlier, we would have avoided that delay.', pron: 'إف ذا تيم هاد ڤيريفايد {ctxPron} إيرلير، وي وُد هاڤ أڤويدد ذات ديلاي', ar: 'لو كان الفريق قد تحقق من {ctxAr} في وقت أبكر، لتجنبنا ذلك التأخير.' },
+          { en: 'You are right. We had the instruments calibrated yesterday to prevent any future errors.', pron: 'يو آر رايت. وي هاد ذي إنسترومنتس كاليبريتد يسترداي تو بريڤنت إني فيوتشر إيرورز', ar: 'أنت على حق. لقد قمنا بمعايرة الأجهزة أمس لمنع أي أخطاء مستقبلية.' },
+          { en: 'Excellent corrective action! Please document it in the quality log.', pron: 'إكسيلنت كوريكتيڤ أكشن! بليز دوكيومنت إت إن ذا كواليتي لوج', ar: 'إجراء تصحيحي ممتاز! يرجى توثيقه في سجل الجودة.' }
+        ]
+      },
+      {
+        level: 'B2', settingAr: 'مفاوضات عقود ومشتريات', speakerA: 'Procurement Manager', speakerB: 'Supplier',
+        lines: [
+          { en: 'We are interested in upgrading our systems for {ctxEn}, provided the warranty covers two years.', pron: 'وي آر إنتريستد إن أبجريدينج أور سيستمز فور {ctxPron}، بروڤايدد ذا وورانتي كَڤرز تو ييرز', ar: 'نحن مهتمون بترقية أنظمتنا الخاصة بـ {ctxAr}، بشرط أن يغطي الضمان عامين.' },
+          { en: 'Both the two-year warranty and free technical training are included in our offer.', pron: 'بوث ذا تو-يير وورانتي آند فري تيكنيكال ترينينج آر إنكلودد إن أور أوفر', ar: 'كل من ضمان العامين والتدريب الفني المجاني مشمولان في عرضنا.' },
+          { en: 'That sounds like a win-win deal. Let us finalize the contract.', pron: 'ذات ساوندز لايك أ وين-وين ديل. ليت أس فاينالايز ذا كونتراكت', ar: 'تبدو هذه صفقة رابحة للطرفين. دعنا نعتمد العقد النهائي.' }
+        ]
+      },
+      {
+        level: 'B2', settingAr: 'نقل تكليفات الإدارة العليا', speakerA: 'Executive Assistant', speakerB: 'Team Member',
+        lines: [
+          { en: 'The director said that the report on {ctxEn} was being reviewed by the board.', pron: 'ذا دايركتور سيد ذات ذا ريبورت أون {ctxPron} ووز بيينج ريڤيود باي ذا بورد', ar: 'قال المدير إن التقرير الخاص بـ {ctxAr} تتم مراجعته حالياً من مجلس الإدارة.' },
+          { en: 'Did he mention when the final approval would be announced?', pron: 'دِد هي مينشن وين ذا فاينال أبروڤال وُد بي أناونسد؟', ar: 'هل ذكر متى سيتم الإعلان عن الاعتماد النهائي؟' },
+          { en: 'He told us that we would receive official feedback by Thursday.', pron: 'هي تولد أس ذات وي وُد ريسيڤ أوفيشال فيدباك باي ثيرزداي', ar: 'أخبرنا أننا سنتلقى الرد الرسمي بحلول يوم الخميس.' }
+        ]
+      },
+      {
+        level: 'B2', settingAr: 'اجتماع تنسيق فني عبر الإنترنت', speakerA: 'Remote Lead', speakerB: 'Field Coordinator',
+        lines: [
+          { en: 'Can everyone see my screen? Today we are looking into {ctxEn}.', pron: 'كان إيفري-وَن سي ماي سكرين؟ توداي وي آر لوكينج إنتو {ctxPron}', ar: 'هل يرى الجميع شاشتي؟ اليوم نبحث بالتفصيل في {ctxAr}.' },
+          { en: 'Although the schedule is tight, we have already carried out 80% of the fieldwork.', pron: 'أولذو ذا سكيدجول إز تايت، وي هاڤ أولريدي كاريد أوت إيتي بيرسنت أوف ذا فيلد-وورك', ar: 'على الرغم من ضيق الجدول الزمني، نفذنا بالفعل 80% من العمل الميداني.' },
+          { en: 'Impressive progress! Let us keep up the momentum.', pron: 'إمبريسيڤ بروجريس! ليت أس كيب أب ذا مومينتم', ar: 'تقدم مبهر! دعونا نحافظ على هذا الدافع القوي.' }
+        ]
+      },
+      {
+        level: 'B2', settingAr: 'حل خلاف تعاقدي بهدوء', speakerA: 'QS Engineer', speakerB: 'Client Representative',
+        lines: [
+          { en: 'I respect your perspective on {ctxEn}; however, the joint survey records prove our quantities.', pron: 'آي ريسبكت يور بيرسبيكتيڤ أون {ctxPron}؛ هاوإيڤر، ذا جوينت سيرڤي ريكوردز بروڤ أور كوانتيتيز', ar: 'أحترم وجهة نظرك بخصوص {ctxAr}؛ ومع ذلك، فإن محاضر المساحة المشتركة تثبت كمياتنا.' },
+          { en: 'Having reviewed the signed cross-sections, I agree that your claim is accurate.', pron: 'هاڤينج ريڤيود ذا سايند كروس-سيكشنز، آي أجري ذات يور كليم إز أكيوريت', ar: 'بعد مراجعة القطاعات العرضية الموقعة، أتفق على أن مطالبتكم دقيقة.' }
+        ]
+      },
+      {
+        level: 'B2', settingAr: 'تمني وتطوير خطط العمل', speakerA: 'Planner', speakerB: 'Operations Manager',
+        lines: [
+          { en: 'I wish we had adopted digital automation for {ctxEn} two years ago.', pron: 'آي ويش وي هاد أدوبتد ديجيتال أوتوميشن فور {ctxPron} تو ييرز أجو', ar: 'أتمنى لو كنا قد اعتمدنا الأتمتة الرقمية لـ {ctxAr} قبل عامين.' },
+          { en: 'Better late than never! Implementing it now will double our efficiency.', pron: 'بيتر ليت ذان نيڤر! إمبليمنتينج إت ناو ويل دَبل أور إفيشينسي', ar: 'أن تأتي متأخراً خير من ألا تأتي أبداً! تطبيقها الآن سيضاعف كفاءتنا.' }
+        ]
+      },
+
+      // ==================== C1 TEMPLATES (8 templates -> 800 dialogues) ====================
+      {
+        level: 'C1', settingAr: 'مؤتمر أكاديمي وبحث علمي', speakerA: 'Professor', speakerB: 'Lead Researcher',
+        lines: [
+          { en: 'Your paper on {ctxEn} presents a compelling framework. Could you elaborate on its empirical findings?', pron: 'يور بيبر أون {ctxPron} بريزنتس أ كومبيلينج فريم-وورك. كود يو إلابوريت أون إتس إمبيريكال فايندينجز؟', ar: 'تقدم ورقتك البحثية حول {ctxAr} إطاراً مقنعاً. هل يمكنك التوسع في شرح نتائجها التجريبية؟' },
+          { en: 'Certainly. Furthermore, our longitudinal data demonstrates a strong correlation between training and precision.', pron: 'سيرتنلي. فيرذرمور، أور لونجيتيودينال داتا ديمونستريتس أ سترونج كوريليشن بيتوين ترينينج آند بريسيجن', ar: 'بالتأكيد. علاوة على ذلك، تثبت بياناتنا الممتدة ارتباطاً قوياً بين التدريب والدقة.' },
+          { en: 'What distinguishes this methodology is its pragmatic applicability in real-world projects.', pron: 'وَت ديستينجويشز ذِس ميثودولوجي إز إتس براجماتيك أبليكابيليتي إن ريل-وورلد بروجيكتس', ar: 'إن ما يميز هذه المنهجية هو قابليتها العملية للتطبيق في المشاريع الواقعية.' }
+        ]
+      },
+      {
+        level: 'C1', settingAr: 'اجتماع استراتيجي للإدارة العليا', speakerA: 'Chief Director', speakerB: 'Strategic Advisor',
+        lines: [
+          { en: 'What we really need this year is a comprehensive transformation in {ctxEn}.', pron: 'وَت وي ريلي نيد ذِس يير إز أ كومبريهينسيڤ ترانسفورميشن إن {ctxPron}', ar: 'إن ما نحتاجه فعلاً هذا العام هو تحول شامل في {ctxAr}.' },
+          { en: 'Undoubtedly. Nevertheless, mitigating operational risks requires rigorous quality controls.', pron: 'أنداوتدلي. نيڤر-ذا-ليس، ميتيجيتينج أوبيريشنال ريسكس ريكوايرز ريجورس كواليتي كونترولز', ar: 'بلا شك. ومع ذلك، فإن تخفيف المخاطر التشغيلية يتطلب ضوابط جودة صارمة.' },
+          { en: 'Consequently, investing in advanced training remains our highest priority.', pron: 'كونسيكوينتلي، إنڤيستينج إن أدڤانسد ترينينج ريمينز أور هايست برايوريتي', ar: 'وبناءً على ذلك، يظل الاستثمار في التدريب المتقدم أولويتنا القصوى.' }
+        ]
+      },
+      {
+        level: 'C1', settingAr: 'تحليل واستنتاج هندسي متقدم', speakerA: 'Senior Consultant', speakerB: 'Geomatics Lead',
+        lines: [
+          { en: 'The closure error is virtually zero; the crew must have calibrated the system prior to {ctxEn}.', pron: 'ذا كلوجر إيرور إز ڤيرتشوالي زيرو؛ ذا كرو مَست هاڤ كاليبريتد ذا سيستم برايور تو {ctxPron}', ar: 'خطأ القفل يكاد يكون صفراً؛ لا بد أن الطاقم قد عاير النظام قبل تنفيذ {ctxAr}.' },
+          { en: 'Having completed the least-squares adjustment, we verified every control station independently.', pron: 'هاڤينج كومبليتد ذا ليست-سكويرز أدجستمنت، وي ڤيريفايد إيفري كونترول ستيشن إنديبيندنتلي', ar: 'بعد إتمام ضبط المربعات الصغرى، تحققنا من كل محطة رصد بشكل مستقل.' }
+        ]
+      },
+      {
+        level: 'C1', settingAr: 'ندوة دولية حول التكنولوجيا والمستقبل', speakerA: 'Panel Moderator', speakerB: 'Keynote Speaker',
+        lines: [
+          { en: 'It is widely believed that artificial intelligence will revolutionize {ctxEn}.', pron: 'إت إز وايدلي بيليڤد ذات آرتيفيشال إنتيليجنس ويل ريڤولوشنايز {ctxPron}', ar: 'يُعتقد على نطاق واسع أن الذكاء الاصطناعي سيحدث ثورة في {ctxAr}.' },
+          { en: 'Indeed, yet human expertise and ethical accountability remain indispensable.', pron: 'إنديد، يِت هيومان إكسبرتيز آند إيثيكال أكاونتابيليتي ريمين إنديسبينسابل', ar: 'بالفعل، غير أن الخبرة البشرية والمساءلة الأخلاقية تظلان لا غنى عنهما.' }
+        ]
+      },
+      {
+        level: 'C1', settingAr: 'مراجعة عقود وتحكيم هندسي', speakerA: 'Legal Counsel', speakerB: 'Technical Expert',
+        lines: [
+          { en: 'It is high time we standardized the technical specifications for {ctxEn} across all contracts.', pron: 'إت إز هاي تايم وي ستانداردايزد ذا تيكنيكال سبيسيفيكيشنز فور {ctxPron} أكروس أول كونتراكتس', ar: 'لقد حان الوقت بالفعل لتوحيد المواصفات الفنية الخاصة بـ {ctxAr} في جميع العقود.' },
+          { en: 'Each clause must be formulated unambiguously to prevent any future litigation.', pron: 'إيتش كلوز مَست بي فورميوليتد أن-أمبيجيوسلي تو بريڤنت إني فيوتشر ليتيجيشن', ar: 'يجب صياغة كل بند بوضوح لا لبس فيه لمنع أي نزاع قضائي مستقبلي.' }
+        ]
+      },
+      {
+        level: 'C1', settingAr: 'تقييم جدوى المشاريع الكبرى', speakerA: 'Investment Board', speakerB: 'Project Director',
+        lines: [
+          { en: 'Had we not modernized {ctxEn} last year, we would not be leading the market today.', pron: 'هاد وي نوت مودرنايزد {ctxPron} لاست يير، وي وُد نوت بي ليدينج ذا ماركت توداي', ar: 'لو لم نحدث {ctxAr} العام الماضي، لما كنا نقود السوق اليوم (شرط مختلط).' },
+          { en: 'The substantial evidence confirms that sustainable innovation yields long-term resilience.', pron: 'ذا سَبستانشال إيڤيدنس كونفيرمز ذات سَستينابل إنوڤيشن ييلدز لونج تيرم ريزيلينس', ar: 'تؤكد الأدلة الجوهرية أن الابتكار المستدام يحقق مرونة طويلة الأمد.' }
+        ]
+      },
+      {
+        level: 'C1', settingAr: 'إشراف أكاديمي ومناقشة رسالة علمية', speakerA: 'Supervisor', speakerB: 'Postgraduate Researcher',
+        lines: [
+          { en: 'Your analysis of {ctxEn} is coherent; however, how did you account for external variables?', pron: 'يور أناليسيس أوف {ctxPron} إز كوهيرنت؛ هاوإيڤر، هاو دِد يو أكاونت فور إكستيرنال ڤاريابلز؟', ar: 'تحليلك لـ {ctxAr} مترابط منطقياً؛ ولكن كيف أخذت المتغيرات الخارجية في الحسبان؟' },
+          { en: 'We scrutinized every dataset and substantiated our conclusions with field verification.', pron: 'وي سكروتينايزد إيفري داتا-سِت آند سَبستانشييتد أور كونكلوجنز وِذ فيلد ڤيريفيكيشن', ar: 'قمنا بفحص كل مجموعة بيانات بدقة وأثبتنا استنتاجاتنا بالتحقق الميداني.' }
+        ]
+      },
+      {
+        level: 'C1', settingAr: 'تخطيط استراتيجي للمدن الذكية', speakerA: 'Urban Planner', speakerB: 'GIS Director',
+        lines: [
+          { en: 'Integrating {ctxEn} into our 3D digital twin will facilitate rapid decision-making.', pron: 'إنتيجريتينج {ctxPron} إنتو أور ثري دي ديجيتال توين ويل فاسيليتيت رابيد ديسيجن-ميكينج', ar: 'إن دمج {ctxAr} في التوأم الرقمي ثلاثي الأبعاد سيسهّل اتخاذ القرار السريع.' },
+          { en: 'Regardless of the technical complexity, our team is fully equipped to deliver.', pron: 'ريجاردليس أوف ذا تيكنيكال كومبليكسيتي، أور تيم إز فولي إكويبد تو ديليڤر', ar: 'بغض النظر عن التعقيد الفني، فإن فريقنا مجهز بالكامل للتنفيذ.' }
+        ]
+      },
+
+      // ==================== C2 TEMPLATES (7 templates -> 700 dialogues) ====================
+      {
+        level: 'C2', settingAr: 'قمة دولية وبلاغة دبلوماسية رفيعة', speakerA: 'Summit Chair', speakerB: 'Keynote Diplomat',
+        lines: [
+          { en: 'Seldom have we witnessed such a unanimous consensus regarding {ctxEn}.', pron: 'سيلدوم هاڤ وي ويتنسد سَتش أ يونانيمس كونسينسس ريجاردينج {ctxPron}', ar: 'نادراً ما شهدنا مثل هذا الإجماع الكامل في الآراء فيما يتعلق بـ {ctxAr}.' },
+          { en: 'Not only does this initiative foster global cooperation, but it also sets an unprecedented standard.', pron: 'نوت أونلي دَز ذِس إنيشياتيڤ فوستر جلوبال كوأوبيريشن، بَت إت أولسو سِتس آن أن-پريسيدينتد ستاندرد', ar: 'لا تقتصر هذه المبادرة على تعزيز التعاون العالمي فحسب، بل ترسي أيضاً معياراً غير مسبوق.' },
+          { en: 'Had it not been for your meticulous leadership, reaching this pinnacle would have been inconceivable.', pron: 'هاد إت نوت بين فور يور ميتيكيولس ليدرشيب، ريتشينج ذِس بيناكل وُد هاڤ بين إنكونسيڤابل', ar: 'لولا قيادتكم فائقة الدقة، لكان الوصول إلى هذه الذروة أمراً لا يمكن تصوره.' }
+        ]
+      },
+      {
+        level: 'C2', settingAr: 'مناظرة فكرية وأكاديمية بمستوى الإتقان', speakerA: 'Distinguished Scholar', speakerB: 'Chief Orator',
+        lines: [
+          { en: 'What, in your estimation, constitutes the quintessence of mastery in {ctxEn}?', pron: 'وَت، إن يور إستيميشن، كونستيتيوتس ذا كوينتيسنس أوف ماستري إن {ctxPron}؟', ar: 'ما الذي يشكل في تقديرك الجوهر الخالص للإتقان في {ctxAr}؟' },
+          { en: 'It lies in synthesizing rigorous empirical precision with effortless eloquence and subtle nuance.', pron: 'إت لايز إن سينثيسايزينج ريجورس إمبيريكال بريسيجن وِذ إيفورتليس إيلوكوينس آند سَتل نيوانس', ar: 'يكمن ذلك في المزج بين الدقة التجريبية الصارمة والبلاغة السلسة وإدراك الفروق الدقيقة.' }
+        ]
+      },
+      {
+        level: 'C2', settingAr: 'صياغة المعايير والبروتوكولات التنفيذية', speakerA: 'Board Chairman', speakerB: 'Chief Geomatics Counsel',
+        lines: [
+          { en: 'Under no circumstances should quality standards in {ctxEn} be compromised.', pron: 'أندر نو سيركمستانسز شود كواليتي ستاندردز إن {ctxPron} بي كومبرومايزد', ar: 'تحت أي ظرف من الظروف لا ينبغي التنازل عن معايير الجودة في {ctxAr}.' },
+          { en: 'It is imperative that every protocol be validated through irrefutable ground-truth evidence.', pron: 'إت إز إمبيريتيڤ ذات إيفري بروتوكول بي ڤاليديتد ثرو إريفيوتابل جراوند-تروث إيڤيدنس', ar: 'من الضروري للغاية أن يتم التحقق من كل بروتوكول عبر أدلة ميدانية دامغة لا تقبل الدحض.' }
+        ]
+      },
+      {
+        level: 'C2', settingAr: 'حوار تنفيذي رفيع حول القيادة والابتكار', speakerA: 'Executive Host', speakerB: 'Visionary Leader',
+        lines: [
+          { en: 'Complex though the challenges in {ctxEn} were, your team delivered exemplary results.', pron: 'كومبلكس ذو ذا تشالينجز إن {ctxPron} وير، يور تيم ديليڤرد إجزيمبلري ريزلتس', ar: 'رغم مدى تعقيد التحديات في {ctxAr}، قدم فريقكم نتائج مثالية يُحتذى بها.' },
+          { en: 'No sooner had we aligned our strategic vision than productivity surged across all departments.', pron: 'نو سونر هاد وي ألايند أور ستراتيجيك ڤيجن ذان برودكتيڤيتي سيرجد أكروس أول ديبارتمنتس', ar: 'ما إن وحّدنا رؤيتنا الاستراتيجية حتى قفزت الإنتاجية في جميع الأقسام.' }
+        ]
+      },
+      {
+        level: 'C2', settingAr: 'تحكيم علمي وفلسفي متقدم', speakerA: 'Chief Reviewer', speakerB: 'Author',
+        lines: [
+          { en: 'Not until all variables in {ctxEn} were isolated did the underlying phenomenon become unambiguous.', pron: 'نوت أنتيل أول ڤاريابلز إن {ctxPron} وير آيسوليتد دِد ذي أندرلايينج فينومينون بيكَم أن-أمبيجيوس', ar: 'لم تصبح الظاهرة الكامنة واضحة بلا لبس إلا بعد عزل جميع المتغيرات في {ctxAr}.' },
+          { en: 'The treatise on which our methodology is predicated bridges theory and practice seamlessly.', pron: 'ذا تريتيس أون ويتش أور ميثودولوجي إز بريديكيتد بريدجز ثيوري آند براكتس سيمليسلي', ar: 'إن الأطروحة التي تستند إليها منهجيتنا تمد الجسور بين النظرية والتطبيق بسلاسة تامة.' }
+        ]
+      },
+      {
+        level: 'C2', settingAr: 'الخطاب الختامي لمؤتمر عالمي', speakerA: 'President of Congress', speakerB: 'Honored Delegate',
+        lines: [
+          { en: 'Should any delegation require further consultation on {ctxEn}, our committee remains at your disposal.', pron: 'شود إني ديليجيشن ريكواير فيرذر كونسلتيشن أون {ctxPron}، أور كوميتي ريمينز آت يور ديسبوزال', ar: 'إذا احتاج أي وفد إلى مزيد من الاستشارة بشأن {ctxAr}، فإن لجنتنا تظل رهن إشارتكم.' },
+          { en: 'We wholeheartedly commend your sagacity and equanimity throughout these negotiations.', pron: 'وي هول-هارتدلي كوميند يور سَجاسيتي آند إيكوانيميتي ثرو-أوت ذيز نيجوشييشنز', ar: 'نشيد من صميم القلب بحصافتكم ورباطة جأشكم طوال هذه المفاوضات.' }
+        ]
+      },
+      {
+        level: 'C2', settingAr: 'حكمة الإتقان اللغوي والمهني', speakerA: 'Young Engineer', speakerB: 'Master Mentor',
+        lines: [
+          { en: 'No matter how rapidly technology evolves in {ctxEn}, articulate communication remains paramount.', pron: 'نو ماتر هاو رابيدلي تكنولوجي إيڤولڤز إن {ctxPron}، آرتيكيوليت كوميونيكيشن ريمينز باراماونت', ar: 'مهما تطورت التكنولوجيا بسرعة في {ctxAr}، يظل التواصل الفصيح والبليغ ذا أهمية قصوى.' },
+          { en: 'Indeed, continuous learning is the enduring catalyst that transforms ambition into excellence.', pron: 'إنديد، كونتينيوس ليرنينج إز ذي إنديورينج كاتاليست ذات ترانسفورمز أمبيشن إنتو إكسيلنس', ar: 'في الحقيقة، التعلم المستمر هو المحفز الخالد الذي يحول الطموح إلى تميز.' }
+        ]
+      }
+    ];
+
+    let ALL_5000_DIALOGUES_CACHE = null;
+    function getAll5000Dialogues() {
+      if (ALL_5000_DIALOGUES_CACHE) return ALL_5000_DIALOGUES_CACHE;
+      const list = [];
+      let dNum = 1;
+      for (let tIdx = 0; tIdx < SENTENCE_5000_TOPICS.length; tIdx++) {
+        const top = SENTENCE_5000_TOPICS[tIdx];
+        for (let mIdx = 0; mIdx < DIALOGUE_5000_TEMPLATES_BY_LEVEL.length; mIdx++) {
+          if (dNum > 5000) break;
+          const tpl = DIALOGUE_5000_TEMPLATES_BY_LEVEL[mIdx];
+          const lines = tpl.lines.map((ln, lIdx) => ({
+            speaker: lIdx % 2 === 0 ? tpl.speakerA : tpl.speakerB,
+            en: ln.en.replace(/\{ctxEn\}/g, top.en),
+            pron: ln.pron.replace(/\{ctxPron\}/g, top.pron),
+            ar: ln.ar.replace(/\{ctxAr\}/g, top.ar)
+          }));
+          list.push({
+            num: dNum,
+            id: `d5k_${dNum}`,
+            level: tpl.level,
+            titleAr: `محادثة #${dNum} (${tpl.level}): ${tpl.settingAr} — ${top.ar}`,
+            topicAr: top.ar,
+            settingAr: tpl.settingAr,
+            lines: lines
+          });
+          dNum++;
+        }
+      }
+      ALL_5000_DIALOGUES_CACHE = list;
+      return list;
+    }
+
+    function renderDialogues5000Module() {
+      const allDlgs = getAll5000Dialogues();
+      const lvPillsEl = document.getElementById('d5000-level-pills');
+      const selectEl = document.getElementById('d5000-batch-select');
+      const listEl = document.getElementById('d5000-list');
+      const descBadge = document.getElementById('d5000-level-desc-badge');
+      if (!lvPillsEl || !selectEl || !listEl) return;
+
+      const masteredD5k = Object.keys(state.mastered).filter(k => k.startsWith('d5k_') && state.mastered[k]).length;
+      const mPill = document.getElementById('d5000-mastered-pill');
+      if (mPill) mPill.textContent = `تم إتقان: ${masteredD5k} / 5000 محادثة`;
+
+      const lvMeta = [
+        { id: 'all', label: '📚 كل المستويات (5000 محادثة)', desc: 'جميع المحادثات الـ 5000 متدرجة من A1 إلى C2' },
+        { id: 'A1', label: '🌱 مستوى A1 (مبتدئ - 900 محادثة)', desc: 'محادثات قصيرة ومبسطة للتعارف والفصل والحياة اليومية البسيطة' },
+        { id: 'A2', label: '🧱 مستوى A2 (أساسي - 900 محادثة)', desc: 'محادثات التسوق والمقاهي والمواعيد والماضي والمستقبل البسيط' },
+        { id: 'B1', label: '🗣️ مستوى B1 (متوسط - 900 محادثة)', desc: 'محادثات السفر والمطار والخبرات المهنية وتنسيق العمل' },
+        { id: 'B2', label: '💼 مستوى B2 (فوق متوسط - 800 محادثة)', desc: 'محادثات مقابلات العمل، إدارة المشاريع، التفاوض، والشرط المتقدم' },
+        { id: 'C1', label: '🎓 مستوى C1 (متقدم - 800 محادثة)', desc: 'محادثات المؤتمرات الأكاديمية، الأبحاث، القيادة الاستراتيجية، والتحكيم' },
+        { id: 'C2', label: '👑 مستوى C2 (إتقان - 700 محادثة)', desc: 'حوارات القمم الدولية والبلاغة الرفيعة والقلب اللغوي (Inversion)' }
+      ];
+
+      lvPillsEl.innerHTML = '';
+      lvMeta.forEach(m => {
+        const isAct = state.d5000Level === m.id;
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = isAct
+          ? 'px-3.5 py-2 rounded-xl text-xs font-extrabold bg-amber-400 text-slate-950 shadow-md transition'
+          : 'px-3.5 py-2 rounded-xl text-xs font-bold bg-white/10 hover:bg-white/20 text-white border border-white/15 transition';
+        b.textContent = m.label;
+        b.addEventListener('click', () => {
+          state.d5000Level = m.id;
+          state.d5000Batch = 1;
+          renderDialogues5000Module();
+        });
+        lvPillsEl.appendChild(b);
+      });
+
+      const activeLvObj = lvMeta.find(m => m.id === state.d5000Level) || lvMeta[0];
+      if (descBadge) descBadge.textContent = activeLvObj.desc;
+
+      const q = (state.d5000Search || '').trim().toLowerCase();
+      const filtered = allDlgs.filter(d => {
+        const matchLv = state.d5000Level === 'all' || d.level === state.d5000Level;
+        const matchQ = !q ||
+          d.titleAr.includes(q) ||
+          d.topicAr.includes(q) ||
+          d.settingAr.includes(q) ||
+          String(d.num) === q ||
+          d.lines.some(ln => ln.en.toLowerCase().includes(q) || ln.ar.includes(q));
+        return matchLv && matchQ;
+      });
+
+      const pageSize = 25;
+      const totalBatches = Math.max(1, Math.ceil(filtered.length / pageSize));
+      if (state.d5000Batch > totalBatches) state.d5000Batch = 1;
+      if (state.d5000Batch < 1) state.d5000Batch = totalBatches;
+
+      selectEl.innerHTML = '';
+      for (let bIdx = 1; bIdx <= totalBatches; bIdx++) {
+        const sNum = (bIdx - 1) * pageSize + 1;
+        const eNum = Math.min(filtered.length, bIdx * pageSize);
+        const optEl = document.createElement('option');
+        optEl.value = String(bIdx);
+        optEl.textContent = `المجموعة ${bIdx} من ${totalBatches} (المحادثات ${sNum} - ${eNum})`;
+        if (bIdx === state.d5000Batch) optEl.selected = true;
+        selectEl.appendChild(optEl);
+      }
+
+      const startIdx = (state.d5000Batch - 1) * pageSize;
+      const pageItems = filtered.slice(startIdx, startIdx + pageSize);
+
+      document.getElementById('d5000-range-label').textContent = filtered.length
+        ? `عرض المحادثات ${startIdx + 1} - ${startIdx + pageItems.length} من إجمالي ${filtered.length} محادثة (${state.d5000Level === 'all' ? 'كل المستويات' : 'مستوى ' + state.d5000Level})`
+        : 'لا توجد محادثات مطابقة لبحثك';
+      document.getElementById('d5000-page-indicator').textContent = `المجموعة ${state.d5000Batch} / ${totalBatches}`;
+
+      listEl.innerHTML = '';
+      pageItems.forEach(dlg => {
+        const isDone = !!state.mastered[dlg.id];
+        const card = document.createElement('div');
+        card.className = `p-4 sm:p-5 rounded-3xl border-2 transition flex flex-col justify-between gap-3 ${
+          isDone ? 'bg-emerald-50/50 border-emerald-300' : 'bg-slate-50/90 hover:bg-white border-slate-200'
+        }`;
+
+        const linesHtml = dlg.lines.map((ln, idx) => `
+          <div class="p-3 rounded-2xl ${idx % 2 === 0 ? 'bg-white border border-sky-200/80' : 'bg-sky-50/70 border border-sky-200'} flex items-start justify-between gap-2">
+            <div class="space-y-0.5">
+              <span class="text-[10px] font-extrabold px-2 py-0.5 rounded ${idx % 2 === 0 ? 'bg-indigo-100 text-indigo-800' : 'bg-sky-200 text-sky-900'}">${ln.speaker}</span>
+              <p class="font-en text-xs sm:text-sm font-extrabold text-slate-900 pt-0.5" dir="ltr">${ln.en}</p>
+              <p class="text-[11px] font-bold text-indigo-600">النطق: ${ln.pron}</p>
+              <p class="text-xs text-slate-700 font-semibold">${ln.ar}</p>
+            </div>
+            <button type="button" data-speak-line="${ln.en.replace(/"/g, '&quot;')}" class="btn-d5k-line-speak px-2.5 py-1.5 rounded-xl bg-sky-100 hover:bg-sky-600 text-sky-800 hover:text-white text-xs font-bold shrink-0 transition" title="استمع لهذا السطر">
+              🔊
+            </button>
+          </div>
+        `).join('');
+
+        card.innerHTML = `
+          <div class="space-y-3">
+            <div class="flex items-center justify-between gap-2 flex-wrap border-b border-slate-200 pb-2.5">
+              <div class="flex items-center gap-1.5 flex-wrap">
+                <span class="font-en text-xs font-extrabold px-2.5 py-0.5 rounded-lg bg-slate-900 text-amber-300">#${dlg.num}</span>
+                <span class="font-en text-xs font-extrabold px-2.5 py-0.5 rounded-lg bg-sky-600 text-white">Level ${dlg.level}</span>
+                <span class="text-xs font-extrabold text-slate-800">${dlg.settingAr} • ${dlg.topicAr}</span>
+              </div>
+              ${isDone ? '<span class="text-xs font-extrabold text-emerald-700">✅ مكتملة</span>' : ''}
+            </div>
+            <div class="space-y-2">
+              ${linesHtml}
+            </div>
+          </div>
+          <div class="flex items-center justify-between gap-2 pt-2 border-t border-slate-200/80">
+            <button type="button" class="btn-d5k-play-all flex-1 py-2.5 px-3 rounded-xl bg-sky-600 hover:bg-sky-700 text-white text-xs font-extrabold shadow-sm transition">
+              ▶️ استمع للمحادثة كاملة
+            </button>
+            <button type="button" class="btn-d5k-master py-2.5 px-3.5 rounded-xl ${
+              isDone ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' : 'bg-emerald-600 hover:bg-emerald-700 text-white'
+            } text-xs font-extrabold transition">
+              ${isDone ? '✅ متقنة' : '✔️ أتممت المحادثة (+10 XP)'}
+            </button>
+          </div>
+        `;
+
+        card.querySelectorAll('.btn-d5k-line-speak').forEach(b => {
+          b.addEventListener('click', () => speakEnglish(b.getAttribute('data-speak-line')));
+        });
+        card.querySelector('.btn-d5k-play-all').addEventListener('click', () => {
+          const fullText = dlg.lines.map(l => l.en).join(' ... ');
+          speakEnglish(fullText);
+        });
+        card.querySelector('.btn-d5k-master').addEventListener('click', () => {
+          markItemMastered(dlg.id, 10, `أتممت المحادثة #${dlg.num} (مستوى ${dlg.level})`);
+          renderDialogues5000Module();
+        });
+
+        listEl.appendChild(card);
+      });
+    }
+
     const YOUTUBE_COURSES_DATA = [
       // Track 1: AUC / English For You Course on YouTube
       {
@@ -6762,7 +7748,31 @@
       { sector: "TRADES", en: "Formwork Carpenter & Steel Fixer", ar: "نجار مسلح وحداد مسلح", duties: "Erecting timber/metal shuttering and tying steel rebar according to structural axes.", exEn: "The formwork carpenter aligned the column shuttering with the surveyor's chalk lines.", exAr: "ضبط النجار المسلح شدة الأعمدة مع خيطان العلام الخاصة بالمساح." },
       { sector: "TRADES", en: "Welder & CNC Machinist", ar: "فني لحام معادن ومشغل ماكينات تحكم رقمي (CNC)", duties: "Precision welding of pipelines/steel structures and computer-controlled machining.", exEn: "Certified welders joined the high-pressure steel pipeline sections.", exAr: "قام فنيو لحام معتمدون بلحام وصلات خط الأنابيب الصلب عالي الضغط." },
       { sector: "TRADES", en: "Plumber & HVAC Technician", ar: "فني سباكة وشبكات مياه وفني تكييف وتبريد", duties: "Installing water supply pipes, drainage networks, and air conditioning units.", exEn: "The plumber tested the water pipeline pressure before backfilling the trench.", exAr: "اختبر فني السباكة ضغط خط المياه قبل ردم الخندق." },
-      { sector: "TRADES", en: "Tower Crane Operator", ar: "مشغل ونش برجي (رافع برجي)", duties: "Lifting heavy precast concrete, steel bundles, and equipment safely on high-rise sites.", exEn: "The tower crane operator communicated with the rigger via two-way radio.", exAr: "تواصل مشغل الونش البرجي مع فني التصبين عبر اللاسلكي." }
+      { sector: "TRADES", en: "Tower Crane Operator", ar: "مشغل ونش برجي (رافع برجي)", duties: "Lifting heavy precast concrete, steel bundles, and equipment safely on high-rise sites.", exEn: "The tower crane operator communicated with the rigger via two-way radio.", exAr: "تواصل مشغل الونش البرجي مع فني التصبين عبر اللاسلكي." },
+      { sector: "ENGINEERING", en: "BIM Manager & Structural Modeler (Revit)", ar: "مدير ومهندس نمذجة معلومات البناء (BIM / Revit)", duties: "Creating 3D BIM models, clash detection in Navisworks, and coordinating architectural, structural, and MEP disciplines.", exEn: "The BIM Manager resolved 45 ductwork clashes before site execution.", exAr: "حل مدير الـ BIM خمسة وأربعين تعارضاً في مجاري التكييف قبل التنفيذ بالموقع." },
+      { sector: "ENGINEERING", en: "Planning & Cost Control Engineer (Primavera P6)", ar: "مهندس تخطيط ومتابعة ومراقبة تكاليف (Primavera P6)", duties: "Developing baseline schedules, critical path analysis, resource loading, and earned value management.", exEn: "The Planning Engineer updated the Primavera P6 baseline schedule.", exAr: "قام مهندس التخطيط بتحديث البرنامج الزمني الأساسي على بريمافيرا P6." },
+      { sector: "ENGINEERING", en: "Quality Assurance / Quality Control (QA/QC) Engineer", ar: "مهندس توكيد ومراقبة الجودة الهندسية (QA/QC)", duties: "Inspecting materials, reviewing method statements, conducting concrete and soil tests, and closing NCRs.", exEn: "The QA/QC Engineer approved the concrete slump and compressive strength tests.", exAr: "اعتمد مهندس الجودة اختبارات هبوط ومقاومة ضغط الخرسانة." },
+      { sector: "ENGINEERING", en: "Highway & Pavement Design Engineer", ar: "مهندس تصميم طرق وأرصفة ومطارات", duties: "Designing geometric road alignments, asphalt pavement layers, superelevation, and highway drainage.", exEn: "The Highway Engineer optimized the vertical profile to balance cut and fill.", exAr: "حسّن مهندس الطرق القطاع الطولي لموازنة كميات الحفر والردم." },
+      { sector: "ENGINEERING", en: "Water Resources & Hydraulics Engineer", ar: "مهندس موارد مائية وهيدروليكا وشبكات ري", duties: "Designing water distribution networks, storm drainage, culverts, pumping stations, and flood protection.", exEn: "The Hydraulics Engineer designed the flood protection channel using HEC-RAS.", exAr: "صمم مهندس الهيدروليكا قناة الحماية من السيول باستخدام برنامج HEC-RAS." },
+      { sector: "ENGINEERING", en: "Interior Designer & Landscape Architect", ar: "مهندس ديكور وتصميم داخلي وتنسيق مواقع", duties: "Designing interior spaces, lighting, furniture layouts, and outdoor landscape gardens.", exEn: "The Interior Designer selected warm lighting and natural wood finishes.", exAr: "اختار مصمم الديكور إضاءة دافئة وتشطيبات خشبية طبيعية." },
+      { sector: "MEDICAL", en: "Ophthalmologist & Optometrist", ar: "طبيب وجراح عيون وأخصائي بصريات", duties: "Examining vision, prescribing corrective lenses, and performing laser eye surgeries.", exEn: "The ophthalmologist examined the patient's retina with a precision lens.", exAr: "فحص طبيب العيون شبكية المريض بعدسة دقيقة." },
+      { sector: "MEDICAL", en: "Pediatrician & Family Medicine Specialist", ar: "طبيب أطفال وأخصائي طب الأسرة", duties: "Monitoring child growth, administering vaccinations, and treating pediatric illnesses.", exEn: "The pediatrician reassured the parents and prescribed a mild syrup.", exAr: "طمأن طبيب الأطفال الوالدين ووصَف شراباً خفيفاً." },
+      { sector: "MEDICAL", en: "Nutritionist & Clinical Dietitian", ar: "أخصائي تغذية علاجية وحميات", duties: "Creating balanced meal plans, managing diabetes and obesity diets, and promoting wellness.", exEn: "The clinical dietitian prepared a customized nutrition plan for the patient.", exAr: "أعد أخصائي التغذية العلاجية خطة غذائية مخصصة للمريض." },
+      { sector: "MEDICAL", en: "Paramedic & Emergency Medical Technician (EMT)", ar: "مسعف طوارئ وفني إسعاف أولي", duties: "Responding to emergency calls, providing first aid and CPR, and transporting patients safely.", exEn: "The paramedic stabilized the injured driver inside the ambulance.", exAr: "قام المسعف بتثبيت حالة السائق المصاب داخل سيارة الإسعاف." },
+      { sector: "TECH", en: "Mobile Application Developer (iOS & Android / Flutter)", ar: "مطور تطبيقات الهواتف الذكية (iOS / Android)", duties: "Building cross-platform mobile apps, integrating push notifications, and publishing to App Store and Google Play.", exEn: "The Mobile Developer released version 2.0 of the learning app.", exAr: "أطلق مطور تطبيقات الهواتف الإصدار الثاني من تطبيق التعلم." },
+      { sector: "TECH", en: "Database Administrator (DBA)", ar: "مدير قواعد البيانات (Oracle / SQL Server)", duties: "Managing database security, automated backups, high availability, and query tuning.", exEn: "The Database Administrator scheduled daily encrypted backups at midnight.", exAr: "جدول مدير قواعد البيانات نسخاً احتياطية مشفرة يومياً عند منتصف الليل." },
+      { sector: "TECH", en: "Technical Support & IT Helpdesk Specialist", ar: "أخصائي دعم فني وصيانة حاسب وشبكات", duties: "Troubleshooting hardware, software, printers, and corporate network connectivity issues.", exEn: "The IT Support Specialist configured the new workstation in twenty minutes.", exAr: "جهز أخصائي الدعم الفني جهاز العمل الجديد في عشرين دقيقة." },
+      { sector: "TECH", en: "Product Manager & Agile Scrum Master", ar: "مدير منتجات تقنية ومنسق فرق (Product Manager)", duties: "Defining product roadmap, gathering user requirements, and leading agile sprint planning.", exEn: "The Product Manager prioritized the most requested user features for the next sprint.", exAr: "رتب مدير المنتج أولويات الميزات الأكثر طلباً من المستخدمين للجولة القادمة." },
+      { sector: "BUSINESS", en: "Banker & Credit Risk Officer", ar: "موظف بنوك ومحلل ائتمان ومخاطر مصرفية", duties: "Managing bank accounts, evaluating corporate loans, and processing letters of credit (LC).", exEn: "The Credit Officer approved the letter of guarantee for the contracting company.", exAr: "اعتمد مسؤول الائتمان خطاب الضمان لشركة المقاولات." },
+      { sector: "BUSINESS", en: "Real Estate Consultant & Property Manager", ar: "مستشار عقاري ومدير أملاك وعقارات", duties: "Valuing properties, negotiating real estate sales and leases, and advising investors.", exEn: "The Real Estate Consultant showed the client three commercial offices.", exAr: "عرض المستشار العقاري على العميل ثلاثة مكاتب تجارية." },
+      { sector: "BUSINESS", en: "Public Relations (PR) & Corporate Communications Specialist", ar: "أخصائي علاقات عامة وتواصل مؤسسي", duties: "Managing brand image, organizing corporate events, and handling media communications.", exEn: "The PR Specialist organized the annual partners summit successfully.", exAr: "نظم أخصائي العلاقات العامة القمة السنوية للشركاء بنجاح." },
+      { sector: "BUSINESS", en: "Executive Assistant & Office Manager", ar: "مساعد تنفيذي ومدير مكتب إداري", duties: "Scheduling executive meetings, drafting official correspondence, and managing office operations.", exEn: "The Office Manager prepared the agenda and minutes of the board meeting.", exAr: "أعد مدير المكتب جدول الأعمال ومحضر اجتماع مجلس الإدارة." },
+      { sector: "EDUCATION_LAW", en: "Graphic Designer & Video Editor", ar: "مصمم جرافيك ومونتير فيديو إبداعي", duties: "Designing visual branding, social media graphics, motion graphics, and editing promotional videos.", exEn: "The Graphic Designer created a modern visual identity for the academy.", exAr: "صمم مصمم الجرافيك هوية بصرية حديثة للأكاديمية." },
+      { sector: "EDUCATION_LAW", en: "Scientific Researcher & Laboratory Chemist", ar: "باحث علمي وكيميائي مختبرات", duties: "Conducting chemical analyses, testing material samples, and documenting research findings.", exEn: "The laboratory chemist analyzed the water purity sample accurately.", exAr: "حلل كيميائي المختبر عينة نقاء المياه بدقة." },
+      { sector: "AVIATION_HOSP", en: "Tour Guide & Egyptologist", ar: "مرشد سياحي وباحث في الآثار المصرية", duties: "Guiding international tourists through historical monuments and explaining ancient civilization in fluent English.", exEn: "The Tour Guide explained the history of Karnak Temple in fluent English.", exAr: "شرح المرشد السياحي تاريخ معبد الكرنك بإنجليزية طليقة." },
+      { sector: "AVIATION_HOSP", en: "Travel Agent & Ticketing Specialist", ar: "موظف حجز طيران وسياحة وتأشيرات", duties: "Booking international flights, hotel packages, travel insurance, and visa appointments.", exEn: "The Travel Agent booked a direct flight and a four-star hotel near the conference center.", exAr: "حجز موظف السياحة رحلة طيران مباشرة وفندق أربع نجوم قرب مركز المؤتمرات." },
+      { sector: "TRADES", en: "Automotive Mechanic & Diagnostic Technician", ar: "فني ميكانيكا وكهرباء سيارات وفحص بالكمبيوتر", duties: "Inspecting engines, brakes, transmissions, and diagnosing electronic fault codes.", exEn: "The automotive technician connected the OBD scanner to diagnose the engine sensor.", exAr: "وصل فني السيارات جهاز الفحص الإلكتروني لتشخيص حساس المحرك." },
+      { sector: "TRADES", en: "Solar Energy & Renewable Power Technician", ar: "فني تركيب وصيانة ألواح الطاقة الشمسية", duties: "Installing photovoltaic solar panels, inverters, and battery storage systems.", exEn: "The solar technician angled the photovoltaic panels toward the south for maximum efficiency.", exAr: "وجّه فني الطاقة الشمسية الألواح الكهروضوئية نحو الجنوب لتحقيق أعلى كفاءة." }
     ];
 
 
@@ -7842,6 +8852,7 @@
       jobSector: "ALL",
       jobsSearch: "",
       selectedJobIndex: 0,
+      jobsViewMode: "directory", // "directory" (list of all jobs) | "study" (isolated single job view)
       jobQuizAnswers: {},
 
       // Word Game & Rich Examples
@@ -8508,32 +9519,73 @@
         `).join("");
       }
 
-      // 4. Populate Interactive Selectable Job Pills List
+      // Update View Mode toggle buttons & container visibility
+      const dirContainer = document.getElementById("jobs-directory-container");
+      const workspaceEl = document.getElementById("selected-job-study-workspace");
+      const btnViewDir = document.getElementById("btn-jobs-view-directory");
+      const btnViewStudy = document.getElementById("btn-jobs-view-study");
+      const studyBtnLabel = document.getElementById("btn-jobs-study-label");
+      const countSub = document.getElementById("jobs-count-subtitle");
+
+      if (studyBtnLabel) {
+        studyBtnLabel.textContent = `دراسة وظيفة: ${selectedJob.ar}`;
+      }
+      if (countSub) {
+        countSub.textContent = `معروض حالياً (${filteredJobsWithIdx.length}) وظيفة مستقلة — اضغط على أي وظيفة لفتح منهجها الكامل لوحده:`;
+      }
+
+      const isStudyMode = newModulesState.jobsViewMode === "study";
+      if (dirContainer && workspaceEl) {
+        dirContainer.classList.toggle("hidden", isStudyMode);
+        workspaceEl.classList.toggle("hidden", !isStudyMode);
+      }
+      if (btnViewDir && btnViewStudy) {
+        btnViewDir.className = !isStudyMode
+          ? "px-4 py-2.5 rounded-xl text-xs sm:text-sm font-black bg-amber-500 text-slate-950 shadow-md transition flex items-center gap-2"
+          : "px-4 py-2.5 rounded-xl text-xs sm:text-sm font-black bg-slate-900 text-amber-300 border border-amber-500/40 hover:border-amber-400 transition flex items-center gap-2";
+        btnViewStudy.className = isStudyMode
+          ? "px-4 py-2.5 rounded-xl text-xs sm:text-sm font-black bg-emerald-500 text-slate-950 shadow-md transition flex items-center gap-2"
+          : "px-4 py-2.5 rounded-xl text-xs sm:text-sm font-black bg-slate-900 text-emerald-300 border border-emerald-500/40 hover:border-emerald-400 transition flex items-center gap-2";
+      }
+
+      // 4. Populate Standalone Cards List for Each Individual Job
       const listEl = document.getElementById("jobs-selectable-list");
       if (listEl) {
-        listEl.innerHTML = filteredJobsWithIdx.map(({ job, idx }) => {
+        listEl.innerHTML = filteredJobsWithIdx.map(({ job, idx }, orderNum) => {
           const isSelected = idx === currentSelectedIdx;
           const isSurveyRole = job.en.toLowerCase().includes("survey") || job.en.toLowerCase().includes("gis");
+          const secInfo = JOBS_SECTORS.find(s => s.id === job.sector) || JOBS_SECTORS[0];
           return `
-            <button type="button" data-select-job-idx="${idx}" class="p-3 rounded-2xl border text-right transition flex flex-col justify-between ${
+            <div class="p-4 rounded-2xl border transition flex flex-col justify-between gap-3 ${
               isSelected
-                ? "bg-amber-500 text-slate-950 border-amber-300 shadow-lg ring-2 ring-amber-400 font-black"
+                ? "bg-amber-950/60 border-2 border-amber-400 shadow-lg"
                 : isSurveyRole
-                  ? "bg-amber-950/40 text-amber-200 border-amber-500/40 hover:border-amber-400"
-                  : "bg-slate-900/90 text-slate-200 border-slate-800 hover:border-sky-400"
+                  ? "bg-slate-900/95 border border-amber-500/40 hover:border-amber-400"
+                  : "bg-slate-900/90 border border-slate-800 hover:border-sky-400"
             }">
-              <div class="flex items-center justify-between gap-1.5 w-full mb-1">
-                <span class="text-xs font-black truncate">${job.ar}</span>
-                ${isSelected ? '<span class="text-[10px] px-1.5 py-0.5 rounded bg-slate-950 text-amber-300 font-black shrink-0">الوظيفة المختارة ✓</span>' : isSurveyRole ? '<span class="text-[10px] px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 font-bold shrink-0">مساحة</span>' : ''}
+              <div class="space-y-1.5">
+                <div class="flex items-center justify-between gap-2">
+                  <span class="px-2 py-0.5 rounded-md bg-slate-800 text-amber-300 text-[10px] font-black">#${orderNum + 1} • ${secInfo.title}</span>
+                  <button type="button" data-speak-en="${job.en.replace(/"/g, '&quot;')}" class="px-2 py-1 rounded-lg bg-slate-800 hover:bg-amber-500 text-slate-200 hover:text-slate-950 text-xs font-bold transition" title="استمع لنطق الوظيفة">🔊</button>
+                </div>
+                <h4 class="text-sm sm:text-base font-black text-white">${job.ar}</h4>
+                <p class="text-xs sm:text-sm font-extrabold text-sky-400 font-en" dir="ltr">${job.en}</p>
+                <p class="text-[11px] text-slate-400 line-clamp-2 font-en" dir="ltr">${job.duties}</p>
               </div>
-              <div class="text-[11px] font-bold font-en truncate ${isSelected ? "text-slate-900" : "text-sky-400"}" dir="ltr">${job.en}</div>
-            </button>
+              <button type="button" data-select-job-idx="${idx}" class="w-full py-2.5 px-3 rounded-xl font-black text-xs transition flex items-center justify-center gap-1.5 ${
+                isSelected
+                  ? "bg-amber-500 hover:bg-amber-400 text-slate-950 shadow"
+                  : "bg-indigo-600 hover:bg-amber-500 text-white hover:text-slate-950"
+              }">
+                <span>📖</span>
+                <span>ادرس هذه الوظيفة لوحدها بالتفصيل ⬅️</span>
+              </button>
+            </div>
           `;
         }).join("");
       }
 
       // 5. Render ONLY the Selected Job's Complete Study Workspace
-      const workspaceEl = document.getElementById("selected-job-study-workspace");
       if (!workspaceEl) return;
 
       const curriculum = getJobDetailedCurriculum(selectedJob, currentSelectedIdx);
@@ -8621,6 +9673,18 @@
       });
 
       workspaceEl.innerHTML = `
+        <!-- Top Back-to-List Navigation Bar inside Single Job Study View -->
+        <div class="flex flex-wrap items-center justify-between gap-3 p-4 rounded-2xl bg-amber-500/15 border border-amber-400/40">
+          <div class="flex items-center gap-2 text-xs sm:text-sm font-black text-amber-200">
+            <span>🎯 أنت تدرس الآن منهج وظيفة مستقلة:</span>
+            <strong class="text-white">${selectedJob.ar} (${selectedJob.en})</strong>
+          </div>
+          <button type="button" data-back-to-jobs-list="1" class="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-black shadow transition flex items-center gap-1.5">
+            <span>📋</span>
+            <span>العودة لقائمة كل الوظائف لاختيار وظيفة أخرى</span>
+          </button>
+        </div>
+
         <!-- Selected Job Hero Card -->
         <div class="p-6 rounded-3xl bg-gradient-to-r from-slate-950 via-indigo-950/80 to-slate-950 border-2 border-amber-400/60 shadow-xl">
           <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
@@ -9174,6 +10238,16 @@
         const selectJobBtn = e.target.closest("[data-select-job-idx]");
         if (selectJobBtn) {
           newModulesState.selectedJobIndex = parseInt(selectJobBtn.getAttribute("data-select-job-idx"), 10) || 0;
+          newModulesState.jobsViewMode = "study";
+          renderJobsAndSurveyingModule();
+          const ws = document.getElementById("selected-job-study-workspace");
+          if (ws) ws.scrollIntoView({ behavior: "smooth", block: "start" });
+          return;
+        }
+
+        const backToJobsBtn = e.target.closest("[data-back-to-jobs-list]");
+        if (backToJobsBtn) {
+          newModulesState.jobsViewMode = "directory";
           renderJobsAndSurveyingModule();
           return;
         }
@@ -9379,6 +10453,19 @@
       const jobDropdown = document.getElementById("job-selector-dropdown");
       if (jobDropdown) jobDropdown.addEventListener("change", (e) => {
         newModulesState.selectedJobIndex = parseInt(e.target.value, 10) || 0;
+        newModulesState.jobsViewMode = "study";
+        renderJobsAndSurveyingModule();
+      });
+
+      const btnJobsDir = document.getElementById("btn-jobs-view-directory");
+      if (btnJobsDir) btnJobsDir.addEventListener("click", () => {
+        newModulesState.jobsViewMode = "directory";
+        renderJobsAndSurveyingModule();
+      });
+
+      const btnJobsStudy = document.getElementById("btn-jobs-view-study");
+      if (btnJobsStudy) btnJobsStudy.addEventListener("click", () => {
+        newModulesState.jobsViewMode = "study";
         renderJobsAndSurveyingModule();
       });
 
@@ -9923,7 +11010,109 @@
       // New Navigation & Feature Listeners (5000 Words, 5000 Sentences, YouTube Courses, Certificate Lock)
       document.getElementById('btn-hero-words5000').addEventListener('click', () => switchTab('words5000'));
       document.getElementById('btn-hero-sentences5000').addEventListener('click', () => switchTab('sentences5000'));
+      document.getElementById('btn-hero-expressions5000').addEventListener('click', () => switchTab('expressions5000'));
+      document.getElementById('btn-hero-dialogues5000').addEventListener('click', () => switchTab('dialogues5000'));
+      const btnJumpD5000 = document.getElementById('btn-jump-d5000-from-stage4');
+      if (btnJumpD5000) btnJumpD5000.addEventListener('click', () => switchTab('dialogues5000'));
       document.getElementById('btn-hero-ytcourses').addEventListener('click', () => switchTab('ytcourses'));
+
+      // 5000 Expressions Controls
+      document.getElementById('e5000-batch-select').addEventListener('change', (e) => {
+        state.e5000Batch = parseInt(e.target.value, 10) || 1;
+        renderExpressions5000Module();
+      });
+      document.getElementById('e5000-search-input').addEventListener('input', (e) => {
+        state.e5000Search = e.target.value;
+        state.e5000Batch = 1;
+        renderExpressions5000Module();
+      });
+      document.getElementById('btn-e5000-prev-batch').addEventListener('click', () => {
+        state.e5000Batch -= 1;
+        renderExpressions5000Module();
+      });
+      document.getElementById('btn-e5000-next-batch').addEventListener('click', () => {
+        state.e5000Batch += 1;
+        renderExpressions5000Module();
+      });
+      document.getElementById('btn-e5000-random').addEventListener('click', () => {
+        state.e5000Batch = Math.floor(Math.random() * 100) + 1;
+        renderExpressions5000Module();
+        showToast(`🎲 تم الانتقال إلى المجموعة ${state.e5000Batch} من 5000 عبارة وتعبير`, 'info');
+      });
+      document.getElementById('btn-e5000-play-page').addEventListener('click', () => {
+        const allExprs = getAll5000Expressions();
+        const startIdx = (state.e5000Batch - 1) * 50;
+        const sample = allExprs.slice(startIdx, startIdx + 3).map(x => x.en).join(' ... ');
+        speakEnglish(sample);
+      });
+      document.getElementById('btn-e5000-mark-page').addEventListener('click', () => {
+        const allExprs = getAll5000Expressions();
+        const startIdx = (state.e5000Batch - 1) * 50;
+        const pageItems = allExprs.slice(startIdx, startIdx + 50);
+        let added = 0;
+        pageItems.forEach(item => {
+          if (!state.mastered[item.id]) {
+            state.mastered[item.id] = true;
+            added++;
+          }
+        });
+        if (added > 0) {
+          state.xp += added * 2;
+          saveProgress();
+          updateGlobalStatsUI();
+          playChime('success');
+          showToast(`✅ تم تسجيل إتقان ${added} عبارة من هذه الصفحة!`, 'success');
+        } else {
+          showToast('جميع عبارات هذه الصفحة متقنة بالفعل', 'info');
+        }
+        renderExpressions5000Module();
+      });
+
+      // 5000 Dialogues Controls
+      document.getElementById('d5000-batch-select').addEventListener('change', (e) => {
+        state.d5000Batch = parseInt(e.target.value, 10) || 1;
+        renderDialogues5000Module();
+      });
+      document.getElementById('d5000-search-input').addEventListener('input', (e) => {
+        state.d5000Search = e.target.value;
+        state.d5000Batch = 1;
+        renderDialogues5000Module();
+      });
+      document.getElementById('btn-d5000-prev-batch').addEventListener('click', () => {
+        state.d5000Batch -= 1;
+        renderDialogues5000Module();
+      });
+      document.getElementById('btn-d5000-next-batch').addEventListener('click', () => {
+        state.d5000Batch += 1;
+        renderDialogues5000Module();
+      });
+      document.getElementById('btn-d5000-random').addEventListener('click', () => {
+        state.d5000Batch = Math.floor(Math.random() * 30) + 1;
+        renderDialogues5000Module();
+        showToast(`🎲 تم اختيار مجموعة محادثات عشوائية`, 'info');
+      });
+      document.getElementById('btn-d5000-mark-page').addEventListener('click', () => {
+        const allDlgs = getAll5000Dialogues();
+        const startIdx = (state.d5000Batch - 1) * 25;
+        const pageItems = allDlgs.slice(startIdx, startIdx + 25);
+        let added = 0;
+        pageItems.forEach(item => {
+          if (!state.mastered[item.id]) {
+            state.mastered[item.id] = true;
+            added++;
+          }
+        });
+        if (added > 0) {
+          state.xp += added * 3;
+          saveProgress();
+          updateGlobalStatsUI();
+          playChime('success');
+          showToast(`✅ تم تسجيل إتقان ${added} محادثة من هذه الصفحة!`, 'success');
+        } else {
+          showToast('جميع محادثات هذه الصفحة متقنة بالفعل', 'info');
+        }
+        renderDialogues5000Module();
+      });
       document.getElementById('btn-jump-yt-courses-from-stage5').addEventListener('click', () => switchTab('ytcourses'));
 
       // 5000 Words Controls
