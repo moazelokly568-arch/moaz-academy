@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>أكاديمية معاذ العكلي (Moaz Elokly) | إنجليزي من الصفر خطوة بخطوة</title>
-  <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#1e1b4b" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -263,10 +262,10 @@
           <span>مكتمل</span>
         </div>
 
-        <!-- Direct App Install & Download Hub Button -->
-        <button id="btn-header-install-app" type="button" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-extrabold bg-gradient-to-l from-emerald-500 to-teal-600 text-white hover:from-emerald-600 hover:to-teal-700 shadow-sm transition" title="تثبيت البرنامج على الموبايل أو الكمبيوتر ومشاركته مع الناس">
-          <span>📲</span>
-          <span>تنزيل البرنامج / بوابة الإدارة</span>
+        <!-- Direct Admin Portal Button -->
+        <button id="btn-header-install-app" type="button" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-extrabold bg-gradient-to-l from-indigo-700 to-slate-800 text-white hover:from-indigo-800 hover:to-slate-900 shadow-sm transition" title="بوابة دخول إدارة الأكاديمية (أ. معاذ العكلي)">
+          <span>🔐</span>
+          <span>بوابة دخول الإدارة</span>
         </button>
 
         <!-- Student Account Button -->
@@ -354,9 +353,9 @@
           <span>🎓</span>
           <span>شهادة الكورس</span>
         </button>
-        <button type="button" data-tab="appdownload" class="nav-tab px-3.5 py-2 rounded-xl text-xs sm:text-sm font-extrabold transition flex items-center gap-2 text-white bg-gradient-to-l from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 shadow-sm">
-          <span>📲</span>
-          <span>تحميل البرنامج للناس + بوابة الإدارة</span>
+        <button type="button" data-tab="appdownload" class="nav-tab px-3.5 py-2 rounded-xl text-xs sm:text-sm font-extrabold transition flex items-center gap-2 text-white bg-gradient-to-l from-indigo-700 to-slate-800 hover:from-indigo-600 hover:to-slate-700 shadow-sm">
+          <span>🔐</span>
+          <span>بوابة دخول الإدارة</span>
         </button>
       </div>
     </nav>
@@ -477,12 +476,7 @@
       <div id="academy-live-announcement-bar" class="bg-gradient-to-l from-emerald-900 via-indigo-950 to-slate-900 text-white rounded-2xl p-3.5 sm:px-5 border border-emerald-400/40 shadow-md flex flex-wrap items-center justify-between gap-3">
         <div class="flex items-center gap-2.5 text-xs sm:text-sm font-bold">
           <span class="px-2.5 py-1 rounded-lg bg-emerald-400 text-slate-950 font-extrabold text-xs shrink-0">📢 إعلان الأكاديمية</span>
-          <span id="academy-live-announcement-text">مرحباً بكم في التطبيق الرسمي لأكاديمية معاذ العكلي! يمكنك الآن تثبيت البرنامج على هاتفك أو جهازك والعمل به حتى بدون إنترنت.</span>
-        </div>
-        <div class="flex items-center gap-2 shrink-0">
-          <button type="button" id="btn-banner-install-now" class="px-3.5 py-1.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 text-xs font-extrabold shadow transition">
-            📲 تثبيت / تنزيل البرنامج الآن
-          </button>
+          <span id="academy-live-announcement-text">مرحباً بكم في أكاديمية معاذ العكلي لتعلم اللغة الإنجليزية من الصفر حتى الاحتراف (A1 – C2)!</span>
         </div>
       </div>
       <!-- Hero Card -->
@@ -519,9 +513,7 @@
               <button type="button" id="btn-daily-phrase-speak" class="px-4 py-3 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-sm border border-white/20 transition flex items-center gap-2">
                 <span>🔊 استمع لجملة اليوم</span>
               </button>
-              <button type="button" id="btn-hero-appdownload" class="px-4 py-3 rounded-xl bg-gradient-to-l from-teal-400 to-emerald-400 hover:from-teal-300 hover:to-emerald-300 text-slate-950 font-extrabold text-sm shadow-lg transition flex items-center gap-2">
-                <span>📲 تثبيت وتحميل البرنامج (موبايل & كمبيوتر)</span>
-              </button>
+
             </div>
             <!-- Quick Access to New Mega Encyclopedias & YouTube Courses -->
             <div class="pt-2 flex flex-wrap items-center gap-2">
@@ -2154,146 +2146,31 @@
     </section>
 
   
-    <!-- ==================== TAB: APP DOWNLOAD, SHARE HUB & ADMIN PORTAL ==================== -->
+    <!-- ==================== TAB: ADMIN PORTAL (FOR MOAZ ELOKLY) ==================== -->
     <section id="tab-appdownload" class="tab-panel hidden space-y-6">
-      <!-- Hero Banner for App Download & Distribution -->
-      <div class="rounded-3xl p-6 sm:p-8 bg-gradient-to-l from-indigo-950 via-slate-900 to-teal-950 text-white shadow-xl border-2 border-teal-400/40 space-y-5">
-        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-          <div class="space-y-3 max-w-3xl">
-            <div class="inline-flex flex-wrap items-center gap-2">
-              <span class="px-3 py-1 rounded-full bg-emerald-400 text-slate-950 text-xs font-extrabold">📲 تطبيق رسمي قابل للتثبيت والتحميل (PWA + Standalone App)</span>
-              <span id="pwa-status-badge" class="px-3 py-1 rounded-full bg-white/10 border border-white/20 text-teal-200 text-xs font-bold">⚡ جاهز للتثبيت والعمل أوفلاين</span>
-            </div>
-            <h2 class="text-2xl sm:text-3xl font-extrabold leading-tight">
-              مركز تحميل وتثبيت برنامج «أكاديمية معاذ العكلي» + بوابة الإدارة والنشر للجمهور
-            </h2>
-            <p class="text-xs sm:text-sm text-indigo-100 leading-relaxed">
-              تم تجهيز الأكاديمية بالكامل لتعمل كبرنامج مستقل على <strong>هواتف الأندرويد (Android)، الآيفون (iOS)، وأجهزة الكمبيوتر (Windows / Mac)</strong>. يمكنك تثبيت التطبيق مباشرة على الشاشة الرئيسية، أو تنزيل نسخة البرنامج المستقلة التي تعمل بدون إنترنت، أو مشاركة رابط التحميل ورمز QR مع جميع الطلاب.
-            </p>
-          </div>
-          <!-- Quick One-Click Action Box -->
-          <div class="bg-white/10 backdrop-blur-md p-5 rounded-3xl border border-white/15 flex flex-col gap-3 min-w-[270px]">
-            <button type="button" id="btn-trigger-pwa-install" class="w-full py-3 px-4 rounded-2xl bg-emerald-400 hover:bg-emerald-300 text-slate-950 font-extrabold text-xs sm:text-sm shadow-lg transition flex items-center justify-center gap-2">
-              <span>📲</span>
-              <span>تثبيت البرنامج على جهازي الآن</span>
-            </button>
-            <button type="button" id="btn-download-standalone-app" class="w-full py-3 px-4 rounded-2xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-extrabold text-xs sm:text-sm shadow-lg transition flex items-center justify-center gap-2">
-              <span>📥</span>
-              <span>تنزيل ملف البرنامج المستقل (بدون نت)</span>
-            </button>
-            <button type="button" id="btn-jump-admin-portal" class="w-full py-2.5 px-4 rounded-2xl bg-white/15 hover:bg-white/25 text-white font-bold text-xs border border-white/20 transition flex items-center justify-center gap-2">
-              <span>🔐</span>
-              <span>بوابة دخول أ. معاذ العكلي (الإدارة)</span>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- STEP-BY-STEP INSTALLATION GUIDES FOR STUDENTS (ANDROID / IPHONE / WINDOWS / APK) -->
-      <div class="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200 shadow-sm space-y-5">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
-          <div>
-            <span class="text-xs font-extrabold text-teal-700 bg-teal-50 px-2.5 py-1 rounded-md border border-teal-200">كيف ينزّل الطلاب البرنامج على أجهزتهم؟</span>
-            <h3 class="text-lg sm:text-xl font-extrabold text-slate-900 mt-1">📱💻 طرق تثبيت وتنزيل البرنامج لجميع الأجهزة</h3>
-          </div>
-          <div class="flex flex-wrap gap-1.5" id="install-platform-tabs">
-            <button type="button" data-plat="android" class="plat-tab-btn px-3.5 py-2 rounded-xl text-xs font-extrabold bg-indigo-600 text-white shadow-sm transition">🤖 أندرويد (Android / APK)</button>
-            <button type="button" data-plat="ios" class="plat-tab-btn px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition">🍎 آيفون وآيباد (iPhone / iOS)</button>
-            <button type="button" data-plat="desktop" class="plat-tab-btn px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition">💻 كمبيوتر ولابتوب (Windows / Mac)</button>
-            <button type="button" data-plat="publish" class="plat-tab-btn px-3.5 py-2 rounded-xl text-xs font-bold bg-amber-100 text-amber-900 hover:bg-amber-200 transition">🚀 كيف ترفعه على الإنترنت وتستخرج APK؟</button>
-          </div>
-        </div>
-
-        <!-- Platform Guide Content Container -->
-        <div id="install-platform-content" class="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <!-- Populated dynamically by JS -->
-        </div>
-      </div>
-
-      <!-- SHARE HUB & DYNAMIC QR CODE GENERATOR -->
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        <!-- Left 7 Cols: Share Link & Social Media Ready Invitation -->
-        <div class="lg:col-span-7 bg-white rounded-3xl p-5 sm:p-6 border border-slate-200 shadow-sm space-y-4 flex flex-col justify-between">
-          <div class="space-y-4">
-            <div>
-              <span class="text-xs font-extrabold text-indigo-700 bg-indigo-50 px-2.5 py-1 rounded-md">نشر البرنامج للطلاب</span>
-              <h3 class="text-lg sm:text-xl font-extrabold text-slate-900 mt-1">🔗 مشاركة رابط الأكاديمية ورسالة الدعوة الجاهزة</h3>
-              <p class="text-xs text-slate-600">ضع رابط موقعك بعد رفعه (أو استخدم الرابط الحالي) لإنشاء كود QR ورسالة دعوة احترافية جاهزة للنشر على واتساب وفيسبوك وتليجرام:</p>
-            </div>
-
-            <div>
-              <label class="block text-xs font-bold text-slate-700 mb-1">رابط البرنامج المخصص للمشاركة والـ QR Code:</label>
-              <div class="flex gap-2">
-                <input id="app-share-url-input" type="text" dir="ltr" placeholder="https://moaz-elokly-academy.netlify.app" class="font-en flex-1 px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500" />
-                <button type="button" id="btn-update-qr-url" class="px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-extrabold shrink-0 transition">
-                  تحديث الكود
-                </button>
-              </div>
-            </div>
-
-            <div>
-              <label class="block text-xs font-bold text-slate-700 mb-1">نص رسالة الدعوة الجاهزة للطلاب:</label>
-              <textarea id="app-share-message-box" rows="4" class="w-full p-3.5 rounded-2xl border border-slate-300 text-xs sm:text-sm font-bold text-slate-800 leading-relaxed focus:outline-none focus:ring-2 focus:ring-indigo-500">🎓 حمّل الآن برنامج «أكاديمية معاذ العكلي لتعلم اللغة الإنجليزية من الصفر حتى الإتقان (A1 → C2)» مجاناً!
-✅ يضم 6 مستويات عالمية، نطق صوتي فوري، 90 امتحاناً تفاعلياً، موسوعة القواعد والوظائف وهندسة المساحة، قارئ كتب تفاعلي، و5000 كلمة وجملة ومحادثة مع شهادة إتمام معتمدة.
-📲 ادخل وحمّل البرنامج من هنا:</textarea>
-            </div>
-          </div>
-
-          <div class="flex flex-wrap items-center gap-2.5 pt-3 border-t border-slate-100">
-            <button type="button" id="btn-copy-app-link" class="flex-1 py-2.5 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-extrabold transition flex items-center justify-center gap-1.5">
-              <span>📋</span>
-              <span>نسخ رسالة الدعوة والرابط</span>
-            </button>
-            <button type="button" id="btn-share-whatsapp" class="py-2.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-extrabold transition flex items-center justify-center gap-1.5">
-              <span>💬</span>
-              <span>مشاركة عبر واتساب</span>
-            </button>
-            <button type="button" id="btn-share-telegram" class="py-2.5 px-4 rounded-xl bg-sky-600 hover:bg-sky-700 text-white text-xs font-extrabold transition flex items-center justify-center gap-1.5">
-              <span>✈️</span>
-              <span>مشاركة عبر تليجرام</span>
-            </button>
-          </div>
-        </div>
-
-        <!-- Right 5 Cols: Promotional Card & Visual QR Matrix -->
-        <div class="lg:col-span-5 bg-gradient-to-b from-slate-900 to-indigo-950 text-white rounded-3xl p-5 sm:p-6 border border-indigo-500/30 shadow-lg flex flex-col items-center justify-between text-center space-y-4">
-          <div class="space-y-1">
-            <span class="px-3 py-0.5 rounded-full bg-amber-400/20 text-amber-300 text-xs font-extrabold">بطاقة تحميل التطبيق (QR Poster)</span>
-            <h4 class="text-base sm:text-lg font-extrabold">امسح الكود أو حمّل بطاقة الدعوة</h4>
-            <p class="text-xs text-indigo-200">يمكنك تحميل هذه البطاقة كصورة ونشرها على صفحتك أو جروب الطلاب</p>
-          </div>
-
-          <div class="bg-white p-3.5 rounded-2xl shadow-xl border-4 border-amber-400">
-            <canvas id="app-qr-canvas" width="240" height="240" class="w-48 h-48 sm:w-52 sm:h-52 mx-auto"></canvas>
-          </div>
-
-          <div class="w-full space-y-2">
-            <p id="qr-displayed-url" class="font-en text-xs text-emerald-300 font-bold truncate px-2"></p>
-            <button type="button" id="btn-download-share-card" class="w-full py-2.5 px-4 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-extrabold text-xs sm:text-sm shadow transition">
-              📥 تحميل بطاقة دعوة الأكاديمية كصورة (PNG)
-            </button>
-          </div>
-        </div>
-      </div>
-
       <!-- ACADEMY DIRECTOR / ADMIN PORTAL (FOR MOAZ ELOKLY) -->
       <div id="admin-portal-section" class="bg-white rounded-3xl p-5 sm:p-6 border-2 border-indigo-200 shadow-md space-y-5">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
           <div>
-            <span class="text-xs font-extrabold text-indigo-700 bg-indigo-50 px-3 py-1 rounded-md border border-indigo-200">🔐 خاصة بمؤسس ومدير الأكاديمية (أ. معاذ العكلي)</span>
+            <span class="text-xs font-extrabold text-indigo-700 bg-indigo-50 px-3 py-1 rounded-md border border-indigo-200">🔐 بوابة دخول الإدارة — خاصة بمؤسس ومدير الأكاديمية (أ. معاذ العكلي)</span>
             <h3 class="text-lg sm:text-2xl font-extrabold text-slate-900 mt-1">👨‍🏫 لوحة تحكم وإدارة أكاديمية معاذ العكلي</h3>
             <p class="text-xs sm:text-sm text-slate-600">تحكم في إعلانات الأكاديمية، تابع حسابات الطلاب المسجلين، صدّر نسخاً احتياطية للبيانات، أو اعتمد الشهادات الفورية.</p>
           </div>
-          <div id="admin-status-pill" class="px-3.5 py-1.5 rounded-full bg-slate-100 text-slate-700 text-xs font-extrabold self-start sm:self-center">
-            🔒 وضع الزائر (أدخل رمز الإدارة للتفعيل)
+          <div class="flex items-center gap-2 self-start sm:self-center">
+            <div id="admin-status-pill" class="px-3.5 py-1.5 rounded-full bg-slate-100 text-slate-700 text-xs font-extrabold">
+              🔒 البوابة مغلقة (تتطلب الرمز السري للإدارة)
+            </div>
+            <button type="button" id="btn-admin-logout" class="hidden px-3.5 py-1.5 rounded-full bg-rose-100 hover:bg-rose-200 text-rose-800 border border-rose-300 text-xs font-extrabold transition">
+              🔒 قفل لوحة الإدارة
+            </button>
           </div>
         </div>
 
         <!-- Admin Login Bar (Shown when not unlocked) -->
         <div id="admin-login-box" class="p-4 sm:p-5 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row items-stretch sm:items-end gap-3">
           <div class="flex-1">
-            <label class="block text-xs font-extrabold text-slate-700 mb-1">الرقم السري لبوابة مدير الأكاديمية (الافتراضي: <span class="font-en text-indigo-600">2026</span>):</label>
-            <input id="admin-pin-input" type="password" dir="ltr" placeholder="أدخل كود الإدارة (مثال: 2026)" class="font-en w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500" value="2026" />
+            <label for="admin-pin-input" class="block text-xs font-extrabold text-slate-700 mb-1">الرمز السري لبوابة دخول الإدارة:</label>
+            <input id="admin-pin-input" type="password" dir="ltr" autocomplete="off" spellcheck="false" placeholder="أدخل الرمز السري الخاص بمدير الأكاديمية..." class="font-en w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500" value="" />
           </div>
           <button type="button" id="btn-admin-login" class="px-6 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs sm:text-sm font-extrabold shadow-sm transition">
             🔓 دخول لوحة تحكم أ. معاذ العكلي
@@ -15419,25 +15296,61 @@
 
       // Admin Portal Login & Actions
       const adminLoginBtn = document.getElementById('btn-admin-login');
-      if (adminLoginBtn) {
-        adminLoginBtn.addEventListener('click', () => {
-          const pin = document.getElementById('admin-pin-input').value.trim();
-          if (pin === '2026' || pin.toLowerCase() === 'moaz') {
-            isAdminUnlocked = true;
-            document.getElementById('admin-login-box').classList.add('hidden');
-            document.getElementById('admin-dashboard-controls').classList.remove('hidden');
-            const pill = document.getElementById('admin-status-pill');
-            if (pill) {
-              pill.className = 'px-3.5 py-1.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300 text-xs font-extrabold self-start sm:self-center';
-              pill.textContent = '✅ مرحباً أ. معاذ العكلي (وضع المدير مفعّل)';
-            }
-            renderAppDownloadModule();
-            playChime('success');
-            showToast('🔓 مرحباً بك يا أ. معاذ العكلي في لوحة إدارة الأكاديمية!', 'success');
-          } else {
-            playChime('error');
-            showToast('❌ الرقم السري غير صحيح (الافتراضي: 2026)', 'error');
+      const adminPinInput = document.getElementById('admin-pin-input');
+      const adminLogoutBtn = document.getElementById('btn-admin-logout');
+
+      function handleAdminPortalLogin() {
+        const pinInputEl = document.getElementById('admin-pin-input');
+        const pin = pinInputEl ? pinInputEl.value : '';
+        if (pin === 'Moaz2542005#') {
+          isAdminUnlocked = true;
+          if (pinInputEl) pinInputEl.value = '';
+          const loginBox = document.getElementById('admin-login-box');
+          if (loginBox) loginBox.classList.add('hidden');
+          const dashControls = document.getElementById('admin-dashboard-controls');
+          if (dashControls) dashControls.classList.remove('hidden');
+          if (adminLogoutBtn) adminLogoutBtn.classList.remove('hidden');
+          const pill = document.getElementById('admin-status-pill');
+          if (pill) {
+            pill.className = 'px-3.5 py-1.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300 text-xs font-extrabold';
+            pill.textContent = '✅ مرحباً أ. معاذ العكلي (وضع المدير مفعّل)';
           }
+          renderAppDownloadModule();
+          playChime('success');
+          showToast('🔓 مرحباً بك يا أ. معاذ العكلي في لوحة إدارة الأكاديمية!', 'success');
+        } else {
+          playChime('error');
+          showToast('❌ الرمز السري غير صحيح! هذه البوابة مخصصة لمدير الأكاديمية فقط.', 'error');
+        }
+      }
+
+      if (adminLoginBtn) {
+        adminLoginBtn.addEventListener('click', handleAdminPortalLogin);
+      }
+      if (adminPinInput) {
+        adminPinInput.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            handleAdminPortalLogin();
+          }
+        });
+      }
+      if (adminLogoutBtn) {
+        adminLogoutBtn.addEventListener('click', () => {
+          isAdminUnlocked = false;
+          if (adminPinInput) adminPinInput.value = '';
+          const loginBox = document.getElementById('admin-login-box');
+          if (loginBox) loginBox.classList.remove('hidden');
+          const dashControls = document.getElementById('admin-dashboard-controls');
+          if (dashControls) dashControls.classList.add('hidden');
+          adminLogoutBtn.classList.add('hidden');
+          const pill = document.getElementById('admin-status-pill');
+          if (pill) {
+            pill.className = 'px-3.5 py-1.5 rounded-full bg-slate-100 text-slate-700 text-xs font-extrabold';
+            pill.textContent = '🔒 البوابة مغلقة (تتطلب الرمز السري للإدارة)';
+          }
+          playChime('click');
+          showToast('🔒 تم قفل بوابة الإدارة بنجاح.', 'info');
         });
       }
 
@@ -15541,11 +15454,6 @@
       initAcademyApp();
     }
     window.addEventListener('load', initAcademyApp);
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js').catch(() => {});
-      });
-    }
   </script>
 </body>
 </html>
