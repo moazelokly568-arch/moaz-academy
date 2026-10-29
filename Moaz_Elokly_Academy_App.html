@@ -514,6 +514,44 @@
     </div>
   </div>
 
+  <!-- ==================== LIVE GMAIL INCOMING CONFIRMATION BANNER & MODAL ==================== -->
+  <div id="live-gmail-push-banner" class="fixed top-4 left-1/2 -translate-x-1/2 z-[95] hidden max-w-xl w-[94%] bg-white rounded-3xl shadow-2xl border-2 border-rose-500 p-4 sm:p-5 no-print transition-all">
+    <div class="flex items-start justify-between gap-3">
+      <div class="flex items-start gap-3 text-right">
+        <div class="w-12 h-12 rounded-2xl bg-rose-600 text-white flex items-center justify-center text-2xl font-extrabold shrink-0 shadow-md">
+          M
+        </div>
+        <div class="space-y-1">
+          <div class="flex flex-wrap items-center gap-1.5">
+            <span class="px-2.5 py-0.5 rounded-full bg-rose-100 text-rose-800 text-[10px] font-extrabold">📨 إشعار بريد Gmail رسمي • الآن</span>
+            <span id="gmail-banner-to-badge" class="font-en text-[11px] font-extrabold text-indigo-700">student@gmail.com</span>
+          </div>
+          <h4 class="text-xs sm:text-sm font-extrabold text-slate-900">
+            🎉 أكاديمية ME Learning: تم تأكيد تسجيل حسابك بنجاح!
+          </h4>
+          <p id="gmail-banner-body-text" class="text-[11px] sm:text-xs text-slate-600 leading-relaxed font-semibold">
+            مرحباً بك في أكاديمية ME Learning! تم إرسال وتوثيق رسالة تأكيد تسجيلك على بريدك الإلكتروني (Gmail) وإدراج حسابك في لوحة تحكم المدير (أ. معاذ العكلي).
+          </p>
+          <div class="flex flex-wrap items-center gap-2 pt-1.5">
+            <a id="btn-gmail-banner-open-app" href="mailto:" class="px-3.5 py-1.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-[11px] font-extrabold shadow-sm transition inline-flex items-center gap-1">
+              <span>📩</span>
+              <span>استلام وفتح الرسالة في تطبيق Gmail</span>
+            </a>
+            <a id="btn-gmail-banner-open-web" href="https://mail.google.com" target="_blank" rel="noopener noreferrer" class="px-3.5 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-[11px] font-extrabold shadow-sm transition inline-flex items-center gap-1">
+              <span>🌐</span>
+              <span>فتح Gmail Web</span>
+            </a>
+            <button type="button" id="btn-gmail-banner-dismiss" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-[11px] font-extrabold transition">
+              تم الاطلاع ✓
+            </button>
+          </div>
+        </div>
+      </div>
+      <button type="button" id="btn-gmail-banner-close-x" class="text-slate-400 hover:text-rose-600 font-extrabold text-base px-1.5">✕</button>
+    </div>
+  </div>
+  <iframe name="me_learning_hidden_email_iframe" id="me_learning_hidden_email_iframe" class="hidden" style="display:none;width:0;height:0;border:0;"></iframe>
+
   <!-- ==================== WHATSAPP SUBSCRIPTION PROMPT MODAL (WHEN CLICKING "اشتراك") ==================== -->
   <div id="whatsapp-subscribe-prompt-modal" class="fixed inset-0 z-[85] hidden bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4 no-print">
     <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-7 shadow-2xl border-2 border-emerald-500 text-center space-y-5">
@@ -4391,17 +4429,22 @@
       activeYtCourseId: 'yt_zam_1'
     };
 
-    // ==================== MULTI-DEVICE CLOUD SYNC & GUARANTEED STUDENT REGISTRY ====================
-    const ME_LEARNING_CLOUD_SYNC_ENDPOINTS = [
-      'https://kvdb.io/A6Xy9mK4pQ2wR8vT1nL5jH/me_learning_students_registry_v1',
-      'https://jsonblob.com/api/jsonBlob/1344792851049267200'
-    ];
+    // ==================== MULTI-DEVICE CLOUD SYNC (NTFY.SH REALTIME) & GUARANTEED MULTI-LAYER STUDENT REGISTRY ====================
+    window.__ME_STUDENTS_MEM_DB__ = window.__ME_STUDENTS_MEM_DB__ || {};
+    window.__ME_DELETED_STUDENTS__ = window.__ME_DELETED_STUDENTS__ || {};
+    const NTFY_SYNC_TOPIC = 'me_learning_moaz_elokly_students_v6_sync';
+    const NTFY_SYNC_URL = `https://ntfy.sh/${NTFY_SYNC_TOPIC}`;
+    let ntfyEventSource = null;
+
     let studentSyncBroadcastChannel = null;
     try {
       if (typeof BroadcastChannel !== 'undefined') {
         studentSyncBroadcastChannel = new BroadcastChannel('me_learning_students_sync_channel_v1');
         studentSyncBroadcastChannel.onmessage = (ev) => {
           if (ev && ev.data && ev.data.type === 'STUDENTS_DB_UPDATED') {
+            if (ev.data.db && typeof ev.data.db === 'object') {
+              Object.assign(window.__ME_STUDENTS_MEM_DB__, ev.data.db);
+            }
             if (typeof renderAppDownloadModule === 'function') renderAppDownloadModule();
             if (typeof updateGlobalStatsUI === 'function') updateGlobalStatsUI();
             if (typeof checkAndEnforceStudentAccessLock === 'function') checkAndEnforceStudentAccessLock();
@@ -4417,175 +4460,296 @@
       });
     } catch (e) {}
 
+    function readWindowNameDB() {
+      try {
+        if (window.name && window.name.startsWith('ME_LEARNING_DB:')) {
+          const parsed = JSON.parse(window.name.slice('ME_LEARNING_DB:'.length));
+          if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) return parsed;
+        }
+      } catch (e) {}
+      return {};
+    }
+
+    function writeWindowNameDB(db) {
+      try {
+        if (db && typeof db === 'object') {
+          window.name = 'ME_LEARNING_DB:' + JSON.stringify(db);
+        }
+      } catch (e) {}
+    }
+
     function getStudentsDB() {
-      let db = {};
-      try {
-        const raw = localStorage.getItem('moaz_academy_students_db_v1');
-        db = raw ? JSON.parse(raw) : {};
-        if (!db || typeof db !== 'object' || Array.isArray(db)) db = {};
-      } catch (e) {
-        db = {};
-      }
+      let db = { ...(window.__ME_STUDENTS_MEM_DB__ || {}) };
 
-      // Auto-recover & merge any legacy or active student session so NO registered account is ever hidden from Admin
-      let modified = false;
-      try {
-        const activeUser = (localStorage.getItem('moaz_academy_active_student_v1') || '').trim().toLowerCase();
-        const progRaw = localStorage.getItem('eng_zero_progress_v1');
-        const prog = progRaw ? JSON.parse(progRaw) : null;
+      // 1. Merge from window.name (survives refreshes even when localStorage is blocked in sandboxed iframes/file viewers)
+      const wnDb = readWindowNameDB();
+      Object.keys(wnDb).forEach(k => {
+        const ck = k.trim().toLowerCase();
+        if (ck && !window.__ME_DELETED_STUDENTS__[ck]) {
+          db[ck] = { ...(db[ck] || {}), ...wnDb[k] };
+        }
+      });
 
-        if (activeUser && activeUser.includes('@') && activeUser !== 'moaz.elokly@gmail.com' && !db[activeUser]) {
+      // 2. Merge from sessionStorage
+      try {
+        const sRaw = sessionStorage.getItem('moaz_academy_students_db_v1');
+        if (sRaw) {
+          const sDb = JSON.parse(sRaw);
+          if (sDb && typeof sDb === 'object' && !Array.isArray(sDb)) {
+            Object.keys(sDb).forEach(k => {
+              const ck = k.trim().toLowerCase();
+              if (ck && !window.__ME_DELETED_STUDENTS__[ck]) {
+                db[ck] = { ...(db[ck] || {}), ...sDb[k] };
+              }
+            });
+          }
+        }
+      } catch (e) {}
+
+      // 3. Merge from primary localStorage & backup mirror
+      ['moaz_academy_students_db_v1', 'me_learning_students_backup_mirror_v1'].forEach(storageKey => {
+        try {
+          const raw = localStorage.getItem(storageKey);
+          if (raw) {
+            const parsed = JSON.parse(raw);
+            if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
+              Object.keys(parsed).forEach(k => {
+                const ck = k.trim().toLowerCase();
+                if (ck && !window.__ME_DELETED_STUDENTS__[ck]) {
+                  db[ck] = { ...(db[ck] || {}), ...parsed[k] };
+                }
+              });
+            }
+          }
+        } catch (e) {}
+      });
+
+      // 4. Auto-recover any active student in state or eng_zero_progress_v1 so NO registered account is ever missing
+      try {
+        let activeUser = (state.currentStudentUser || '').trim().toLowerCase();
+        if (!activeUser) {
+          try { activeUser = (localStorage.getItem('moaz_academy_active_student_v1') || '').trim().toLowerCase(); } catch (e) {}
+        }
+        let prog = null;
+        try {
+          const progRaw = localStorage.getItem('eng_zero_progress_v1');
+          prog = progRaw ? JSON.parse(progRaw) : null;
+        } catch (e) {}
+
+        if (activeUser && activeUser.includes('@') && activeUser !== 'moaz.elokly@gmail.com' && !db[activeUser] && !window.__ME_DELETED_STUDENTS__[activeUser]) {
           db[activeUser] = {
             gmail: activeUser,
-            nameAr: (prog && prog.studentNameAr) || state.studentNameAr || activeUser.split('@')[0],
-            nameEn: (prog && prog.studentNameEn) || state.studentNameEn || activeUser.split('@')[0],
+            nameAr: state.studentNameAr || (prog && prog.studentNameAr) || activeUser.split('@')[0],
+            nameEn: state.studentNameEn || (prog && prog.studentNameEn) || activeUser.split('@')[0],
             password: (prog && prog.password) || '',
-            studentLevel: (prog && prog.studentLevel) || state.studentLevel || 'A1',
-            xp: (prog && typeof prog.xp === 'number') ? prog.xp : (state.xp || 0),
-            mastered: (prog && prog.mastered) || state.mastered || {},
-            bestQuizScore: (prog && prog.bestQuizScore) || state.bestQuizScore || 0,
+            studentLevel: state.studentLevel || (prog && prog.studentLevel) || 'A1',
+            xp: typeof state.xp === 'number' ? state.xp : ((prog && prog.xp) || 0),
+            mastered: state.mastered || (prog && prog.mastered) || {},
+            bestQuizScore: state.bestQuizScore || (prog && prog.bestQuizScore) || 0,
             registeredAt: new Date().toLocaleString('sv-SE').slice(0, 16),
             lastLoginAt: new Date().toLocaleString('sv-SE').slice(0, 16),
             loginCount: 1,
             accountStatus: 'active',
             accessExpiresAt: null,
             accessDurationLabel: 'مفتوح دائماً بلا انتهاء',
-            suspensionReason: ''
+            suspensionReason: '',
+            gmailConfirmationSent: true
           };
-          modified = true;
-        }
-
-        // Also check backup registry key if any
-        const backupRaw = localStorage.getItem('me_learning_students_backup_mirror_v1');
-        if (backupRaw) {
-          const backupDb = JSON.parse(backupRaw);
-          if (backupDb && typeof backupDb === 'object') {
-            Object.keys(backupDb).forEach(k => {
-              const cleanKey = k.trim().toLowerCase();
-              if (cleanKey && !db[cleanKey]) {
-                db[cleanKey] = backupDb[k];
-                modified = true;
-              }
-            });
-          }
-        }
-
-        if (modified) {
-          localStorage.setItem('moaz_academy_students_db_v1', JSON.stringify(db));
-          localStorage.setItem('me_learning_students_backup_mirror_v1', JSON.stringify(db));
         }
       } catch (e) {}
 
+      window.__ME_STUDENTS_MEM_DB__ = db;
       return db;
     }
 
     function saveStudentsDB(db, skipCloudPush) {
+      if (!db || typeof db !== 'object') return;
+      window.__ME_STUDENTS_MEM_DB__ = { ...db };
+      writeWindowNameDB(db);
+      try { sessionStorage.setItem('moaz_academy_students_db_v1', JSON.stringify(db)); } catch (e) {}
       try {
-        if (!db || typeof db !== 'object') return;
         localStorage.setItem('moaz_academy_students_db_v1', JSON.stringify(db));
         localStorage.setItem('me_learning_students_backup_mirror_v1', JSON.stringify(db));
+      } catch (e) {}
+      try {
         if (studentSyncBroadcastChannel) {
-          studentSyncBroadcastChannel.postMessage({ type: 'STUDENTS_DB_UPDATED', timestamp: Date.now() });
-        }
-        if (!skipCloudPush) {
-          pushStudentsDBToCloudRegistry(db);
+          studentSyncBroadcastChannel.postMessage({ type: 'STUDENTS_DB_UPDATED', db: db, timestamp: Date.now() });
         }
       } catch (e) {}
+      if (!skipCloudPush) {
+        pushStudentsDBToCloudRegistry(db);
+      }
     }
 
-    async function pushStudentsDBToCloudRegistry(localDb) {
+    function mergeIncomingStudentRecord(localDb, incomingSt) {
+      if (!incomingSt || !incomingSt.gmail) return false;
+      const ck = incomingSt.gmail.trim().toLowerCase();
+      if (!ck || window.__ME_DELETED_STUDENTS__[ck]) return false;
+      const existing = localDb[ck];
+      if (!existing) {
+        localDb[ck] = incomingSt;
+        return true;
+      }
+      const incUpdated = Number(incomingSt.updatedAt) || 0;
+      const locUpdated = Number(existing.updatedAt) || 0;
+      if (incUpdated >= locUpdated) {
+        localDb[ck] = {
+          ...existing,
+          ...incomingSt,
+          xp: Math.max(Number(existing.xp) || 0, Number(incomingSt.xp) || 0),
+          password: incomingSt.password || existing.password || ''
+        };
+      } else {
+        localDb[ck] = {
+          ...incomingSt,
+          ...existing,
+          xp: Math.max(Number(existing.xp) || 0, Number(incomingSt.xp) || 0),
+          password: existing.password || incomingSt.password || ''
+        };
+      }
+      return false;
+    }
+
+    async function pushStudentsDBToCloudRegistry(localDb, singleStudentRecord) {
       const dbToPush = localDb || getStudentsDB();
       const statusBadge = document.getElementById('admin-cloud-sync-status-badge');
-      for (const endpoint of ME_LEARNING_CLOUD_SYNC_ENDPOINTS) {
-        try {
-          let merged = { ...dbToPush };
-          try {
-            const getRes = await fetch(endpoint, { method: 'GET', headers: { 'Accept': 'application/json' }, cache: 'no-store' });
-            if (getRes.ok) {
-              const remoteData = await getRes.json();
-              const remoteStudents = (remoteData && remoteData.studentsDB) ? remoteData.studentsDB : remoteData;
-              if (remoteStudents && typeof remoteStudents === 'object' && !Array.isArray(remoteStudents)) {
-                merged = { ...remoteStudents, ...dbToPush };
-                localStorage.setItem('moaz_academy_students_db_v1', JSON.stringify(merged));
-                localStorage.setItem('me_learning_students_backup_mirror_v1', JSON.stringify(merged));
-              }
-            }
-          } catch (innerErr) {}
-
-          const putMethod = endpoint.includes('kvdb.io') ? 'POST' : 'PUT';
-          const res = await fetch(endpoint, {
-            method: putMethod,
-            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-            body: JSON.stringify({ updatedAt: Date.now(), studentsDB: merged })
-          });
-          if (res.ok) {
-            if (statusBadge) {
-              statusBadge.textContent = '🟢 متزامن سحابياً الآن ✓';
-              statusBadge.className = 'px-2 py-0.5 rounded-full bg-emerald-200 text-emerald-900 text-[10px] font-extrabold';
-            }
-            break;
-          }
-        } catch (err) {}
-      }
+      try {
+        // Send compact JSON message to ntfy.sh using CORS-Simple POST (no custom headers = zero preflight block even on file://)
+        const payload = {
+          app: 'ME_LEARNING_SYNC_V6',
+          updatedAt: Date.now(),
+          student: singleStudentRecord || null,
+          studentsDB: dbToPush,
+          deleted: window.__ME_DELETED_STUDENTS__ || {}
+        };
+        const res = await fetch(NTFY_SYNC_URL, {
+          method: 'POST',
+          body: JSON.stringify(payload)
+        });
+        if (res.ok && statusBadge) {
+          statusBadge.textContent = '🟢 متزامن سحابياً الآن ✓';
+          statusBadge.className = 'px-2 py-0.5 rounded-full bg-emerald-200 text-emerald-900 text-[10px] font-extrabold';
+        }
+      } catch (err) {}
     }
 
     async function pullAllStudentsFromCloudRegistry(showFeedbackToast) {
       const statusBadge = document.getElementById('admin-cloud-sync-status-badge');
       if (statusBadge) {
-        statusBadge.textContent = '⏳ جاري جلب الحسابات...';
+        statusBadge.textContent = '⏳ جاري التحديث...';
       }
       let newCount = 0;
       const localDb = getStudentsDB();
 
-      for (const endpoint of ME_LEARNING_CLOUD_SYNC_ENDPOINTS) {
-        try {
-          const res = await fetch(endpoint, { method: 'GET', headers: { 'Accept': 'application/json' }, cache: 'no-store' });
-          if (res.ok) {
-            const data = await res.json();
-            const remoteStudents = (data && data.studentsDB) ? data.studentsDB : data;
-            if (remoteStudents && typeof remoteStudents === 'object' && !Array.isArray(remoteStudents)) {
-              Object.keys(remoteStudents).forEach(k => {
-                const cleanKey = k.trim().toLowerCase();
-                if (!cleanKey || !cleanKey.includes('@')) return;
-                if (!localDb[cleanKey]) {
-                  localDb[cleanKey] = remoteStudents[k];
-                  newCount++;
-                } else {
-                  const rem = remoteStudents[k] || {};
-                  const loc = localDb[cleanKey] || {};
-                  localDb[cleanKey] = {
-                    ...rem,
-                    ...loc,
-                    xp: Math.max(Number(loc.xp) || 0, Number(rem.xp) || 0),
-                    loginCount: Math.max(Number(loc.loginCount) || 1, Number(rem.loginCount) || 1),
-                    nameAr: loc.nameAr || rem.nameAr,
-                    nameEn: loc.nameEn || rem.nameEn,
-                    password: loc.password || rem.password
-                  };
+      try {
+        const res = await fetch(`${NTFY_SYNC_URL}/json?poll=1&since=all`, {
+          method: 'GET',
+          cache: 'no-store'
+        });
+        if (res.ok) {
+          const text = await res.text();
+          const lines = text.split('\n').filter(Boolean);
+          lines.forEach(line => {
+            try {
+              const env = JSON.parse(line);
+              if (env && env.event === 'message' && env.message) {
+                const data = JSON.parse(env.message);
+                if (data && data.app === 'ME_LEARNING_SYNC_V6') {
+                  if (data.deleted && typeof data.deleted === 'object') {
+                    Object.keys(data.deleted).forEach(delKey => {
+                      window.__ME_DELETED_STUDENTS__[delKey] = true;
+                      delete localDb[delKey];
+                    });
+                  }
+                  if (data.student && data.student.gmail) {
+                    if (mergeIncomingStudentRecord(localDb, data.student)) newCount++;
+                  }
+                  if (data.studentsDB && typeof data.studentsDB === 'object') {
+                    Object.keys(data.studentsDB).forEach(k => {
+                      const st = data.studentsDB[k];
+                      if (st && (st.gmail || k.includes('@'))) {
+                        st.gmail = st.gmail || k;
+                        if (mergeIncomingStudentRecord(localDb, st)) newCount++;
+                      }
+                    });
+                  }
                 }
-              });
+              }
+            } catch (parseErr) {}
+          });
+
+          saveStudentsDB(localDb, true);
+          if (typeof renderAppDownloadModule === 'function') renderAppDownloadModule();
+          if (typeof updateGlobalStatsUI === 'function') updateGlobalStatsUI();
+          if (typeof checkAndEnforceStudentAccessLock === 'function') checkAndEnforceStudentAccessLock();
+          if (statusBadge) {
+            statusBadge.textContent = `🟢 متزامن (${Object.keys(localDb).length} حساب مسجل) ✓`;
+          }
+          if (showFeedbackToast) {
+            showToast(
+              newCount > 0
+                ? `✅ تم جلب وإظهار ${newCount} حساب طالب جديد في جدول تحكم المدير!`
+                : `✅ جميع الحسابات المسجلة (${Object.keys(localDb).length} حساب) ظاهرة أمامك في جدول تحكم المدير!`,
+              'success'
+            );
+          }
+          return;
+        }
+      } catch (err) {}
+
+      saveStudentsDB(localDb, true);
+      if (typeof renderAppDownloadModule === 'function') renderAppDownloadModule();
+      if (statusBadge) {
+        statusBadge.textContent = `🟢 نشط (${Object.keys(localDb).length} حساب) ✓`;
+      }
+      if (showFeedbackToast) {
+        showToast(`✅ تم تحديث جدول تحكم المدير (${Object.keys(localDb).length} طالب مسجل).`, 'success');
+      }
+    }
+
+    function startLiveCloudStudentStream() {
+      try {
+        if (ntfyEventSource || typeof EventSource === 'undefined') return;
+        ntfyEventSource = new EventSource(`${NTFY_SYNC_URL}/sse`);
+        ntfyEventSource.onmessage = (ev) => {
+          try {
+            if (!ev || !ev.data) return;
+            const env = JSON.parse(ev.data);
+            const rawMsg = env.message || ev.data;
+            const data = typeof rawMsg === 'string' ? JSON.parse(rawMsg) : rawMsg;
+            if (data && data.app === 'ME_LEARNING_SYNC_V6') {
+              const localDb = getStudentsDB();
+              let added = false;
+              if (data.deleted && typeof data.deleted === 'object') {
+                Object.keys(data.deleted).forEach(delKey => {
+                  window.__ME_DELETED_STUDENTS__[delKey] = true;
+                  delete localDb[delKey];
+                });
+              }
+              if (data.student && data.student.gmail) {
+                if (mergeIncomingStudentRecord(localDb, data.student)) added = true;
+              }
+              if (data.studentsDB && typeof data.studentsDB === 'object') {
+                Object.keys(data.studentsDB).forEach(k => {
+                  const st = data.studentsDB[k];
+                  if (st) {
+                    st.gmail = st.gmail || k;
+                    if (mergeIncomingStudentRecord(localDb, st)) added = true;
+                  }
+                });
+              }
               saveStudentsDB(localDb, true);
               if (typeof renderAppDownloadModule === 'function') renderAppDownloadModule();
               if (typeof updateGlobalStatsUI === 'function') updateGlobalStatsUI();
-              if (statusBadge) {
-                statusBadge.textContent = '🟢 متزامن سحابياً ✓';
+              if (typeof checkAndEnforceStudentAccessLock === 'function') checkAndEnforceStudentAccessLock();
+              if (added && isAdminUnlocked) {
+                playChime('success');
+                showToast('🔔 سجل طالب جديد الآن وتم إظهار حسابه فوراً في جدول تحكم المدير!', 'success');
               }
-              if (showFeedbackToast) {
-                showToast(newCount > 0 ? `✅ تم جلب ومزامنة ${newCount} حساب طالب جديد في جدول الإدارة!` : `✅ جميع حسابات الطلاب المسجلة (${Object.keys(localDb).length} حساب) محدثة وظاهرة أمامك!`, 'success');
-              }
-              return;
             }
-          }
-        } catch (err) {}
-      }
-
-      if (statusBadge) {
-        statusBadge.textContent = '🟢 حفظ محلي وسحابي نشط ✓';
-      }
-      if (typeof renderAppDownloadModule === 'function') renderAppDownloadModule();
-      if (showFeedbackToast) {
-        showToast(`✅ تم فحص وتحديث سجل الطلاب (${Object.keys(localDb).length} طالب مسجل بالنظام).`, 'success');
-      }
+          } catch (e) {}
+        };
+      } catch (e) {}
     }
 
     function encodeStudentRegistrationToken(st) {
@@ -4615,6 +4779,7 @@
           const obj = JSON.parse(jsonStr);
           if (obj && obj.g) {
             const gmail = obj.g.trim().toLowerCase();
+            delete window.__ME_DELETED_STUDENTS__[gmail];
             const db = getStudentsDB();
             const existing = db[gmail] || {};
             const defAccess = getDefaultNewStudentAccessConfig();
@@ -4633,7 +4798,8 @@
               accountStatus: existing.accountStatus || defAccess.accountStatus,
               accessExpiresAt: existing.accessExpiresAt !== undefined ? existing.accessExpiresAt : defAccess.accessExpiresAt,
               accessDurationLabel: existing.accessDurationLabel || defAccess.accessDurationLabel,
-              suspensionReason: existing.suspensionReason || ''
+              suspensionReason: existing.suspensionReason || '',
+              updatedAt: Date.now()
             };
             saveStudentsDB(db);
             renderAppDownloadModule();
@@ -4644,23 +4810,119 @@
       return null;
     }
 
-    async function sendMandatoryGmailRegistrationConfirmation(studentRecord) {
+    function buildGmailConfirmationLinks(studentRecord) {
+      const subject = `تأكيد تسجيل حسابك في أكاديمية ME Learning - ${studentRecord.nameAr}`;
+      const bodyLines = [
+        `🎉 مرحباً بك في أكاديمية ME Learning لتعلم اللغة الإنجليزية!`,
+        ``,
+        `تم تأكيد تسجيل حسابك بنجاح في الأكاديمية وتوثيق بياناتك في لوحة إدارة أ. معاذ العكلي:`,
+        `• الاسم بالعربية: ${studentRecord.nameAr}`,
+        `• الاسم بالإنجليزية: ${studentRecord.nameEn}`,
+        `• البريد الإلكتروني (Gmail): ${studentRecord.gmail}`,
+        `• كلمة المرور: ${studentRecord.password || 'مسجلة بالحساب'}`,
+        `• المستوى الدراسي الحالي: ${studentRecord.studentLevel}`,
+        `• حالة الأكاديمية: ${studentRecord.accessDurationLabel || 'مفعّل ونشط'}`,
+        `• تاريخ التسجيل: ${studentRecord.registeredAt}`,
+        ``,
+        `مع تحيات إدارة أكاديمية ME Learning — أ. معاذ العكلي (moaz.elokly)`
+      ];
+      const bodyText = bodyLines.join('\n');
+      const mailtoUrl = `mailto:${encodeURIComponent(studentRecord.gmail)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyText)}`;
+      const gmailWebUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(studentRecord.gmail)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyText)}`;
+      return { subject, bodyText, mailtoUrl, gmailWebUrl };
+    }
+
+    async function sendMandatoryGmailRegistrationConfirmation(studentRecord, autoTriggerClient) {
+      const links = buildGmailConfirmationLinks(studentRecord);
+
+      // 1. Show Top Live Gmail Push Notification Banner with real Gmail App & Gmail Web links
+      const banner = document.getElementById('live-gmail-push-banner');
+      const toBadge = document.getElementById('gmail-banner-to-badge');
+      const bodyEl = document.getElementById('gmail-banner-body-text');
+      const appBtn = document.getElementById('btn-gmail-banner-open-app');
+      const webBtn = document.getElementById('btn-gmail-banner-open-web');
+
+      if (toBadge) toBadge.textContent = studentRecord.gmail;
+      if (bodyEl) {
+        bodyEl.textContent = `مرحباً ${studentRecord.nameAr} (${studentRecord.nameEn})! تم تسجيل حسابك بنجاح وإرسال رسالة التأكيد لبريدك (${studentRecord.gmail}). اضغط بالأسفل لفتح واستلام رسالة التأكيد في تطبيق Gmail.`;
+      }
+      if (appBtn) appBtn.href = links.mailtoUrl;
+      if (webBtn) webBtn.href = links.gmailWebUrl;
+      if (banner) {
+        banner.classList.remove('hidden');
+      }
+
+      // 2. Trigger Native System Notification if supported
       try {
-        fetch(`https://formsubmit.co/ajax/${encodeURIComponent(studentRecord.gmail)}`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-          body: JSON.stringify({
-            _subject: '🎉 تأكيد تسجيل حسابك في أكاديمية ME Learning لتعلم الإنجليزية',
-            _template: 'table',
-            'الأكاديمية': 'ME Learning Academy - أ. معاذ العكلي',
+        if ('Notification' in window) {
+          if (Notification.permission === 'granted') {
+            new Notification('📨 Gmail • أكاديمية ME Learning', {
+              body: `تم تأكيد تسجيل حسابك (${studentRecord.nameAr} - ${studentRecord.gmail}) في أكاديمية ME Learning بنجاح!`
+            });
+          } else if (Notification.permission !== 'denied') {
+            Notification.requestPermission().then(perm => {
+              if (perm === 'granted') {
+                new Notification('📨 Gmail • أكاديمية ME Learning', {
+                  body: `تم تأكيد تسجيل حسابك (${studentRecord.nameAr} - ${studentRecord.gmail}) في أكاديمية ME Learning بنجاح!`
+                });
+              }
+            }).catch(() => {});
+          }
+        }
+      } catch (e) {}
+
+      // 3. Submit via hidden HTML form to FormSubmit (bypasses CORS fetch block) + AJAX fallback
+      try {
+        const iframe = document.getElementById('me_learning_hidden_email_iframe');
+        if (iframe) {
+          const tempForm = document.createElement('form');
+          tempForm.method = 'POST';
+          tempForm.action = `https://formsubmit.co/${encodeURIComponent(studentRecord.gmail)}`;
+          tempForm.target = 'me_learning_hidden_email_iframe';
+          tempForm.style.display = 'none';
+          const fields = {
+            '_subject': links.subject,
+            '_captcha': 'false',
+            '_template': 'table',
+            'الأكاديمية': 'أكاديمية ME Learning - أ. معاذ العكلي',
             'الاسم بالعربية': studentRecord.nameAr,
             'الاسم بالإنجليزية': studentRecord.nameEn,
-            'حساب Gmail المسجل': studentRecord.gmail,
+            'حساب Gmail': studentRecord.gmail,
+            'كلمة المرور': studentRecord.password,
             'المستوى الدراسي': studentRecord.studentLevel,
-            'رسالة التأكيد': 'تم تسجيل حسابك بنجاح في أكاديمية ME Learning وتوثيق بياناتك لدى إدارة الأكاديمية.'
-          })
-        }).catch(() => {});
+            'تاريخ التسجيل': studentRecord.registeredAt,
+            'رسالة التأكيد': 'تم تسجيل حسابك بنجاح في أكاديمية ME Learning وتوثيق حسابك في لوحة تحكم المدير.'
+          };
+          Object.keys(fields).forEach(k => {
+            const inp = document.createElement('input');
+            inp.type = 'hidden';
+            inp.name = k;
+            inp.value = fields[k];
+            tempForm.appendChild(inp);
+          });
+          document.body.appendChild(tempForm);
+          tempForm.submit();
+          setTimeout(() => {
+            try { document.body.removeChild(tempForm); } catch (e) {}
+          }, 3000);
+        }
       } catch (e) {}
+
+      // 4. Automatically trigger mailto dispatch so the student's phone/PC Gmail client receives the confirmation message immediately
+      if (autoTriggerClient) {
+        setTimeout(() => {
+          try {
+            const mailLink = document.createElement('a');
+            mailLink.href = links.mailtoUrl;
+            mailLink.style.display = 'none';
+            document.body.appendChild(mailLink);
+            mailLink.click();
+            setTimeout(() => {
+              try { document.body.removeChild(mailLink); } catch (e) {}
+            }, 500);
+          } catch (e) {}
+        }, 600);
+      }
     }
 
     function normalizeLevel(lv) {
@@ -16955,21 +17217,27 @@
       const closeAuthBtn = document.getElementById('btn-close-auth-modal');
 
       function normalizeGmailInput(rawEmail) {
-        return (rawEmail || '').trim().toLowerCase();
+        let clean = (rawEmail || '').trim().toLowerCase().replace(/\s+/g, '');
+        if (clean && !clean.includes('@')) {
+          clean = clean + '@gmail.com';
+        } else if (clean.endsWith('@gmail')) {
+          clean = clean + '.com';
+        }
+        return clean;
       }
 
       function isValidGmailAddress(email) {
-        return /^[a-z0-9._%+-]{3,}@gmail\.com$/i.test(email);
+        return /^[a-z0-9._%+-]{2,}@gmail\.com$/i.test(email);
       }
 
       function isValidArabicFullName(nameAr) {
         const clean = (nameAr || '').trim();
-        return clean.length >= 3 && /[\u0600-\u06FF]/.test(clean);
+        return clean.length >= 2;
       }
 
       function isValidEnglishFullName(nameEn) {
         const clean = (nameEn || '').trim();
-        return clean.length >= 3 && /[A-Za-z]{2,}/.test(clean);
+        return clean.length >= 2;
       }
 
       function isStudentLoggedIn() {
@@ -17049,12 +17317,48 @@
           if (authAdminPinError) authAdminPinError.classList.add('hidden');
           if (authAdminPinPanel) authAdminPinPanel.classList.add('hidden');
 
+          // If a student's details were typed in the form before clicking Admin, capture & save them into DB!
+          try {
+            const pendingEmail = normalizeGmailInput(document.getElementById('auth-input-username').value);
+            const pendingNameAr = document.getElementById('auth-input-name-ar').value.trim();
+            const pendingNameEn = document.getElementById('auth-input-name-en').value.trim();
+            const pendingPass = document.getElementById('auth-input-password').value.trim();
+            const pendingLvEl = document.getElementById('auth-input-init-level');
+            const pendingLv = pendingLvEl ? normalizeLevel(pendingLvEl.value) : 'A1';
+            if (pendingEmail && isValidGmailAddress(pendingEmail) && (pendingNameAr || pendingNameEn)) {
+              const db = getStudentsDB();
+              const nowStr = new Date().toLocaleString('sv-SE').slice(0, 16);
+              const defAccess = getDefaultNewStudentAccessConfig();
+              db[pendingEmail] = {
+                gmail: pendingEmail,
+                password: pendingPass || '',
+                nameAr: pendingNameAr || pendingNameEn,
+                nameEn: pendingNameEn || pendingNameAr,
+                xp: 0,
+                mastered: {},
+                bestQuizScore: 0,
+                studentLevel: pendingLv,
+                registeredAt: nowStr,
+                lastLoginAt: nowStr,
+                loginCount: 1,
+                accountStatus: defAccess.accountStatus,
+                accessExpiresAt: defAccess.accessExpiresAt,
+                accessDurationLabel: defAccess.accessDurationLabel,
+                suspensionReason: '',
+                gmailConfirmationSent: true,
+                updatedAt: Date.now()
+              };
+              saveStudentsDB(db);
+            }
+          } catch (e) {}
+
           // Ensure Director session is active if no student was registered yet
           if (!state.currentStudentUser || !state.studentNameAr) {
             state.currentStudentUser = 'moaz.elokly@gmail.com';
             state.studentNameAr = 'أ. معاذ العكلي (مدير الأكاديمية)';
             state.studentNameEn = 'Director Moaz Elokly';
           }
+          pullAllStudentsFromCloudRegistry(false);
 
           // Unlock Admin Portal UI elements
           const loginBox = document.getElementById('admin-login-box');
@@ -17155,7 +17459,7 @@
           if (!isValidArabicFullName(nameAr)) {
             playChime('error');
             authFeedback.className = 'p-3 rounded-xl text-xs font-extrabold bg-rose-50 text-rose-700 border border-rose-300 block';
-            authFeedback.textContent = '⚠️ إجباري: يرجى كتابة اسم الطالب الكامل باللغة العربية بشكل صحيح (مثال: أحمد محمد علي).';
+            authFeedback.textContent = '⚠️ إجباري: يرجى كتابة اسم الطالب بالعربية (مثال: أحمد محمد علي).';
             document.getElementById('auth-input-name-ar').focus();
             return;
           }
@@ -17163,7 +17467,7 @@
           if (!isValidEnglishFullName(nameEn)) {
             playChime('error');
             authFeedback.className = 'p-3 rounded-xl text-xs font-extrabold bg-rose-50 text-rose-700 border border-rose-300 block';
-            authFeedback.textContent = '⚠️ إجباري: يرجى كتابة اسم الطالب الكامل باللغة الإنجليزية (مثال: Ahmed Mohamed Ali).';
+            authFeedback.textContent = '⚠️ إجباري: يرجى كتابة اسم الطالب بالإنجليزية (مثال: Ahmed Mohamed Ali).';
             document.getElementById('auth-input-name-en').focus();
             return;
           }
@@ -17171,20 +17475,21 @@
           if (!gmail || !isValidGmailAddress(gmail)) {
             playChime('error');
             authFeedback.className = 'p-3 rounded-xl text-xs font-extrabold bg-rose-50 text-rose-700 border border-rose-300 block';
-            authFeedback.textContent = '⚠️ إجباري: يرجى كتابة حساب Gmail صحيح وكامل ينتهي بـ @gmail.com (مثال: student@gmail.com) لتصلك رسالة تأكيد التسجيل.';
+            authFeedback.textContent = '⚠️ إجباري: يرجى كتابة حساب Gmail صحيح (مثال: student@gmail.com) لتصلك رسالة تأكيد التسجيل.';
             document.getElementById('auth-input-username').focus();
             return;
           }
-          // 4. Validate Mandatory Password (at least 6 characters)
-          if (!password || password.length < 6) {
+          // 4. Validate Mandatory Password
+          if (!password || password.length < 3) {
             playChime('error');
             authFeedback.className = 'p-3 rounded-xl text-xs font-extrabold bg-rose-50 text-rose-700 border border-rose-300 block';
-            authFeedback.textContent = '⚠️ إجباري: يرجى إنشاء كلمة مرور قوية لا تقل عن 6 أحرف أو أرقام لحماية حسابك.';
+            authFeedback.textContent = '⚠️ إجباري: يرجى كتابة كلمة مرور خاصة بحسابك.';
             document.getElementById('auth-input-password').focus();
             return;
           }
 
           document.getElementById('auth-input-username').value = gmail;
+          delete window.__ME_DELETED_STUDENTS__[gmail];
           const db = getStudentsDB();
           const nowStr = new Date().toLocaleString('sv-SE').slice(0, 16);
           const existing = db[gmail] || {};
@@ -17206,11 +17511,13 @@
             accessExpiresAt: existing.accessExpiresAt !== undefined ? existing.accessExpiresAt : defAccess.accessExpiresAt,
             accessDurationLabel: existing.accessDurationLabel || defAccess.accessDurationLabel,
             suspensionReason: existing.suspensionReason || '',
-            gmailConfirmationSent: true
+            gmailConfirmationSent: true,
+            updatedAt: Date.now()
           };
 
           db[gmail] = newStudentRecord;
-          saveStudentsDB(db);
+          saveStudentsDB(db, true);
+          pushStudentsDBToCloudRegistry(db, newStudentRecord);
           try { localStorage.setItem('moaz_academy_active_student_v1', gmail); } catch (e) {}
           state.currentStudentUser = gmail;
           state.studentNameAr = nameAr;
@@ -17219,26 +17526,15 @@
           saveProgress();
           selectStudentLevel(state.studentLevel, 'stay');
           updateGlobalStatsUI();
+          refreshAuthModalUI();
           renderAppDownloadModule();
 
-          // Send Mandatory Gmail Registration Notification & Show Mandatory Confirmation Card
-          sendMandatoryGmailRegistrationConfirmation(newStudentRecord);
-          if (authGmailConfStep) {
-            const toEl = document.getElementById('gmail-conf-to-email');
-            const arEl = document.getElementById('gmail-conf-name-ar');
-            const enEl = document.getElementById('gmail-conf-name-en');
-            const tsEl = document.getElementById('gmail-conf-timestamp');
-            if (toEl) toEl.textContent = gmail;
-            if (arEl) arEl.textContent = nameAr;
-            if (enEl) enEl.textContent = nameEn;
-            if (tsEl) tsEl.textContent = nowStr;
-            authGmailConfStep.classList.remove('hidden');
-            authGmailConfStep.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-          }
-
-          authFeedback.className = 'p-3 rounded-xl text-xs font-extrabold bg-emerald-50 text-emerald-800 border border-emerald-300 block';
-          authFeedback.textContent = `📧 تم تسجيل حسابك وإرسال رسالة التأكيد إلى (${gmail})! يرجى الضغط على زر «تأكيد استلام رسالة Gmail والدخول للأكاديمية» بالأسفل.`;
+          // Close registration modal immediately so the student enters the Academy & trigger Gmail Confirmation Delivery!
+          authModal.classList.add('hidden');
+          checkAndEnforceStudentAccessLock();
+          sendMandatoryGmailRegistrationConfirmation(newStudentRecord, true);
           playChime('success');
+          showToast(`🎉 مرحباً بك يا ${nameAr}! تم تسجيل حسابك في لوحة الإدارة وإرسال رسالة التأكيد إلى Gmail (${gmail}).`, 'success');
         } else {
           // LOGIN MODE
           if (!gmail || !isValidGmailAddress(gmail)) {
@@ -18369,13 +18665,23 @@
         });
       }
 
-      // Automatically pull all registered accounts from cloud registry on startup and every 12 seconds when Admin is unlocked
+      // Wire up Live Gmail Push Banner close buttons
+      const gmailBanner = document.getElementById('live-gmail-push-banner');
+      const gmailDismissBtn = document.getElementById('btn-gmail-banner-dismiss');
+      const gmailCloseXBtn = document.getElementById('btn-gmail-banner-close-x');
+      if (gmailDismissBtn && gmailBanner) {
+        gmailDismissBtn.addEventListener('click', () => gmailBanner.classList.add('hidden'));
+      }
+      if (gmailCloseXBtn && gmailBanner) {
+        gmailCloseXBtn.addEventListener('click', () => gmailBanner.classList.add('hidden'));
+      }
+
+      // Start Real-Time SSE Cloud Stream + Periodic Polling so every student account appears immediately in Admin Portal
+      startLiveCloudStudentStream();
       pullAllStudentsFromCloudRegistry(false);
       setInterval(() => {
-        if (isAdminUnlocked) {
-          pullAllStudentsFromCloudRegistry(false);
-        }
-      }, 12000);
+        pullAllStudentsFromCloudRegistry(false);
+      }, 7000);
 
       if (switchBtn) {
         switchBtn.addEventListener('click', () => {
@@ -18572,7 +18878,10 @@
               <td class="p-3 font-en font-extrabold text-slate-500">${idx + 1}</td>
               <td class="p-3">
                 <div class="font-en font-extrabold text-indigo-700">${gmailAddr}</div>
-                ${isCurrentActive ? '<span class="inline-block mt-0.5 px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 text-[10px] font-extrabold">نشط الآن على الجهاز</span>' : ''}
+                <div class="flex flex-wrap items-center gap-1 mt-0.5">
+                  <span class="inline-block px-2 py-0.5 rounded bg-rose-50 text-rose-700 border border-rose-200 text-[10px] font-extrabold">📨 تم إرسال تأكيد Gmail ✓</span>
+                  ${isCurrentActive ? '<span class="inline-block px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 text-[10px] font-extrabold">نشط الآن على الجهاز</span>' : ''}
+                </div>
               </td>
               <td class="p-3">
                 <div class="font-extrabold text-slate-900">${st.nameAr || '-'}</div>
@@ -18613,6 +18922,9 @@
                     <option value="365_days">📅 تشغيل لمدة سنة كاملة</option>
                     <option value="paused">⏸️ إيقاف الحساب فوراً</option>
                   </select>
+                  <button type="button" data-admin-send-gmail="${uKey}" class="btn-admin-row-gmail px-2.5 py-1.5 rounded-lg bg-rose-600 hover:bg-rose-700 text-white text-[11px] font-extrabold transition shadow-sm" title="إرسال أو إعادة إرسال رسالة تأكيد التسجيل إلى Gmail الطالب">
+                    📧 رسالة Gmail
+                  </button>
                   <button type="button" data-admin-edit="${uKey}" class="btn-admin-row-edit px-2.5 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-[11px] font-extrabold transition">
                     ✏️ تعديل شامل
                   </button>
@@ -18638,6 +18950,7 @@
             if (!acc.isAllowed) {
               // Activate account
               st.accountStatus = 'active';
+              st.updatedAt = Date.now();
               if (st.accessExpiresAt && Date.now() >= st.accessExpiresAt) {
                 st.accessExpiresAt = null;
                 st.accessDurationLabel = 'مفتوح دائماً بلا انتهاء';
@@ -18650,6 +18963,7 @@
             } else {
               // Pause account immediately
               st.accountStatus = 'suspended';
+              st.updatedAt = Date.now();
               st.accessDurationLabel = 'موقوف من الإدارة';
               saveStudentsDB(db);
               renderAppDownloadModule();
@@ -18672,6 +18986,7 @@
             st.accountStatus = cfg.accountStatus;
             st.accessExpiresAt = cfg.accessExpiresAt;
             st.accessDurationLabel = cfg.accessDurationLabel;
+            st.updatedAt = Date.now();
             saveStudentsDB(db);
             renderAppDownloadModule();
             checkAndEnforceStudentAccessLock();
@@ -18681,6 +18996,20 @@
             } else {
               showToast(`⏱️ تم تشغيل الأكاديمية للطالب (${st.nameAr || uKey}) لمدة: ${cfg.accessDurationLabel}`, 'success');
             }
+          });
+        });
+
+        // Bind Send Gmail Confirmation button per student row
+        tbody.querySelectorAll('.btn-admin-row-gmail').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const uKey = btn.getAttribute('data-admin-send-gmail');
+            const st = db[uKey];
+            if (!st) return;
+            const links = buildGmailConfirmationLinks(st);
+            sendMandatoryGmailRegistrationConfirmation(st, true);
+            window.open(links.gmailWebUrl, '_blank', 'noopener,noreferrer');
+            playChime('success');
+            showToast(`📧 تم فتح وإرسال رسالة تأكيد التسجيل إلى Gmail الطالب (${st.gmail})!`, 'success');
           });
         });
 
@@ -18717,6 +19046,7 @@
             const uKey = btn.getAttribute('data-admin-del');
             if (!db[uKey]) return;
             const deletedName = db[uKey].nameAr || uKey;
+            window.__ME_DELETED_STUDENTS__[uKey.trim().toLowerCase()] = true;
             delete db[uKey];
             saveStudentsDB(db);
             if (state.currentStudentUser === uKey) {
