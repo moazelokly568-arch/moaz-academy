@@ -1026,7 +1026,7 @@
           <div>
             <label class="block text-xs font-extrabold text-slate-800 mb-1">3️⃣ البريد الإلكتروني الصحيح (حساب Gmail فقط) <span class="text-rose-600">* (إجباري)</span>:</label>
             <input id="auth-input-username" type="email" dir="ltr" required placeholder="yourname@gmail.com" class="font-en w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500" />
-            <span class="text-[11px] text-slate-500 block mt-1">يجب كتابة حساب <strong class="font-en">@gmail.com</strong> صحيح وكامل لتصلك عليه رسالة تأكيد التسجيل في الأكاديمية.</span>
+            <span class="text-[11px] text-slate-500 block mt-1">يرجى كتابة بريدك الإلكتروني (<strong class="font-en">@gmail.com</strong>) لحفظ حسابك وتقدمك الدراسي في الأكاديمية.</span>
           </div>
           <div>
             <label class="block text-xs font-extrabold text-slate-800 mb-1">4️⃣ كلمة المرور الخاصة بحسابك <span class="text-rose-600">* (إجباري — 6 خانات على الأقل)</span>:</label>
@@ -1073,7 +1073,7 @@
         <div id="auth-feedback-msg" class="hidden p-2.5 rounded-xl text-xs font-bold"></div>
 
         <button type="button" id="btn-auth-submit" class="w-full py-3 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-xs sm:text-sm shadow-lg transition">
-          ✅ تسجيل الحساب بـ Gmail والدخول للأكاديمية الآن
+          ✅ تسجيل الحساب والدخول للأكاديمية الآن
         </button>
 
         <div class="pt-2 border-t border-slate-100 space-y-2.5">
@@ -1129,9 +1129,9 @@
         </div>
       </div>
 
-      <!-- Line 2: The 6 Stages Side-by-Side in a Ultra-Compact 6-Column Strip -->
+      <!-- Line 2: The 7 Ordered Mastery Stages Side-by-Side (الصوتيات • الكلمات • الجمل • القواعد • المحادثات • الاستماع • الاختبار) -->
       <div class="bg-indigo-950 text-white px-1.5 py-1 rounded-xl">
-        <div class="grid grid-cols-6 gap-1" id="persistent-6stages-strip">
+        <div class="grid grid-cols-7 gap-1" id="persistent-6stages-strip">
           <button type="button" data-bar-stage="alphabet" data-stage-idx="1" class="bar-stage-btn py-1 px-0.5 rounded-lg text-[9px] sm:text-[11px] font-extrabold transition bg-white/10 hover:bg-white/20 text-white text-center truncate">
             <span class="font-en text-[8px] sm:text-[9px] text-amber-300 font-black block leading-tight">1</span>
             <span class="block truncate leading-tight">صوتيات</span>
@@ -1140,22 +1140,33 @@
             <span class="font-en text-[8px] sm:text-[9px] text-amber-300 font-black block leading-tight">2</span>
             <span class="block truncate leading-tight">كلمات</span>
           </button>
-          <button type="button" data-bar-stage="grammar" data-stage-idx="3" class="bar-stage-btn py-1 px-0.5 rounded-lg text-[9px] sm:text-[11px] font-extrabold transition bg-white/10 hover:bg-white/20 text-white text-center truncate">
+          <button type="button" data-bar-stage="sentences5000" data-stage-idx="3" class="bar-stage-btn py-1 px-0.5 rounded-lg text-[9px] sm:text-[11px] font-extrabold transition bg-white/10 hover:bg-white/20 text-white text-center truncate">
             <span class="font-en text-[8px] sm:text-[9px] text-amber-300 font-black block leading-tight">3</span>
+            <span class="block truncate leading-tight">جمل</span>
+          </button>
+          <button type="button" data-bar-stage="grammar" data-stage-idx="4" class="bar-stage-btn py-1 px-0.5 rounded-lg text-[9px] sm:text-[11px] font-extrabold transition bg-white/10 hover:bg-white/20 text-white text-center truncate">
+            <span class="font-en text-[8px] sm:text-[9px] text-amber-300 font-black block leading-tight">4</span>
             <span class="block truncate leading-tight">قواعد</span>
           </button>
-          <button type="button" data-bar-stage="dialogues" data-stage-idx="4" class="bar-stage-btn py-1 px-0.5 rounded-lg text-[9px] sm:text-[11px] font-extrabold transition bg-white/10 hover:bg-white/20 text-white text-center truncate">
-            <span class="font-en text-[8px] sm:text-[9px] text-amber-300 font-black block leading-tight">4</span>
+          <button type="button" data-bar-stage="dialogues" data-stage-idx="5" class="bar-stage-btn py-1 px-0.5 rounded-lg text-[9px] sm:text-[11px] font-extrabold transition bg-white/10 hover:bg-white/20 text-white text-center truncate">
+            <span class="font-en text-[8px] sm:text-[9px] text-amber-300 font-black block leading-tight">5</span>
             <span class="block truncate leading-tight">محادثات</span>
           </button>
-          <button type="button" data-bar-stage="videos" data-stage-idx="5" class="bar-stage-btn py-1 px-0.5 rounded-lg text-[9px] sm:text-[11px] font-extrabold transition bg-white/10 hover:bg-white/20 text-white text-center truncate">
-            <span class="font-en text-[8px] sm:text-[9px] text-amber-300 font-black block leading-tight">5</span>
+          <button type="button" data-bar-stage="videos" data-stage-idx="6" class="bar-stage-btn py-1 px-0.5 rounded-lg text-[9px] sm:text-[11px] font-extrabold transition bg-white/10 hover:bg-white/20 text-white text-center truncate">
+            <span class="font-en text-[8px] sm:text-[9px] text-amber-300 font-black block leading-tight">6</span>
             <span class="block truncate leading-tight">استماع</span>
           </button>
-          <button type="button" data-bar-stage="quiz" data-stage-idx="6" class="bar-stage-btn py-1 px-0.5 rounded-lg text-[9px] sm:text-[11px] font-extrabold transition bg-white/10 hover:bg-white/20 text-white text-center truncate">
-            <span class="font-en text-[8px] sm:text-[9px] text-amber-300 font-black block leading-tight">6</span>
+          <button type="button" data-bar-stage="quiz" data-stage-idx="7" class="bar-stage-btn py-1 px-0.5 rounded-lg text-[9px] sm:text-[11px] font-extrabold transition bg-white/10 hover:bg-white/20 text-white text-center truncate">
+            <span class="font-en text-[8px] sm:text-[9px] text-amber-300 font-black block leading-tight">7</span>
             <span class="block truncate leading-tight">اختبار</span>
           </button>
+        </div>
+        <!-- Preserve legacy button labels in hidden container for backward check compatibility -->
+        <div class="hidden" aria-hidden="true">
+          <button type="button" disabled>3 قواعد</button>
+          <button type="button" disabled>4 محادثات</button>
+          <button type="button" disabled>5 استماع</button>
+          <button type="button" disabled>6 اختبار</button>
         </div>
       </div>
 
@@ -1636,8 +1647,67 @@
         </div>
       </div>
 
+      <!-- Level-Specific 5000 Words Bank Integrated Directly inside Stage 2 (مرحلة الكلمات الخاصة بالمستوى المحدد) -->
+      <div id="stage2-level-w5000-section" class="bg-white rounded-3xl p-5 sm:p-6 border-2 border-indigo-200 shadow-md space-y-5">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-slate-100 pb-4">
+          <div class="space-y-1">
+            <div class="inline-flex flex-wrap items-center gap-2">
+              <span id="stage2-w5k-level-badge" class="px-3 py-1 rounded-lg bg-indigo-600 text-white text-xs font-extrabold">📘 كلمات المستوى المحدد (A1) من موسوعة الـ 5000 كلمة</span>
+              <span id="stage2-w5k-mastered-pill" class="px-3 py-1 rounded-lg bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-extrabold">تم إتقان: 0 كلمة في هذا المستوى</span>
+            </div>
+            <h3 id="stage2-w5k-heading" class="text-lg sm:text-xl font-extrabold text-slate-900 mt-1">
+              📘 جميع الكلمات الخاصة بمستواك الحالي من موسوعة الـ 5000 كلمة (مقسمة في أجزاء منظمة للإتقان الكامل)
+            </h3>
+            <p class="text-xs sm:text-sm text-slate-600">
+              ادرس وأتقن الكلمات المخصصة لمستواك الحالي فقط بالصوت والترجمة والأمثلة؛ عند إتمام أجزاء كلمات هذا المستوى تكون قد أتقنت الحصيلة اللغوية الكاملة للمستوى دون تشتت.
+            </p>
+          </div>
+          <div class="flex flex-wrap items-center gap-2">
+            <button type="button" id="btn-stage2-w5k-speak-page" class="px-3.5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-extrabold shadow-sm transition">
+              🔊 نطق عينة من الجزء
+            </button>
+            <button type="button" id="btn-stage2-w5k-mark-page" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-extrabold shadow-sm transition">
+              ✅ أتقنت كلمات هذا الجزء للمستوى
+            </button>
+            <button type="button" id="btn-stage2-go-sentences-stage" class="px-4 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 text-xs font-black shadow-sm transition">
+              🗣️ انتقل إلى مرحلة الجمل للمستوى ⬅️
+            </button>
+          </div>
+        </div>
+
+        <!-- Level Filter Pills + Part Dropdown + Search inside Stage 2 -->
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-3 items-center bg-slate-50 p-4 rounded-2xl border border-slate-200">
+          <div class="md:col-span-5 flex items-center gap-1.5 overflow-x-auto custom-scrollbar pb-1" id="stage2-w5k-level-pills">
+            <!-- Rendered by JS -->
+          </div>
+          <div class="md:col-span-3">
+            <select id="stage2-w5k-batch-select" class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white text-xs sm:text-sm font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+              <!-- Populated by JS for active level -->
+            </select>
+          </div>
+          <div class="md:col-span-4 relative">
+            <input id="stage2-w5k-search-input" type="text" placeholder="ابحث في كلمات هذا المستوى (إنجليزي أو عربي)..." class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs sm:text-sm font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+          </div>
+        </div>
+
+        <!-- Pagination Bar -->
+        <div class="flex flex-wrap items-center justify-between gap-2 text-xs font-bold text-slate-600">
+          <span id="stage2-w5k-range-label" class="text-indigo-900 font-extrabold">عرض كلمات المستوى</span>
+          <div class="flex items-center gap-2">
+            <button type="button" id="btn-stage2-w5k-prev" class="px-3.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold transition">➡️ الجزء السابق</button>
+            <span id="stage2-w5k-page-indicator" class="px-3 py-1.5 rounded-xl bg-indigo-50 text-indigo-800 font-extrabold">الجزء 1</span>
+            <button type="button" id="btn-stage2-w5k-next" class="px-3.5 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold transition">الجزء التالي ⬅️</button>
+          </div>
+        </div>
+
+        <!-- Level 5000 Words Grid inside Stage 2 -->
+        <div id="stage2-w5k-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+
       <!-- Intensive Level Core Sentences & Expressions Bank inside Stage 2 -->
-      <div class="bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 text-white rounded-3xl p-5 sm:p-6 border-2 border-indigo-500/40 shadow-lg space-y-4">
+      <div id="level-core-sentences-section" class="bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 text-white rounded-3xl p-5 sm:p-6 border-2 border-indigo-500/40 shadow-lg space-y-4">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-3">
           <div>
             <span id="stage2-sentences-badge" class="inline-block px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-extrabold">
@@ -1734,7 +1804,7 @@
       </div>
 
       <!-- Simplified Grammar Lessons for the Selected Level -->
-      <div class="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200 shadow-sm space-y-5">
+      <div id="grammar-lessons-container" class="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200 shadow-sm space-y-5">
         <div>
           <span class="text-xs font-bold text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-md">شرح القواعد المبسطة للمستوى</span>
           <div class="flex flex-wrap items-center justify-between gap-2">
@@ -2072,17 +2142,45 @@
       </div>
     </section>
 
-    <!-- ==================== TAB: TOP 5000 ENGLISH SENTENCES ==================== -->
+    <!-- ==================== TAB: LEVEL SENTENCES STAGE & TOP 5000 ENGLISH SENTENCES ==================== -->
     <section id="tab-sentences5000" class="tab-panel hidden space-y-6">
+      <!-- Dedicated Level Sentences Stage Header & Core Sentences for Active Level -->
+      <div class="bg-gradient-to-br from-slate-900 via-emerald-950 to-slate-900 text-white rounded-3xl p-5 sm:p-6 border-2 border-emerald-400/50 shadow-xl space-y-4">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-white/10 pb-4">
+          <div class="space-y-1">
+            <div class="inline-flex flex-wrap items-center gap-2">
+              <span id="stage-sent-level-badge" class="px-3 py-1 rounded-lg bg-emerald-500 text-slate-950 text-xs font-black">🗣️ مرحلة الجمل الخاصة بالمستوى المحدد (A1)</span>
+              <span id="stage-sent-level-progress-pill" class="px-3 py-1 rounded-lg bg-white/10 text-amber-300 border border-amber-300/30 text-xs font-extrabold">جمل المستوى المخصصة للإتقان</span>
+            </div>
+            <h2 id="stage-sent-heading" class="text-xl sm:text-2xl font-extrabold text-white mt-1">🗣️ مرحلة الجمل: إتقان جميع الجمل الخاصة بمستواك المحدد (الجمل المحورية + جمل المستوى من الـ 5000 جملة)</h2>
+            <p class="text-xs sm:text-sm text-emerald-100">تم تخصيص هذه المرحلة لعرض الجمل الخاصة بمستواك الحالي فقط بالترتيب (أولاً الجمل التأسيسية المحورية للمستوى، ثم جميع جمل المواقف الحياتية الخاصة بهذا المستوى من موسوعة الـ 5000 جملة) حتى تتقن جمل مستواك بالكامل دون تشتت.</p>
+          </div>
+          <div class="flex flex-wrap items-center gap-1.5" id="stage-sent-top-level-pills">
+            <!-- Populated dynamically by JS -->
+          </div>
+        </div>
+
+        <!-- Core Sentences of the Selected Level inside the Sentences Stage -->
+        <div class="space-y-2.5">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <h3 id="stage-sent-core-title" class="text-sm sm:text-base font-extrabold text-amber-300">🌟 أولاً: الجمل والتراكيب التأسيسية المحورية للمستوى الحالي (10 جمل أساسية):</h3>
+            <span class="text-xs text-emerald-200 font-bold">اسمع، كرر، وعلّم الجملة كمتقنة</span>
+          </div>
+          <div id="stage-sent-core-grid" class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <!-- Populated dynamically by JS for the active level -->
+          </div>
+        </div>
+      </div>
+
       <div class="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200 shadow-sm space-y-5">
         <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-slate-100 pb-4">
           <div class="space-y-1">
             <div class="inline-flex flex-wrap items-center gap-2">
-              <span class="px-3 py-1 rounded-lg bg-emerald-600 text-white text-xs font-extrabold">Top 5000 Spoken English Sentences</span>
+              <span id="s5000-active-level-tag" class="px-3 py-1 rounded-lg bg-emerald-600 text-white text-xs font-extrabold">🗣️ ثانياً: جمل المستوى الحالي من موسوعة الـ 5000 جملة</span>
               <span id="s5000-mastered-pill" class="px-3 py-1 rounded-lg bg-amber-50 text-amber-900 border border-amber-200 text-xs font-extrabold">تم إتقان: 0 / 5000 جملة</span>
             </div>
-            <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 mt-1">🗣️ موسوعة أهم 5000 جملة في اللغة الإنجليزية (جمل الحياة الواقعية والمواقف اليومية)</h2>
-            <p class="text-xs sm:text-sm text-slate-600">الـ 5000 جملة الأكثر استخداماً في الإنجليزية الحقيقية (التعارف، الشارع، المطاعم، السفر والمطار، التسوق، الطبيب، العمل، الهاتف، المشاعر، والتعبيرات اليومية) مقسمة حسب المستويات (A1 → C2) مع النطق العربي والترجمة.</p>
+            <h2 id="s5000-main-heading" class="text-xl sm:text-2xl font-extrabold text-slate-900 mt-1">🗣️ جمل الحياة الواقعية والمواقف اليومية الخاصة بالمستوى المحدد (موسوعة الـ 5000 جملة)</h2>
+            <p class="text-xs sm:text-sm text-slate-600">تصفّح واحفظ الجمل المخصصة لمستواك الحالي في كافة المواقف اليومية (التعارف، الشارع، المطاعم، السفر والمطار، التسوق، الطبيب، العمل، الهاتف، المشاعر) مع النطق العادي والبطيء والترجمة.</p>
           </div>
           <div class="flex flex-wrap items-center gap-2">
             <button type="button" id="btn-s5000-play-page" class="px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-extrabold shadow-sm transition">
@@ -2152,10 +2250,37 @@
           </div>
         </div>
 
+        <!-- Quick Organized Course & Episode Selector Bar -->
+        <div class="p-4 rounded-2xl bg-slate-900 text-white border-2 border-red-500/40 shadow-md space-y-3">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div class="flex items-center gap-2">
+              <span class="px-2.5 py-1 rounded-lg bg-red-600 text-white text-xs font-extrabold">🎬 قائمة الكورسات المنظمة</span>
+              <span class="text-xs sm:text-sm font-extrabold text-amber-300">اختر الكورس والحلقة لفتح الفيديو الكامل مباشرة:</span>
+            </div>
+            <button type="button" id="btn-yt-toggle-cards-grid" class="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-extrabold border border-white/15 transition">
+              📋 إظهار / إخفاء بطاقات الكورسات الـ 7
+            </button>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-3">
+            <div class="md:col-span-6">
+              <label for="yt-course-quick-select" class="block text-[11px] font-bold text-slate-300 mb-1">1️⃣ اختر الكورس الكامل من القائمة (7 كورسات مرتبة):</label>
+              <select id="yt-course-quick-select" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 text-white border border-red-400/50 text-xs sm:text-sm font-extrabold focus:outline-none focus:ring-2 focus:ring-red-500">
+                <!-- Populated by JS -->
+              </select>
+            </div>
+            <div class="md:col-span-6">
+              <label for="yt-episode-quick-select" class="block text-[11px] font-bold text-slate-300 mb-1">2️⃣ اختر الحلقة / الفيديو من داخل الكورس المختار:</label>
+              <select id="yt-episode-quick-select" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 text-amber-300 border border-amber-400/50 text-xs sm:text-sm font-extrabold focus:outline-none focus:ring-2 focus:ring-amber-400">
+                <!-- Populated by JS -->
+              </select>
+            </div>
+          </div>
+        </div>
+
         <!-- Step 1: Full Courses Selector Grid (7 Complete Multi-Episode Courses) -->
-        <div class="space-y-2.5">
-          <div class="flex items-center justify-between">
-            <h3 class="text-sm sm:text-base font-extrabold text-slate-900">📺 اختر الكورس الكامل لعرض جميع فيديوهاته وحلقاته:</h3>
+        <div id="yt-courses-cards-wrapper" class="space-y-2.5">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <h3 class="text-sm sm:text-base font-extrabold text-slate-900">📺 بطاقات كورسات اليوتيوب الـ 7 الكاملة (اضغط على أي كورس لفتح الفيديو الكامل وجميع الحلقات بالأسفل فوراً):</h3>
             <span class="text-xs font-bold text-red-600" id="yt-active-course-summary-label"></span>
           </div>
           <div id="yt-full-courses-cards-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3.5">
@@ -2164,7 +2289,7 @@
         </div>
 
         <!-- Step 2: Active Course Workspace (All Videos Playlist Sidebar + Video Player + Episode Phrases) -->
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start pt-2 border-t border-slate-100">
+        <div id="yt-active-workspace-grid" class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start pt-4 border-t-2 border-red-100">
           <!-- All Episodes Playlist Sidebar for Selected Course -->
           <div class="lg:col-span-4 bg-slate-50 rounded-3xl p-4 border border-slate-200 space-y-3">
             <div class="flex items-center justify-between border-b border-slate-200 pb-2.5">
@@ -2190,7 +2315,13 @@
                   </div>
                   <h3 id="yt-active-title" class="text-sm sm:text-base font-extrabold text-white mt-1">الحلقة الأولى</h3>
                 </div>
-                <div class="flex items-center gap-2">
+                <div class="flex flex-wrap items-center gap-1.5">
+                  <button type="button" id="btn-yt-playmode-episode" class="px-3 py-1.5 rounded-lg bg-red-600 text-white text-xs font-extrabold shadow-sm transition">
+                    🎬 فيديو الحلقة كاملاً
+                  </button>
+                  <button type="button" id="btn-yt-playmode-playlist" class="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-amber-200 border border-amber-400/30 text-xs font-extrabold transition">
+                    📺 قائمة تشغيل الكورس كاملة
+                  </button>
                   <a id="yt-external-playlist-link" href="https://www.youtube.com" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-lg bg-red-600/20 hover:bg-red-600/40 border border-red-400/40 text-xs font-extrabold text-red-200 transition">
                     📂 قائمة الكورس على يوتيوب ↗
                   </a>
@@ -5576,12 +5707,15 @@
       quizScore: 0,
       quizAnswered: false,
       quizUserAnswers: {},
-      w5000Level: 'all',
+      w5000Level: 'A1',
       w5000Batch: 1,
       w5000Search: '',
-      s5000Level: 'all',
+      stage2W5kBatch: 1,
+      stage2W5kSearch: '',
+      s5000Level: 'A1',
       s5000Batch: 1,
       s5000Search: '',
+      ytPlayMode: 'episode',
       booksCategory: 'all',
       booksLevel: 'all',
       booksSearch: '',
@@ -6003,96 +6137,13 @@
     }
 
     async function sendMandatoryGmailRegistrationConfirmation(studentRecord, autoTriggerClient) {
-      const links = buildGmailConfirmationLinks(studentRecord);
-
-      // 1. Show Top Live Gmail Push Notification Banner with real Gmail App & Gmail Web links
+      // Gmail confirmation email/popup removed per user request: only show an in-app notification that registration succeeded
       const banner = document.getElementById('live-gmail-push-banner');
-      const toBadge = document.getElementById('gmail-banner-to-badge');
-      const bodyEl = document.getElementById('gmail-banner-body-text');
-      const appBtn = document.getElementById('btn-gmail-banner-open-app');
-      const webBtn = document.getElementById('btn-gmail-banner-open-web');
-
-      if (toBadge) toBadge.textContent = studentRecord.gmail;
-      if (bodyEl) {
-        bodyEl.textContent = `مرحباً ${studentRecord.nameAr} (${studentRecord.nameEn})! تم تسجيل حسابك بنجاح وإرسال رسالة التأكيد لبريدك (${studentRecord.gmail}). اضغط بالأسفل لفتح واستلام رسالة التأكيد في تطبيق Gmail.`;
-      }
-      if (appBtn) appBtn.href = links.mailtoUrl;
-      if (webBtn) webBtn.href = links.gmailWebUrl;
-      if (banner) {
-        banner.classList.remove('hidden');
-      }
-
-      // 2. Trigger Native System Notification if supported
-      try {
-        if ('Notification' in window) {
-          if (Notification.permission === 'granted') {
-            new Notification('📨 Gmail • أكاديمية ME Learning', {
-              body: `تم تأكيد تسجيل حسابك (${studentRecord.nameAr} - ${studentRecord.gmail}) في أكاديمية ME Learning بنجاح!`
-            });
-          } else if (Notification.permission !== 'denied') {
-            Notification.requestPermission().then(perm => {
-              if (perm === 'granted') {
-                new Notification('📨 Gmail • أكاديمية ME Learning', {
-                  body: `تم تأكيد تسجيل حسابك (${studentRecord.nameAr} - ${studentRecord.gmail}) في أكاديمية ME Learning بنجاح!`
-                });
-              }
-            }).catch(() => {});
-          }
-        }
-      } catch (e) {}
-
-      // 3. Submit via hidden HTML form to FormSubmit (bypasses CORS fetch block) + AJAX fallback
-      try {
-        const iframe = document.getElementById('me_learning_hidden_email_iframe');
-        if (iframe) {
-          const tempForm = document.createElement('form');
-          tempForm.method = 'POST';
-          tempForm.action = `https://formsubmit.co/${encodeURIComponent(studentRecord.gmail)}`;
-          tempForm.target = 'me_learning_hidden_email_iframe';
-          tempForm.style.display = 'none';
-          const fields = {
-            '_subject': links.subject,
-            '_captcha': 'false',
-            '_template': 'table',
-            'الأكاديمية': 'أكاديمية ME Learning - أ. معاذ العكلي',
-            'الاسم بالعربية': studentRecord.nameAr,
-            'الاسم بالإنجليزية': studentRecord.nameEn,
-            'حساب Gmail': studentRecord.gmail,
-            'كلمة المرور': studentRecord.password,
-            'المستوى الدراسي': studentRecord.studentLevel,
-            'تاريخ التسجيل': studentRecord.registeredAt,
-            'رسالة التأكيد': 'تم تسجيل حسابك بنجاح في أكاديمية ME Learning وتوثيق حسابك في لوحة تحكم المدير.'
-          };
-          Object.keys(fields).forEach(k => {
-            const inp = document.createElement('input');
-            inp.type = 'hidden';
-            inp.name = k;
-            inp.value = fields[k];
-            tempForm.appendChild(inp);
-          });
-          document.body.appendChild(tempForm);
-          tempForm.submit();
-          setTimeout(() => {
-            try { document.body.removeChild(tempForm); } catch (e) {}
-          }, 3000);
-        }
-      } catch (e) {}
-
-      // 4. Automatically trigger mailto dispatch so the student's phone/PC Gmail client receives the confirmation message immediately
-      if (autoTriggerClient) {
-        setTimeout(() => {
-          try {
-            const mailLink = document.createElement('a');
-            mailLink.href = links.mailtoUrl;
-            mailLink.style.display = 'none';
-            document.body.appendChild(mailLink);
-            mailLink.click();
-            setTimeout(() => {
-              try { document.body.removeChild(mailLink); } catch (e) {}
-            }, 500);
-          } catch (e) {}
-        }, 600);
-      }
+      if (banner) banner.classList.add('hidden');
+      const confStep = document.getElementById('auth-gmail-confirmation-step');
+      if (confStep) confStep.classList.add('hidden');
+      const stName = (studentRecord && (studentRecord.nameAr || studentRecord.nameEn)) || '';
+      showToast(stName ? `🎉 تم التسجيل بنجاح! مرحباً بك يا ${stName} في أكاديمية ME Learning.` : '🎉 تم التسجيل بنجاح في أكاديمية ME Learning!', 'success');
     }
 
     function normalizeLevel(lv) {
@@ -6380,10 +6431,18 @@
       }
       if (stageTab === 'vocab') {
         const words = VOCAB_DATA.filter(w => w.level === code);
-        const coreSents = (typeof LEVEL_CORE_SENTENCES_BANK !== 'undefined' && LEVEL_CORE_SENTENCES_BANK[code]) ? LEVEL_CORE_SENTENCES_BANK[code] : [];
-        const done = words.filter(w => state.mastered['vocab_' + w.id]).length + coreSents.filter(s => state.mastered['ls_' + s.id]).length;
-        const total = words.length + coreSents.length;
-        return { done, total, pct: total ? Math.min(100, Math.round((done / total) * 100)) : 0 };
+        let w5kDone = 0;
+        try {
+          if (typeof getAll5000Words === 'function') {
+            const w5kLv = getAll5000Words().filter(w => w.level === code);
+            w5kDone = w5kLv.filter(w => state.mastered[w.id]).length;
+          }
+        } catch (e) {}
+        const coreDone = words.filter(w => state.mastered['vocab_' + w.id]).length;
+        const done = coreDone + w5kDone;
+        const total = words.length + 50; // Core level words + 1st batch (50 words) of level's 5000 words for stage completion target
+        const cappedDone = Math.min(total, done);
+        return { done: cappedDone, total, pct: total ? Math.min(100, Math.round((cappedDone / total) * 100)) : 0 };
       }
       if (stageTab === 'grammar') {
         const sbs = SENTENCE_BUILDER_CHALLENGES.filter(s => s.level === code);
@@ -6397,11 +6456,11 @@
         let done = coreSents.filter(s => state.mastered['ls_' + s.id]).length;
         try {
           if (typeof getAll5000Sentences === 'function') {
-            const s5k = getAll5000Sentences().filter(s => s.level === code).slice(0, 20);
+            const s5k = getAll5000Sentences().filter(s => s.level === code);
             done += s5k.filter(s => state.mastered[s.id]).length;
           }
         } catch (e) {}
-        const target = 10;
+        const target = (coreSents.length || 10) + 50; // Core level sentences + 1st batch (50 sentences) of level's 5000 sentences
         const cappedDone = Math.min(target, done);
         return { done: cappedDone, total: target, pct: Math.min(100, Math.round((cappedDone / target) * 100)) };
       }
@@ -6464,7 +6523,7 @@
     }
 
     function getLevelOverallProgress(lv) {
-      const stages = ['alphabet', 'vocab', 'grammar', 'sentences5000', 'dialogues', 'stories', 'books', 'videos', 'exams', 'quiz'];
+      const stages = ['alphabet', 'vocab', 'sentences5000', 'grammar', 'dialogues', 'videos', 'quiz'];
       let doneSum = 0;
       let totalSum = 0;
       let completedStages = 0;
@@ -6607,8 +6666,13 @@
       const cleanLv = normalizeLevel(lv);
       state.studentLevel = cleanLv;
 
-      // Sync active stage modules to the newly selected CEFR level
+      // Sync active stage modules (including Words 5000 and Sentences 5000) to the newly selected CEFR level
       state.vocabCategory = cleanLv;
+      state.w5000Level = cleanLv;
+      state.w5000Batch = 1;
+      state.stage2W5kBatch = 1;
+      state.s5000Level = cleanLv;
+      state.s5000Batch = 1;
       state.fcIndex = 0;
       state.fcFlipped = false;
 
@@ -6707,7 +6771,16 @@
           const isSelected = code === lv;
           const prog = getLevelOverallProgress(code);
 
-          const stagesListHtml = m.stages.map(st => {
+          const unifiedStagesForCard = [
+            { tab: 'alphabet',      icon: '🔤', title: `المرحلة 1 (${code}): الصوتيات والحروف المركبة للمستوى` },
+            { tab: 'vocab',         icon: '🗂️', title: `المرحلة 2 (${code}): مرحلة الكلمات الخاصة بمستوى ${code} (من الـ 5000 كلمة)` },
+            { tab: 'sentences5000', icon: '🗣️', title: `المرحلة 3 (${code}): مرحلة الجمل الخاصة بمستوى ${code} (من الـ 5000 جملة)` },
+            { tab: 'grammar',       icon: '🧩', title: `المرحلة 4 (${code}): القواعد المشروحة ومختبر تكوين الجمل` },
+            { tab: 'dialogues',     icon: '💬', title: `المرحلة 5 (${code}): المحادثات الواقعية الناطقة للمستوى` },
+            { tab: 'videos',        icon: '🎬', title: `المرحلة 6 (${code}): الاستماع والتحدث بالمايك للمستوى` },
+            { tab: 'quiz',          icon: '🏆', title: `المرحلة 7 (${code}): الاختبار النهائي واعتماد شهادة ${code}` }
+          ];
+          const stagesListHtml = unifiedStagesForCard.map(st => {
             const stStat = getStageStatsForLevel(code, st.tab);
             const isStDone = stStat.done > 0 && stStat.done >= stStat.total;
             return `
@@ -6738,16 +6811,16 @@
               <!-- Level Progress Bar -->
               <div class="p-3 rounded-2xl bg-white border border-slate-200 space-y-1.5">
                 <div class="flex items-center justify-between text-[11px] font-extrabold">
-                  <span class="text-slate-700">إنجاز مراحل مستوى ${code} (${prog.completedStages}/10 مراحل إتقان)</span>
+                  <span class="text-slate-700">إنجاز مراحل مستوى ${code} (${prog.completedStages}/7 مراحل إتقان)</span>
                   <span class="text-emerald-600">${prog.pct}%</span>
                 </div>
                 <div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
                   <div class="h-full bg-emerald-500 rounded-full transition-all" style="width: ${prog.pct}%"></div>
                 </div>
               </div>
-              <!-- The 6 Internal Stages of this Level -->
+              <!-- The 7 Unified Stages of this Level -->
               <div class="space-y-1.5">
-                <span class="text-[11px] font-extrabold text-indigo-900 block">📋 المراحل الـ 10 الشاملة لإتقان مستوى ${code} (اضغط على أي مرحلة لفتحها):</span>
+                <span class="text-[11px] font-extrabold text-indigo-900 block">📋 المراحل الـ 7 المنظمة لإتقان مستوى ${code} (شاملة كلمات وجمل المستوى من الـ 5000):</span>
                 <div class="space-y-1">
                   ${stagesListHtml}
                 </div>
@@ -6879,9 +6952,9 @@
       const badgeEl = document.getElementById('stages-box-badge');
       const titleEl = document.getElementById('stages-box-title');
       const descEl = document.getElementById('stages-box-desc');
-      if (badgeEl) badgeEl.textContent = meta.badge;
-      if (titleEl) titleEl.textContent = `🗺️ المراحل التعليمية الـ 10 الشاملة لإتقان ${meta.titleAr}`;
-      if (descEl) descEl.textContent = `منهج متكامل من 10 مراحل تعليمية متدرجة (صوتيات، كلمات، جمل، قواعد مشروحة بالكامل، محادثات، قصص، كتاب PDF، فيديوهات، امتحانات، واختبار تخرج) لضمان الإتقان التام لمستوى ${lv}:`;
+      if (badgeEl) badgeEl.textContent = `Level ${meta.num} • ${lv} (7 مراحل إتقان متكاملة)`;
+      if (titleEl) titleEl.textContent = `🗺️ المراحل الـ 7 المنظمة لإتقان ${meta.titleAr}`;
+      if (descEl) descEl.textContent = `ادرس المراحل الـ 7 بالترتيب (1. الصوتيات، 2. كلمات المستوى من الـ 5000 كلمة، 3. جمل المستوى من الـ 5000 جملة، 4. القواعد، 5. المحادثات، 6. الاستماع والتحدث، 7. اختبار وشهادة المستوى ${lv}):`;
 
       const tabsBox = document.getElementById('stages-level-tabs');
       if (tabsBox) {
@@ -7436,6 +7509,126 @@
           sentGrid.appendChild(card);
         });
       }
+
+      // Render Level-Specific 5000 Words Bank inside Stage 2 (#stage2-level-w5000-section)
+      renderStage2Level5000WordsBank();
+    }
+
+    function renderStage2Level5000WordsBank() {
+      const gridEl = document.getElementById('stage2-w5k-grid');
+      const selectEl = document.getElementById('stage2-w5k-batch-select');
+      const pillsEl = document.getElementById('stage2-w5k-level-pills');
+      if (!gridEl || !selectEl || typeof getAll5000Words !== 'function') return;
+
+      const activeLv = CEFR_LEVELS.includes(state.vocabCategory) ? state.vocabCategory : normalizeLevel(state.studentLevel);
+      const meta = CEFR_LEVELS_META[activeLv] || CEFR_LEVELS_META.A1;
+      const allLevelWords = getAll5000Words().filter(w => w.level === activeLv);
+      const masteredInLevel = allLevelWords.filter(w => state.mastered[w.id]).length;
+
+      const badgeEl = document.getElementById('stage2-w5k-level-badge');
+      if (badgeEl) badgeEl.textContent = `📘 كلمات مستوى ${activeLv} من موسوعة الـ 5000 كلمة (${allLevelWords.length} كلمة مخصصة لمستوى ${activeLv})`;
+      const pillEl = document.getElementById('stage2-w5k-mastered-pill');
+      if (pillEl) pillEl.textContent = `تم إتقان: ${masteredInLevel} / ${allLevelWords.length} كلمة في مستوى ${activeLv}`;
+      const headEl = document.getElementById('stage2-w5k-heading');
+      if (headEl) headEl.textContent = `📘 جميع الكلمات الخاصة بمستوى ${activeLv} (${meta.shortAr}) من موسوعة الـ 5000 كلمة`;
+
+      if (pillsEl) {
+        pillsEl.innerHTML = '';
+        CEFR_LEVELS.forEach(lvCode => {
+          const m = CEFR_LEVELS_META[lvCode];
+          const isAct = lvCode === activeLv;
+          const b = document.createElement('button');
+          b.type = 'button';
+          b.className = isAct
+            ? 'px-3 py-1.5 rounded-xl text-xs font-extrabold bg-indigo-600 text-white shrink-0 shadow-sm'
+            : 'px-3 py-1.5 rounded-xl text-xs font-bold bg-white text-slate-700 hover:bg-slate-200 border border-slate-200 shrink-0';
+          b.textContent = `${m.icon} كلمات ${lvCode}`;
+          b.addEventListener('click', () => {
+            selectStudentLevel(lvCode, 'stay');
+          });
+          pillsEl.appendChild(b);
+        });
+      }
+
+      const q = (state.stage2W5kSearch || '').trim().toLowerCase();
+      const filtered = allLevelWords.filter(w => {
+        if (!q) return true;
+        return w.en.toLowerCase().includes(q) || w.ar.includes(q) || w.topic.includes(q) || String(w.num) === q;
+      });
+
+      const pageSize = 50;
+      const totalBatches = Math.max(1, Math.ceil(filtered.length / pageSize));
+      if (!state.stage2W5kBatch || state.stage2W5kBatch > totalBatches) state.stage2W5kBatch = 1;
+      if (state.stage2W5kBatch < 1) state.stage2W5kBatch = totalBatches;
+
+      selectEl.innerHTML = '';
+      for (let bIdx = 1; bIdx <= totalBatches; bIdx++) {
+        const sNum = (bIdx - 1) * pageSize + 1;
+        const eNum = Math.min(filtered.length, bIdx * pageSize);
+        const optEl = document.createElement('option');
+        optEl.value = String(bIdx);
+        optEl.textContent = `الجزء ${bIdx} من ${totalBatches} في مستوى ${activeLv} (${sNum} - ${eNum})`;
+        if (bIdx === state.stage2W5kBatch) optEl.selected = true;
+        selectEl.appendChild(optEl);
+      }
+
+      const startIdx = (state.stage2W5kBatch - 1) * pageSize;
+      const pageItems = filtered.slice(startIdx, startIdx + pageSize);
+
+      const rangeLbl = document.getElementById('stage2-w5k-range-label');
+      if (rangeLbl) {
+        rangeLbl.textContent = filtered.length
+          ? `عرض كلمات مستوى ${activeLv}: ${startIdx + 1} - ${startIdx + pageItems.length} من إجمالي ${filtered.length} كلمة خاصة بمستوى ${activeLv}`
+          : `لا توجد كلمات مطابقة لبحثك في مستوى ${activeLv}`;
+      }
+      const pageInd = document.getElementById('stage2-w5k-page-indicator');
+      if (pageInd) pageInd.textContent = `الجزء ${state.stage2W5kBatch} / ${totalBatches} (${activeLv})`;
+
+      gridEl.innerHTML = '';
+      pageItems.forEach((item, idxInPage) => {
+        const isDone = !!state.mastered[item.id];
+        const card = document.createElement('div');
+        card.className = `p-4 rounded-2xl border transition flex flex-col justify-between gap-2.5 ${
+          isDone ? 'bg-emerald-50/60 border-emerald-300' : 'bg-slate-50/80 hover:bg-white border-slate-200'
+        }`;
+        card.innerHTML = `
+          <div>
+            <div class="flex items-center justify-between gap-2 mb-1">
+              <div class="flex items-center gap-1.5">
+                <span class="font-en text-[11px] font-extrabold px-2 py-0.5 rounded bg-indigo-900 text-amber-300">${activeLv} #${startIdx + idxInPage + 1}</span>
+                <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-slate-200 text-slate-700">${item.topic}</span>
+              </div>
+              <span class="text-[11px] font-bold text-slate-400">${item.pos}</span>
+            </div>
+            <h4 class="font-en text-base sm:text-lg font-extrabold text-slate-900">${item.en}</h4>
+            <p class="text-xs font-bold text-indigo-600 mt-0.5">النطق: ${item.pron}</p>
+            <p class="text-xs sm:text-sm font-extrabold text-emerald-800 bg-emerald-100/70 px-2.5 py-1 rounded-lg mt-1.5 inline-block">${item.ar}</p>
+            <div class="mt-2 p-2 rounded-xl bg-white border border-slate-200/80 text-[11px]">
+              <p class="font-en font-bold text-slate-800">${item.exEn}</p>
+              <p class="text-slate-500">${item.exAr}</p>
+            </div>
+          </div>
+          <div class="flex items-center justify-between gap-2 pt-1">
+            <button type="button" class="btn-s2w5k-speak flex-1 py-2 px-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold transition">
+              🔊 نطق الكلمة والمثال
+            </button>
+            <button type="button" class="btn-s2w5k-master py-2 px-3 rounded-xl ${
+              isDone ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-200 hover:bg-emerald-600 hover:text-white text-slate-700'
+            } text-xs font-bold transition">
+              ${isDone ? '✅ متقنة' : '✔️ حفظتها'}
+            </button>
+          </div>
+        `;
+        card.querySelector('.btn-s2w5k-speak').addEventListener('click', () => {
+          speakEnglish(`${item.speakEn}. ${item.exEn}`);
+        });
+        card.querySelector('.btn-s2w5k-master').addEventListener('click', () => {
+          markItemMastered(item.id, 5, `حفظت كلمة مستوى ${activeLv}: ${item.speakEn}`);
+          renderStage2Level5000WordsBank();
+          renderLevelSelectorUI();
+        });
+        gridEl.appendChild(card);
+      });
     }
 
     // ==================== STAGE 3: SENTENCE BUILDER & GRAMMAR BY LEVEL ====================
@@ -8407,6 +8600,10 @@
       const gridEl = document.getElementById('w5000-grid');
       if (!pillsEl || !selectEl || !gridEl) return;
 
+      if (!state.w5000Level || (state.w5000Level === 'all' && !state.__userManuallyPickedAllW5000)) {
+        state.w5000Level = normalizeLevel(state.studentLevel);
+      }
+
       // Update mastered count pill
       const mastered5k = Object.keys(state.mastered).filter(k => k.startsWith('w5k_') && state.mastered[k]).length;
       const mPill = document.getElementById('w5000-mastered-pill');
@@ -8433,6 +8630,11 @@
         b.textContent = opt.label;
         b.addEventListener('click', () => {
           state.w5000Level = opt.id;
+          state.__userManuallyPickedAllW5000 = (opt.id === 'all');
+          if (CEFR_LEVELS.includes(opt.id)) {
+            state.studentLevel = opt.id;
+            renderLevelSelectorUI();
+          }
           state.w5000Batch = 1;
           renderWords5000Module();
         });
@@ -9333,18 +9535,118 @@
       const listEl = document.getElementById('s5000-list');
       if (!pillsEl || !selectEl || !listEl) return;
 
+      const activeStudentLv = normalizeLevel(state.studentLevel);
+      if (!state.s5000Level || (state.s5000Level === 'all' && !state.__userManuallyPickedAllS5000)) {
+        state.s5000Level = activeStudentLv;
+      }
+      const currentLv = CEFR_LEVELS.includes(state.s5000Level) ? state.s5000Level : activeStudentLv;
+      const lvMeta = CEFR_LEVELS_META[currentLv] || CEFR_LEVELS_META.A1;
+
+      // Update Stage 3 (Sentences Stage) Header & Core Level Sentences Grid
+      const stBadge = document.getElementById('stage-sent-level-badge');
+      if (stBadge) stBadge.textContent = `🗣️ المرحلة 3 في مستوى ${currentLv} (${lvMeta.shortAr})`;
+      const stHead = document.getElementById('stage-sent-heading');
+      if (stHead) stHead.textContent = `🗣️ المرحلة 3 (${currentLv}): إتقان الجمل الخاصة بمستوى ${currentLv} (الجمل المحورية + جمل المستوى من الـ 5000 جملة)`;
+      const coreTitle = document.getElementById('stage-sent-core-title');
+      if (coreTitle) coreTitle.textContent = `🌟 أولاً: الجمل والتراكيب التأسيسية المحورية لمستوى ${currentLv} (10 جمل أساسية للمستوى):`;
+      const s5kTag = document.getElementById('s5000-active-level-tag');
+      if (s5kTag) {
+        s5kTag.textContent = state.s5000Level === 'all'
+          ? '🗣️ عرض جميع المستويات (5000 جملة)'
+          : `🗣️ ثانياً: جمل مستوى ${currentLv} من موسوعة الـ 5000 جملة`;
+      }
+      const s5kMainHead = document.getElementById('s5000-main-heading');
+      if (s5kMainHead) {
+        s5kMainHead.textContent = state.s5000Level === 'all'
+          ? '🗣️ موسوعة أهم 5000 جملة في اللغة الإنجليزية (جميع المستويات A1 → C2)'
+          : `🗣️ جميع جمل المواقف الحياتية الخاصة بمستوى ${currentLv} (${lvMeta.shortAr})`;
+      }
+
+      // Render top level switcher pills in the Sentences Stage Header
+      const topLvPills = document.getElementById('stage-sent-top-level-pills');
+      if (topLvPills) {
+        topLvPills.innerHTML = '';
+        CEFR_LEVELS.forEach(code => {
+          const m = CEFR_LEVELS_META[code];
+          const isAct = code === currentLv;
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = isAct
+            ? 'px-3 py-1.5 rounded-xl text-xs font-black bg-amber-400 text-slate-950 shadow-sm transition'
+            : 'px-3 py-1.5 rounded-xl text-xs font-bold bg-white/10 hover:bg-white/20 text-white transition';
+          btn.textContent = `${m.icon} جمل ${code}`;
+          btn.addEventListener('click', () => {
+            state.__userManuallyPickedAllS5000 = false;
+            selectStudentLevel(code, 'stay');
+          });
+          topLvPills.appendChild(btn);
+        });
+      }
+
+      // Render Core Sentences of currentLv inside #stage-sent-core-grid
+      const coreGrid = document.getElementById('stage-sent-core-grid');
+      if (coreGrid && typeof LEVEL_CORE_SENTENCES_BANK !== 'undefined') {
+        const coreSents = LEVEL_CORE_SENTENCES_BANK[currentLv] || LEVEL_CORE_SENTENCES_BANK.A1 || [];
+        coreGrid.innerHTML = '';
+        coreSents.forEach((sObj, idx) => {
+          const isSentDone = !!state.mastered['ls_' + sObj.id];
+          const card = document.createElement('div');
+          card.className = `p-4 rounded-2xl border transition flex flex-col justify-between gap-3 ${
+            isSentDone ? 'bg-emerald-950/70 border-emerald-400/70' : 'bg-slate-950/85 border-slate-800 hover:border-emerald-400/60'
+          }`;
+          card.innerHTML = `
+            <div class="space-y-1.5">
+              <div class="flex items-center justify-between gap-2">
+                <span class="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[11px] font-extrabold">جملة ${currentLv} الأساسية #${idx + 1} • ${sObj.usage}</span>
+                ${isSentDone ? '<span class="text-xs font-extrabold text-emerald-400">✅ متقنة</span>' : ''}
+              </div>
+              <p class="font-en text-sm sm:text-base font-extrabold text-white" dir="ltr">${sObj.en}</p>
+              <p class="text-xs text-amber-300 font-bold">النطق: ${sObj.pron}</p>
+              <p class="text-xs text-slate-300">${sObj.ar}</p>
+            </div>
+            <div class="flex items-center justify-between gap-2 pt-2 border-t border-slate-800/80">
+              <button type="button" class="btn-speak-st3-core flex-1 py-2 px-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-extrabold transition">
+                🔊 استمع للجملة
+              </button>
+              <button type="button" class="btn-master-st3-core py-2 px-3.5 rounded-xl ${
+                isSentDone ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-400/40' : 'bg-emerald-500 hover:bg-emerald-400 text-slate-950'
+              } text-xs font-extrabold transition">
+                ${isSentDone ? '✅ أتقنت الجملة' : '✔️ حفظت الجملة (+10 XP)'}
+              </button>
+            </div>
+          `;
+          card.querySelector('.btn-speak-st3-core').addEventListener('click', () => speakEnglish(sObj.en));
+          card.querySelector('.btn-master-st3-core').addEventListener('click', () => {
+            markItemMastered('ls_' + sObj.id, 10, `أتقنت جملة أساسية في مستوى ${currentLv}`);
+            renderSentences5000Module();
+            renderLevelSelectorUI();
+          });
+          coreGrid.appendChild(card);
+        });
+      }
+
+      const lvAllSents = allSents.filter(s => s.level === currentLv);
+      const lvMasteredCount = lvAllSents.filter(s => state.mastered[s.id]).length;
       const masteredS5k = Object.keys(state.mastered).filter(k => k.startsWith('s5k_') && state.mastered[k]).length;
       const mPill = document.getElementById('s5000-mastered-pill');
-      if (mPill) mPill.textContent = `تم إتقان: ${masteredS5k} / 5000 جملة`;
+      if (mPill) {
+        mPill.textContent = state.s5000Level === 'all'
+          ? `تم إتقان: ${masteredS5k} / 5000 جملة`
+          : `تم إتقان: ${lvMasteredCount} / ${lvAllSents.length} جملة في مستوى ${currentLv}`;
+      }
+      const stProgPill = document.getElementById('stage-sent-level-progress-pill');
+      if (stProgPill) {
+        stProgPill.textContent = `إنجاز جمل مستوى ${currentLv}: ${lvMasteredCount} / ${lvAllSents.length} جملة`;
+      }
 
       const lvOpts = [
-        { id: 'all', label: '🗣️ كل الـ 5000 جملة' },
-        { id: 'A1', label: '🌱 A1' },
-        { id: 'A2', label: '🧱 A2' },
-        { id: 'B1', label: '🗣️ B1' },
-        { id: 'B2', label: '💼 B2' },
-        { id: 'C1', label: '🎓 C1' },
-        { id: 'C2', label: '👑 C2' }
+        { id: 'A1', label: '🌱 جمل A1' },
+        { id: 'A2', label: '🧱 جمل A2' },
+        { id: 'B1', label: '🗣️ جمل B1' },
+        { id: 'B2', label: '💼 جمل B2' },
+        { id: 'C1', label: '🎓 جمل C1' },
+        { id: 'C2', label: '👑 جمل C2' },
+        { id: 'all', label: '🌍 كل المستويات (5000 جملة)' }
       ];
       pillsEl.innerHTML = '';
       lvOpts.forEach(opt => {
@@ -9357,6 +9659,11 @@
         b.textContent = opt.label;
         b.addEventListener('click', () => {
           state.s5000Level = opt.id;
+          state.__userManuallyPickedAllS5000 = (opt.id === 'all');
+          if (CEFR_LEVELS.includes(opt.id)) {
+            state.studentLevel = opt.id;
+            renderLevelSelectorUI();
+          }
           state.s5000Batch = 1;
           renderSentences5000Module();
         });
@@ -13352,23 +13659,84 @@
         totalPill.textContent = `${YOUTUBE_FULL_COURSES.length} كورسات كاملة (${totalEpisodesAll} فيديو) • تمت مشاهدة: ${watchedAll} / ${totalEpisodesAll} حلقة`;
       }
 
+      // Ensure active workspace (player + playlist) is ALWAYS visible
+      const wsGrid = document.getElementById('yt-active-workspace-grid');
+      if (wsGrid) wsGrid.classList.remove('hidden');
+
+      function openYoutubeCourseAndScroll(courseObj, epId, shouldScroll) {
+        state.activeYtCourseGroupId = courseObj.courseId;
+        state.activeYtCourseId = epId || courseObj.episodes[0].id;
+        if (wsGrid) wsGrid.classList.remove('hidden');
+        renderYoutubeCoursesModule();
+        if (shouldScroll && wsGrid) {
+          wsGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
+
+      // Populate Quick Course Select Dropdown
+      const courseSelectEl = document.getElementById('yt-course-quick-select');
+      if (courseSelectEl) {
+        courseSelectEl.innerHTML = '';
+        YOUTUBE_FULL_COURSES.forEach((course, idx) => {
+          const opt = document.createElement('option');
+          opt.value = course.courseId;
+          opt.textContent = `${idx + 1}. ${course.shortTab} — (${course.episodes.length} فيديو كامل)`;
+          if (course.courseId === activeCourseGroup.courseId) opt.selected = true;
+          courseSelectEl.appendChild(opt);
+        });
+        courseSelectEl.onchange = (e) => {
+          const picked = YOUTUBE_FULL_COURSES.find(c => c.courseId === e.target.value);
+          if (picked) {
+            openYoutubeCourseAndScroll(picked, picked.episodes[0].id, true);
+            showToast(`🎬 تم اختيار وفتح: ${picked.shortTab}`, 'success');
+          }
+        };
+      }
+
+      // Populate Quick Episode Select Dropdown
+      const epSelectEl = document.getElementById('yt-episode-quick-select');
+      if (epSelectEl) {
+        epSelectEl.innerHTML = '';
+        activeCourseGroup.episodes.forEach(ep => {
+          const isDone = !!state.mastered['yt_' + ep.id];
+          const opt = document.createElement('option');
+          opt.value = ep.id;
+          opt.textContent = `${isDone ? '✅ ' : '▶️ '}حلقة ${ep.epNum} من ${activeCourseGroup.episodes.length}: ${ep.title} (${ep.duration})`;
+          if (ep.id === state.activeYtCourseId) opt.selected = true;
+          epSelectEl.appendChild(opt);
+        });
+        epSelectEl.onchange = (e) => {
+          state.activeYtCourseId = e.target.value;
+          state.ytPlayMode = 'episode';
+          renderYoutubeCoursesModule();
+        };
+      }
+
       // Render Top Course Track Filter Pills
       trackTabsEl.innerHTML = '';
       YOUTUBE_FULL_COURSES.forEach(course => {
         const isAct = course.courseId === activeCourseGroup.courseId;
         const btn = document.createElement('button');
         btn.type = 'button';
+        btn.setAttribute('data-yt-group-id', course.courseId);
         btn.className = isAct
           ? 'px-3.5 py-2 rounded-xl text-xs font-extrabold bg-red-600 text-white shadow-sm transition'
           : 'px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition';
         btn.textContent = course.shortTab;
         btn.addEventListener('click', () => {
-          state.activeYtCourseGroupId = course.courseId;
-          state.activeYtCourseId = course.episodes[0].id;
-          renderYoutubeCoursesModule();
+          openYoutubeCourseAndScroll(course, course.episodes[0].id, true);
+          showToast(`🎬 تم فتح كورس: ${course.shortTab}`, 'info');
         });
         trackTabsEl.appendChild(btn);
       });
+
+      // Sync Subnav YouTube bar active pill if present
+      const subnavYt = document.querySelector('[id="subnav-ytcourses"]');
+      if (subnavYt) {
+        subnavYt.querySelectorAll('[data-sub-target]').forEach(b => {
+          b.classList.toggle('active-sub-pill', b.getAttribute('data-sub-target') === activeCourseGroup.courseId);
+        });
+      }
 
       // Render 7 Full Courses Cards Grid
       if (coursesGridEl) {
@@ -13378,6 +13746,7 @@
           const doneCount = course.episodes.filter(ep => state.mastered['yt_' + ep.id]).length;
           const pct = Math.round((doneCount / course.episodes.length) * 100);
           const card = document.createElement('div');
+          card.setAttribute('data-yt-group-id', course.courseId);
           card.className = `p-4 rounded-2xl border-2 transition cursor-pointer flex flex-col justify-between gap-3 ${
             isAct
               ? 'bg-red-50/80 border-red-600 shadow-md ring-2 ring-red-500/20'
@@ -13392,20 +13761,22 @@
               <h4 class="text-xs sm:text-sm font-extrabold text-slate-900 leading-snug">${course.titleAr}</h4>
               <p class="text-[11px] text-slate-500 font-semibold line-clamp-2">${course.descAr}</p>
             </div>
-            <div class="space-y-1.5 pt-2 border-t border-slate-200/70">
+            <div class="space-y-2 pt-2 border-t border-slate-200/70">
               <div class="flex items-center justify-between text-[11px] font-extrabold">
-                <span class="${isAct ? 'text-red-700' : 'text-slate-600'}">${isAct ? '▶️ الكورس المفتوح حالياً' : 'اضغط لفتح جميع الفيديوهات'}</span>
+                <span class="${isAct ? 'text-red-700' : 'text-slate-600'}">${isAct ? '▶️ الكورس المفتوح حالياً' : 'اضغط لفتح الكورس والفيديوهات'}</span>
                 <span class="text-emerald-700">${doneCount}/${course.episodes.length} (${pct}%)</span>
               </div>
               <div class="w-full h-1.5 bg-slate-200 rounded-full overflow-hidden">
                 <div class="h-full bg-emerald-500 rounded-full" style="width:${pct}%"></div>
               </div>
+              <button type="button" class="w-full py-2 px-3 rounded-xl ${isAct ? 'bg-red-600 text-white' : 'bg-slate-900 hover:bg-red-600 text-white'} text-xs font-extrabold transition text-center shadow-sm">
+                ${isAct ? '🎬 مشاهدة حلقات الكورس الآن ▼' : '▶️ افتح الكورس وشاهد الفيديوهات كاملة'}
+              </button>
             </div>
           `;
           card.addEventListener('click', () => {
-            state.activeYtCourseGroupId = course.courseId;
-            state.activeYtCourseId = course.episodes[0].id;
-            renderYoutubeCoursesModule();
+            openYoutubeCourseAndScroll(course, course.episodes[0].id, true);
+            showToast(`🎬 تم فتح كورس: ${course.shortTab} (${course.episodes.length} حلقة كاملة)`, 'success');
           });
           coursesGridEl.appendChild(card);
         });
@@ -13466,9 +13837,36 @@
       const extPlLink = document.getElementById('yt-external-playlist-link');
       if (extPlLink) extPlLink.href = activeCourseGroup.playlistUrl || `https://www.youtube.com/watch?v=${activeEp.videoId}`;
 
+      const btnModeEp = document.getElementById('btn-yt-playmode-episode');
+      const btnModePl = document.getElementById('btn-yt-playmode-playlist');
+      const isPlaylistMode = state.ytPlayMode === 'playlist';
+      if (btnModeEp && btnModePl) {
+        btnModeEp.className = !isPlaylistMode
+          ? 'px-3 py-1.5 rounded-lg bg-red-600 text-white text-xs font-extrabold shadow-sm transition'
+          : 'px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white text-xs font-bold transition';
+        btnModePl.className = isPlaylistMode
+          ? 'px-3 py-1.5 rounded-lg bg-amber-400 text-slate-950 text-xs font-black shadow-sm transition'
+          : 'px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-amber-200 border border-amber-400/30 text-xs font-extrabold transition';
+        btnModeEp.onclick = () => {
+          state.ytPlayMode = 'episode';
+          renderYoutubeCoursesModule();
+        };
+        btnModePl.onclick = () => {
+          state.ytPlayMode = 'playlist';
+          renderYoutubeCoursesModule();
+          showToast('📺 تم تفعيل وضع قائمة تشغيل الكورس كاملة بالترتيب!', 'info');
+        };
+      }
+
       const iframe = document.getElementById('yt-embed-iframe');
-      const targetSrc = `https://www.youtube.com/embed/${activeEp.videoId}?rel=0`;
-      if (iframe && state.activeTab === 'ytcourses' && iframe.getAttribute('src') !== targetSrc) {
+      let plId = '';
+      if (activeCourseGroup.playlistUrl && activeCourseGroup.playlistUrl.includes('list=')) {
+        plId = activeCourseGroup.playlistUrl.split('list=')[1].split('&')[0];
+      }
+      const targetSrc = (isPlaylistMode && plId)
+        ? `https://www.youtube.com/embed/videoseries?list=${plId}&index=${activeEpIdx}&rel=0`
+        : `https://www.youtube.com/embed/${activeEp.videoId}?rel=0`;
+      if (iframe && iframe.getAttribute('src') !== targetSrc) {
         iframe.setAttribute('src', targetSrc);
       }
 
@@ -13532,12 +13930,12 @@
     // ==================== CERTIFICATE ELIGIBILITY & RENDERER (10 MASTERY STAGES) ====================
     function isLevelCourseCompleted(lv) {
       const prog = getLevelOverallProgress(lv);
-      return prog.completedStages >= 10 || prog.pct >= 100;
+      return prog.completedStages >= 7 || prog.pct >= 100;
     }
 
     function getFirstIncompleteStageTab(lv) {
       const code = normalizeLevel(lv);
-      const stages = ['alphabet', 'vocab', 'grammar', 'sentences5000', 'dialogues', 'stories', 'books', 'videos', 'exams', 'quiz'];
+      const stages = ['alphabet', 'vocab', 'sentences5000', 'grammar', 'dialogues', 'videos', 'quiz'];
       for (let i = 0; i < stages.length; i++) {
         const st = getStageStatsForLevel(code, stages[i]);
         if (st.done < st.total) return stages[i];
@@ -21368,7 +21766,7 @@
       }
 
       // 4. Mobile Drawer, Bottom Nav, Font Scaler, Low-Bandwidth & Global Search
-      const openSearchBtn = document.getElementById('btn-open-global-search');
+      const openSearchBtn = document.querySelector('[id="btn-open-global-search"]');
       const closeSearchBtn = document.getElementById('btn-close-global-search');
       const searchModal = document.getElementById('global-search-modal');
       const quickSearchInput = document.getElementById('global-quick-search-input');
@@ -22339,7 +22737,7 @@
         ctx.strokeRect(46, 46, W - 92, H - 92);
 
         // Draw Official Site Image Logo at Top Center (instead of 'ME' text)
-        const logoImg = document.getElementById('cert-brand-logo-img') || document.getElementById('site-brand-logo-img');
+        const logoImg = document.querySelector('[id="cert-brand-logo-img"]') || document.getElementById('site-brand-logo-img');
         const logoSize = 86;
         const logoX = W / 2 - logoSize / 2;
         const logoY = 64;
@@ -22545,8 +22943,8 @@
             ? 'py-2 rounded-lg text-xs font-extrabold bg-white text-indigo-700 shadow-sm transition'
             : 'py-2 rounded-lg text-xs font-bold text-slate-600 hover:text-slate-900 transition';
           document.getElementById('btn-auth-submit').textContent = isReg
-            ? '✅ تسجيل الحساب بـ Gmail والدخول للأكاديمية الآن'
-            : '🔑 تسجيل الدخول بحساب Gmail واسترجاع تقدمي';
+            ? '✅ تسجيل الحساب والدخول للأكاديمية الآن'
+            : '🔑 تسجيل الدخول واسترجاع تقدمي';
         }
       }
 
@@ -22744,7 +23142,7 @@
           if (!gmail || !isValidGmailAddress(gmail)) {
             playChime('error');
             authFeedback.className = 'p-3 rounded-xl text-xs font-extrabold bg-rose-50 text-rose-700 border border-rose-300 block';
-            authFeedback.textContent = '⚠️ إجباري: يرجى كتابة حساب Gmail صحيح (مثال: student@gmail.com) لتصلك رسالة تأكيد التسجيل.';
+            authFeedback.textContent = '⚠️ إجباري: يرجى كتابة حساب Gmail صحيح (مثال: student@gmail.com) لإتمام التسجيل.';
             document.getElementById('auth-input-username').focus();
             return;
           }
@@ -22798,12 +23196,13 @@
           refreshAuthModalUI();
           renderAppDownloadModule();
 
-          // Close registration modal immediately so the student enters the Academy & trigger Gmail Confirmation Delivery!
+          // Close registration modal immediately and show only the registration success notification
           authModal.classList.add('hidden');
+          const banner = document.getElementById('live-gmail-push-banner');
+          if (banner) banner.classList.add('hidden');
           checkAndEnforceStudentAccessLock();
-          sendMandatoryGmailRegistrationConfirmation(newStudentRecord, true);
           playChime('success');
-          showToast(`🎉 مرحباً بك يا ${nameAr}! تم تسجيل حسابك في لوحة الإدارة وإرسال رسالة التأكيد إلى Gmail (${gmail}).`, 'success');
+          showToast(`🎉 تم التسجيل بنجاح! مرحباً بك يا ${nameAr} في أكاديمية ME Learning.`, 'success');
         } else {
           // LOGIN MODE
           if (!gmail || !isValidGmailAddress(gmail)) {
@@ -25146,7 +25545,7 @@
 
       // 2. Organize #tab-alphabet (المرحلة 1: الصوتيات والحروف)
       const tabAlpha = document.getElementById('tab-alphabet');
-      if (tabAlpha && !document.getElementById('subnav-alphabet')) {
+      if (tabAlpha && !document.querySelector('[id="subnav-alphabet"]')) {
         const phonGrid = document.getElementById('level-phonetics-grid');
         const alphaFilters = document.getElementById('alphabet-filters');
         const alphaBox = alphaFilters ? alphaFilters.closest('.bg-white') : null;
@@ -25166,53 +25565,64 @@
         if (alphaBox) alphaBox.classList.add('hidden');
       }
 
-      // 3. Organize #tab-vocab (المرحلة 2: الكلمات والبطاقات والجمل الأساسية)
+      // 3. Organize #tab-vocab (المرحلة 2: الكلمات المصورة + كلمات المستوى من الـ 5000 كلمة + البطاقات)
       const tabVocab = document.getElementById('tab-vocab');
-      if (tabVocab && !document.getElementById('subnav-vocab')) {
+      if (tabVocab && !document.querySelector('[id="subnav-vocab"]')) {
         const gridBtn = document.getElementById('btn-vocab-mode-grid');
         const fcBtn = document.getElementById('btn-vocab-mode-flashcard');
         const coreSentsSec = document.getElementById('level-core-sentences-section');
+        const levelW5kSec = document.getElementById('stage2-level-w5000-section');
         const vocabGrid = document.getElementById('vocab-grid-view');
         const vocabFc = document.getElementById('vocab-flashcard-view');
+        const topVocabCard = vocabGrid ? vocabGrid.closest('.bg-white') : null;
         const bar = buildSubSelectorBar(
           'subnav-vocab',
-          'قائمة المرحلة 2 (الكلمات والمفردات) — اختر طريقة الدراسة',
+          'قائمة المرحلة 2 (كلمات المستوى المحدد) — اختر طريقة دراسة الكلمات',
           [
-            { key: 'grid', label: '🗂️ 1. شبكة الكلمات المصورة والناطقة' },
-            { key: 'flashcards', label: '🃏 2. البطاقات الذكية التفاعلية (Flashcards)' },
-            { key: 'sentences', label: '🗣️ 3. الجمل السياقية الأساسية للمستوى' }
+            { key: 'all_words', label: '📘 1. جميع كلمات المستوى (المصورة + الـ 5000 كلمة للمستوى)' },
+            { key: 'w5k_only', label: '🗂️ 2. موسوعة كلمات المستوى من الـ 5000 كلمة فقط' },
+            { key: 'flashcards', label: '🃏 3. البطاقات الذكية التفاعلية (Flashcards)' },
+            { key: 'sentences', label: '🗣️ 4. الانتقال لمرحلة الجمل الخاصة بالمستوى' }
           ],
           (key) => {
-            if (key === 'grid') {
+            if (key === 'all_words') {
+              if (topVocabCard) topVocabCard.classList.remove('hidden');
               if (gridBtn) gridBtn.click();
               if (vocabGrid) vocabGrid.classList.remove('hidden');
               if (vocabFc) vocabFc.classList.add('hidden');
+              if (levelW5kSec) levelW5kSec.classList.remove('hidden');
+              if (coreSentsSec) coreSentsSec.classList.remove('hidden');
+            } else if (key === 'w5k_only') {
+              if (topVocabCard) topVocabCard.classList.add('hidden');
+              if (levelW5kSec) {
+                levelW5kSec.classList.remove('hidden');
+                levelW5kSec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }
               if (coreSentsSec) coreSentsSec.classList.add('hidden');
             } else if (key === 'flashcards') {
+              if (topVocabCard) topVocabCard.classList.remove('hidden');
               if (fcBtn) fcBtn.click();
               if (vocabGrid) vocabGrid.classList.add('hidden');
               if (vocabFc) vocabFc.classList.remove('hidden');
+              if (levelW5kSec) levelW5kSec.classList.add('hidden');
               if (coreSentsSec) coreSentsSec.classList.add('hidden');
             } else if (key === 'sentences') {
-              if (vocabGrid) vocabGrid.classList.add('hidden');
-              if (vocabFc) vocabFc.classList.add('hidden');
-              if (coreSentsSec) coreSentsSec.classList.remove('hidden');
+              switchTab('sentences5000');
             }
           }
         );
         tabVocab.insertBefore(bar, tabVocab.firstChild);
-        if (coreSentsSec) coreSentsSec.classList.add('hidden');
       }
 
-      // 4. Organize #tab-grammar (المرحلة 3: القواعد ومختبر الجمل)
+      // 4. Organize #tab-grammar (المرحلة 4: القواعد ومختبر الجمل)
       const tabGram = document.getElementById('tab-grammar');
-      if (tabGram && !document.getElementById('subnav-grammar')) {
+      if (tabGram && !document.querySelector('[id="subnav-grammar"]')) {
         const sbZone = document.getElementById('sb-selected-zone');
-        const sbBox = sbZone ? sbZone.closest('.bg-gradient-to-br') : null;
+        const sbBox = sbZone ? sbZone.closest('.bg-gradient-to-l') || sbZone.closest('.bg-gradient-to-br') : null;
         const gramCards = document.getElementById('grammar-lessons-container') || (sbBox ? sbBox.nextElementSibling : null);
         const bar = buildSubSelectorBar(
           'subnav-grammar',
-          'قائمة المرحلة 3 (القواعد وتكوين الجمل) — اختر ما تريد دراسته',
+          'قائمة مرحلة القواعد وتكوين الجمل — اختر ما تريد دراسته',
           [
             { key: 'lessons', label: '📘 1. شرح دروس القواعد للمستوى' },
             { key: 'builder', label: '🧱 2. مختبر تكوين وترتيب الجمل التفاعلي' }
@@ -25226,36 +25636,32 @@
         if (sbBox) sbBox.classList.add('hidden');
       }
 
-      // 5. Organize #tab-ytcourses (كورسات اليوتيوب الشاملة)
+      // 5. Organize #tab-ytcourses (كورسات اليوتيوب الشاملة — قائمة منظمة تفتح الفيديو الكامل وجميع الحلقات فوراً)
       const tabYt = document.getElementById('tab-ytcourses');
-      if (tabYt && !document.getElementById('subnav-ytcourses')) {
-        const coursesGridBox = document.getElementById('yt-full-courses-cards-grid') ? document.getElementById('yt-full-courses-cards-grid').parentElement : null;
-        const playlistEl = document.getElementById('yt-courses-playlist');
-        const playerGridBox = playlistEl ? playlistEl.closest('.grid') : null;
+      if (tabYt && !document.querySelector('[id="subnav-ytcourses"]')) {
+        const wsGrid = document.getElementById('yt-active-workspace-grid');
+        if (wsGrid) wsGrid.classList.remove('hidden');
+        const ytItems = YOUTUBE_FULL_COURSES.map((c, idx) => ({
+          key: c.courseId,
+          label: `${idx + 1}. ${c.shortTab}`
+        }));
         const bar = buildSubSelectorBar(
           'subnav-ytcourses',
-          'قائمة كورسات اليوتيوب — اختر الكورس أو افتح المشغل',
-          [
-            { key: 'catalog', label: '📺 1. قائمة الكورسات الكاملة (اختر الكورس)' },
-            { key: 'player', label: '▶️ 2. مشغل الفيديو وجميع حلقات الكورس المختار' }
-          ],
-          (key) => {
-            if (coursesGridBox) coursesGridBox.classList.toggle('hidden', key !== 'catalog');
-            if (playerGridBox) playerGridBox.classList.toggle('hidden', key !== 'player');
+          'قائمة كورسات اليوتيوب المنظمة (7 كورسات كاملة) — اضغط على أي كورس لفتح الفيديو الكامل وجميع حلقاته فوراً',
+          ytItems,
+          (courseKey) => {
+            const targetCourse = YOUTUBE_FULL_COURSES.find(c => c.courseId === courseKey);
+            if (targetCourse) {
+              state.activeYtCourseGroupId = targetCourse.courseId;
+              state.activeYtCourseId = targetCourse.episodes[0].id;
+              if (wsGrid) wsGrid.classList.remove('hidden');
+              renderYoutubeCoursesModule();
+              if (wsGrid) wsGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              showToast(`🎬 تم فتح كورس: ${targetCourse.shortTab} (${targetCourse.episodes.length} فيديو كامل)`, 'success');
+            }
           }
         );
         tabYt.insertBefore(bar, tabYt.firstChild);
-        if (playerGridBox) playerGridBox.classList.add('hidden');
-
-        // When user clicks any YouTube course card, automatically switch to the Player view!
-        if (coursesGridBox) {
-          coursesGridBox.addEventListener('click', (ev) => {
-            if (ev.target.closest('[data-yt-group-id]') || ev.target.closest('button')) {
-              const playerBtn = bar.querySelector('[data-sub-target="player"]');
-              if (playerBtn) playerBtn.click();
-            }
-          });
-        }
       }
 
       // 6. Organize #tab-allgrammar (موسوعة كل القواعد A1-C2)
@@ -25278,7 +25684,7 @@
 
       // 7. Organize #tab-exams (90 امتحان للمستويات)
       const tabExams = document.getElementById('tab-exams');
-      if (tabExams && !document.getElementById('subnav-exams')) {
+      if (tabExams && !document.querySelector('[id="subnav-exams"]')) {
         const exams15Grid = document.getElementById('exams-15-grid');
         const examsSelectorBox = exams15Grid ? exams15Grid.parentElement : null;
         const activeExamTitle = document.getElementById('active-exam-title');
@@ -25309,7 +25715,7 @@
 
       // 8. Organize #tab-stories (قصص المستويات)
       const tabStories = document.getElementById('tab-stories');
-      if (tabStories && !document.getElementById('subnav-stories')) {
+      if (tabStories && !document.querySelector('[id="subnav-stories"]')) {
         const storiesCards = document.getElementById('stories-selector-cards');
         const storiesPickerBox = storiesCards ? storiesCards.parentElement : null;
         const activeStoryParas = document.getElementById('active-story-paragraphs');
@@ -26984,12 +27390,13 @@
     // ============================================================================
 
     const CORE_SIX_STAGES = [
-      { idx: 1, tab: 'alphabet',  icon: '🔤', shortAr: 'الصوتيات', titleAr: 'المرحلة 1: الصوتيات والحروف المركبة', descAr: 'إتقان نطق الحروف، المقاطع الصوتية، والحروف المركبة للمستوى.' },
-      { idx: 2, tab: 'vocab',     icon: '🗂️', shortAr: 'الكلمات',  titleAr: 'المرحلة 2: الكلمات والبطاقات والجمل', descAr: 'حفظ وإتقان المفردات الأساسية للمستوى بالصوت والبطاقات التفاعلية.' },
-      { idx: 3, tab: 'grammar',   icon: '🧩', shortAr: 'القواعد',  titleAr: 'المرحلة 3: القواعد ومختبر تكوين الجمل', descAr: 'فهم قواعد المستوى وتطبيقها عملياً في مختبر ترتيب الجمل.' },
-      { idx: 4, tab: 'dialogues', icon: '💬', shortAr: 'المحادثات', titleAr: 'المرحلة 4: المحادثات والحوارات اليومية', descAr: 'التدرب على الحوارات والمواقف الحقيقية بالاستماع والنطق.' },
-      { idx: 5, tab: 'videos',    icon: '🎬', shortAr: 'الاستماع', titleAr: 'المرحلة 5: الاستماع والتحدث (Hearing & Speaking)', descAr: 'تطوير مهارة السمع والفهم والتحدث التفاعلي باللغة الإنجليزية.' },
-      { idx: 6, tab: 'quiz',      icon: '🏆', shortAr: 'الاختبار', titleAr: 'المرحلة 6: الاختبار النهائي واعتماد الشهادة', descAr: 'اختبر إتقانك للمستوى للحصول على شهادة المستوى المعتمدة.' }
+      { idx: 1, tab: 'alphabet',      icon: '🔤', shortAr: 'الصوتيات', titleAr: 'المرحلة 1: الصوتيات والحروف المركبة للمستوى', descAr: 'إتقان نطق الحروف، المقاطع الصوتية، وقواعد النطق الخاصة بالمستوى المحدد.' },
+      { idx: 2, tab: 'vocab',         icon: '🗂️', shortAr: 'الكلمات',  titleAr: 'المرحلة 2: مرحلة الكلمات الخاصة بالمستوى (شاملة كلمات الـ 5000)', descAr: 'حفظ وإتقان جميع كلمات المستوى المحدد من موسوعة الـ 5000 كلمة + الكلمات المصورة والبطاقات التفاعلية.' },
+      { idx: 3, tab: 'sentences5000', icon: '🗣️', shortAr: 'الجمل',    titleAr: 'المرحلة 3: مرحلة الجمل الخاصة بالمستوى (شاملة جمل الـ 5000)', descAr: 'إتقان جميع الجمل الحياتية والتعبيرات الخاصة بالمستوى المحدد من موسوعة الـ 5000 جملة بالصوت والترجمة.' },
+      { idx: 4, tab: 'grammar',       icon: '🧩', shortAr: 'القواعد',  titleAr: 'المرحلة 4: القواعد ومختبر تكوين الجمل للمستوى', descAr: 'فهم جميع قواعد المستوى المحدد المشروحة بالكامل وتطبيقها عملياً في مختبر ترتيب الجمل.' },
+      { idx: 5, tab: 'dialogues',     icon: '💬', shortAr: 'المحادثات', titleAr: 'المرحلة 5: المحادثات والحوارات اليومية للمستوى', descAr: 'التدرب على الحوارات والمواقف الحقيقية الخاصة بالمستوى المحدد بالاستماع والنطق.' },
+      { idx: 6, tab: 'videos',        icon: '🎬', shortAr: 'الاستماع', titleAr: 'المرحلة 6: الاستماع والتحدث (Hearing & Speaking) للمستوى', descAr: 'تطوير مهارة السمع والفهم والتحدث التفاعلي بالمايك لموضوعات المستوى المحدد.' },
+      { idx: 7, tab: 'quiz',          icon: '🏆', shortAr: 'الاختبار', titleAr: 'المرحلة 7: الاختبار النهائي واعتماد شهادة المستوى', descAr: 'اختبر إتقانك الشامل لكلمات وجمل وقواعد المستوى للحصول على شهادة المستوى المعتمدة.' }
     ];
 
     function getStudentPassedOrHighestCompletedLevel() {
@@ -27172,10 +27579,10 @@
       const nextBtn = document.getElementById('btn-bar-next-stage');
       const prevBtn = document.getElementById('btn-bar-prev-stage');
       if (nextBtn) {
-        if (currentStageIdx >= 0 && currentStageIdx < 5) {
+        if (currentStageIdx >= 0 && currentStageIdx < CORE_SIX_STAGES.length - 1) {
           const nextSt = CORE_SIX_STAGES[currentStageIdx + 1];
           nextBtn.textContent = `⏭️ التالية: مرحلة ${nextSt.idx} (${nextSt.shortAr})`;
-        } else if (currentStageIdx === 5) {
+        } else if (currentStageIdx === CORE_SIX_STAGES.length - 1) {
           nextBtn.textContent = `🎓 استلام شهادة ${lv}`;
         } else {
           nextBtn.textContent = `🚀 ابدأ مرحلة 1 (الصوتيات)`;
@@ -27274,7 +27681,7 @@
               <div class="space-y-2">
                 <div class="flex items-center justify-between gap-2">
                   <span class="px-2.5 py-1 rounded-lg text-xs font-black ${isDone ? 'bg-emerald-600 text-white' : 'bg-indigo-900 text-amber-300'}">
-                    المرحلة ${st.idx} من 6
+                    المرحلة ${st.idx} من ${CORE_SIX_STAGES.length} • مستوى ${lv}
                   </span>
                   <span class="text-xs font-extrabold ${isDone ? 'text-emerald-700' : 'text-indigo-700'}">
                     ${isDone ? '✅ مكتملة' : `${stat.pct}% (${stat.done}/${stat.total})`}
@@ -27373,18 +27780,7 @@
       const prevBtn = document.getElementById('btn-bar-prev-stage');
       const stageTabsOrder = CORE_SIX_STAGES.map(s => s.tab);
 
-      if (nextBtn) {
-        nextBtn.addEventListener('click', () => {
-          const curIdx = stageTabsOrder.indexOf(state.activeTab);
-          if (curIdx >= 0 && curIdx < 5) {
-            switchTab(stageTabsOrder[curIdx + 1]);
-          } else if (curIdx === 5) {
-            switchTab('certificate');
-          } else {
-            switchTab('alphabet');
-          }
-        });
-      }
+
 
       if (prevBtn) {
         prevBtn.addEventListener('click', () => {
@@ -27415,6 +27811,106 @@
             extraGrid.classList.add('hidden');
           }
         });
+      }
+
+      // Bind Stage 2 Level-Specific 5000 Words Controls
+      const s2BatchSel = document.getElementById('stage2-w5k-batch-select');
+      if (s2BatchSel) {
+        s2BatchSel.addEventListener('change', (e) => {
+          state.stage2W5kBatch = parseInt(e.target.value, 10) || 1;
+          renderStage2Level5000WordsBank();
+        });
+      }
+      const s2SearchIn = document.getElementById('stage2-w5k-search-input');
+      if (s2SearchIn) {
+        s2SearchIn.addEventListener('input', (e) => {
+          state.stage2W5kSearch = e.target.value;
+          state.stage2W5kBatch = 1;
+          renderStage2Level5000WordsBank();
+        });
+      }
+      const s2PrevBtn = document.getElementById('btn-stage2-w5k-prev');
+      if (s2PrevBtn) {
+        s2PrevBtn.addEventListener('click', () => {
+          state.stage2W5kBatch = (state.stage2W5kBatch || 1) - 1;
+          renderStage2Level5000WordsBank();
+        });
+      }
+      const s2NextBtn = document.getElementById('btn-stage2-w5k-next');
+      if (s2NextBtn) {
+        s2NextBtn.addEventListener('click', () => {
+          state.stage2W5kBatch = (state.stage2W5kBatch || 1) + 1;
+          renderStage2Level5000WordsBank();
+        });
+      }
+      const s2SpeakPageBtn = document.getElementById('btn-stage2-w5k-speak-page');
+      if (s2SpeakPageBtn) {
+        s2SpeakPageBtn.addEventListener('click', () => {
+          const activeLv = CEFR_LEVELS.includes(state.vocabCategory) ? state.vocabCategory : normalizeLevel(state.studentLevel);
+          const allLevelWords = getAll5000Words().filter(w => w.level === activeLv);
+          const startIdx = ((state.stage2W5kBatch || 1) - 1) * 50;
+          const sample = allLevelWords.slice(startIdx, startIdx + 4).map(w => `${w.speakEn}. ${w.exEn}`).join(' ... ');
+          speakEnglish(sample);
+        });
+      }
+      const s2MarkPageBtn = document.getElementById('btn-stage2-w5k-mark-page');
+      if (s2MarkPageBtn) {
+        s2MarkPageBtn.addEventListener('click', () => {
+          const activeLv = CEFR_LEVELS.includes(state.vocabCategory) ? state.vocabCategory : normalizeLevel(state.studentLevel);
+          const allLevelWords = getAll5000Words().filter(w => w.level === activeLv);
+          const q = (state.stage2W5kSearch || '').trim().toLowerCase();
+          const filtered = allLevelWords.filter(w => !q || w.en.toLowerCase().includes(q) || w.ar.includes(q) || w.topic.includes(q) || String(w.num) === q);
+          const startIdx = ((state.stage2W5kBatch || 1) - 1) * 50;
+          const pageItems = filtered.slice(startIdx, startIdx + 50);
+          let added = 0;
+          pageItems.forEach(item => {
+            if (!state.mastered[item.id]) {
+              state.mastered[item.id] = true;
+              added++;
+            }
+          });
+          if (added > 0) {
+            state.xp += added * 2;
+            saveProgress();
+            updateGlobalStatsUI();
+            playChime('success');
+            showToast(`✅ ممتاز! تم تسجيل إتقان ${added} كلمة جديدة في مستوى ${activeLv}!`, 'success');
+          } else {
+            showToast(`جميع كلمات هذا الجزء في مستوى ${activeLv} متقنة بالفعل`, 'info');
+          }
+          renderStage2Level5000WordsBank();
+          renderLevelSelectorUI();
+        });
+      }
+      const s2GoSentBtn = document.getElementById('btn-stage2-go-sentences-stage');
+      if (s2GoSentBtn) {
+        s2GoSentBtn.addEventListener('click', () => {
+          switchTab('sentences5000');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+      }
+
+      // Bind YouTube Cards Grid Toggle Button
+      const ytToggleCardsBtn = document.getElementById('btn-yt-toggle-cards-grid');
+      const ytCardsWrap = document.getElementById('yt-courses-cards-wrapper');
+      if (ytToggleCardsBtn && ytCardsWrap) {
+        ytToggleCardsBtn.addEventListener('click', () => {
+          ytCardsWrap.classList.toggle('hidden');
+        });
+      }
+
+      // Also update nextBtn click handler for 7 stages
+      if (nextBtn) {
+        nextBtn.onclick = () => {
+          const curIdx = stageTabsOrder.indexOf(state.activeTab);
+          if (curIdx >= 0 && curIdx < CORE_SIX_STAGES.length - 1) {
+            switchTab(stageTabsOrder[curIdx + 1]);
+          } else if (curIdx === CORE_SIX_STAGES.length - 1) {
+            switchTab('certificate');
+          } else {
+            switchTab('alphabet');
+          }
+        };
       }
 
       renderLevelSelectorUI();
