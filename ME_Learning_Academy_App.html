@@ -345,10 +345,10 @@
 
       <!-- Left: Essential Compact Action Icons (Search, XP, Student Profile, Tools Dropdown, Mobile Menu) -->
       <div class="flex items-center gap-1.5 shrink-0">
-        <!-- Instant Global Search Trigger Button -->
-        <button id="btn-open-global-search" type="button" class="inline-flex items-center gap-1 px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-extrabold bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm transition" title="بحث سريع شامل في كل الدروس والكلمات والقواعد">
+        <!-- Instant Global Search Bar & Trigger Button -->
+        <button id="btn-open-global-search" type="button" class="inline-flex items-center gap-1.5 px-3 sm:px-3.5 py-1.5 rounded-xl text-xs font-extrabold bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm ring-2 ring-indigo-200 transition cursor-pointer" title="ابحث عن أي شيء داخل الأكاديمية (كلمات، قواعد، دروس، نطق أمريكي، فيديوهات، وظائف)">
           <span>🔍</span>
-          <span class="hidden sm:inline">بحث</span>
+          <span>ابحث في الأكاديمية...</span>
         </button>
 
         <!-- Compact XP Badge -->
@@ -2897,60 +2897,91 @@
   
     <!-- ==================== TAB: AMERICAN ACCENT 🇺🇸 (ALL LESSONS + YOUTUBE COURSE + INTERACTIVE EXERCISES) ==================== -->
     <section id="tab-americanaccent" class="tab-panel hidden space-y-6">
-      <!-- Top Hero & Navigation Bar for American Accent -->
-      <div class="rounded-3xl p-6 md:p-8 bg-gradient-to-br from-slate-950 via-blue-950 to-indigo-950 text-white border-2 border-blue-500/40 shadow-2xl space-y-6">
-        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-5 border-b border-white/10 pb-5">
-          <div class="space-y-2 max-w-3xl">
-            <div class="inline-flex flex-wrap items-center gap-2">
-              <span class="px-3 py-1 rounded-full bg-red-600 text-white text-xs font-black shadow">🇺🇸 الموسوعة الشاملة للـ American Accent</span>
-              <span id="aa-mastery-progress-badge" class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 text-xs font-extrabold">تم إتقان: 0 / 24 درساً • 0 تدريب</span>
-              <span class="px-3 py-1 rounded-full bg-blue-500/20 text-blue-200 border border-blue-400/30 text-xs font-extrabold">24 درساً كاملاً + 20 فيديو يوتيوب + 78 تدريباً تفاعلياً</span>
+      <!-- Top Organized Hub & Separate Section Selector for American Accent (Mobile-First) -->
+      <div class="rounded-3xl p-4 sm:p-6 bg-gradient-to-br from-slate-950 via-blue-950 to-indigo-950 text-white border-2 border-blue-500/40 shadow-xl space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-3.5">
+          <div class="space-y-1">
+            <div class="inline-flex flex-wrap items-center gap-1.5">
+              <span class="px-2.5 py-0.5 rounded-full bg-red-600 text-white text-[11px] font-black">🇺🇸 قسم American Accent المنظم</span>
+              <span id="aa-mastery-progress-badge" class="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 text-[11px] font-extrabold">تم إتقان: 0 / 24 درساً</span>
             </div>
-            <h2 class="text-2xl sm:text-3xl md:text-4xl font-black text-white leading-tight">
-              قائمة <span class="text-amber-300 font-en">American Accent 🇺🇸</span> — كل دروس النطق الأمريكي، الكورس الكامل، والتدريبات العملية
+            <h2 class="text-lg sm:text-2xl font-black text-white leading-snug">
+              قائمة <span class="text-amber-300 font-en">American Accent 🇺🇸</span> — اختر القسم الذي تريد فتحه الآن
             </h2>
-            <p class="text-xs sm:text-sm text-blue-100 leading-relaxed">
-              تعلّم كيف تتحدث الإنجليزية بطلاقة كأهلها في أمريكا وتفهم الأفلام والمحادثات السريعة بسهولة: شرح تفصيلي لجميع قواعد <strong>Flap T, Stop T, Glottal T, Dropped T, Schwa /ə/, American R, Dark L, Linking, Assimilation, Reductions (Wanna/Gonna/Gotta/Whatcha/Didja), Intonation & Stress</strong> مع نطق صوتي فوري (عادي وبطيء)، كورس يوتيوب كامل بجميع حلقاته، وتدريبات تفاعلية شاملة.
-            </p>
+            <p class="text-xs text-blue-100">كل قسم مفصول ومرتب لوحده تماماً لتختار ما تريد دراسته بسهولة على الموبايل أو الكمبيوتر:</p>
           </div>
 
-          <div class="flex flex-col sm:flex-row lg:flex-col gap-2.5 shrink-0">
-            <button type="button" id="btn-aa-open-full-yt-tab" class="px-4 py-3 rounded-2xl bg-red-600 hover:bg-red-500 text-white font-black text-xs sm:text-sm shadow-lg transition flex items-center justify-center gap-2">
-              <span>▶️</span>
-              <span>فتح كورس American Accent في قسم كورسات اليوتيوب</span>
-            </button>
-            <button type="button" id="btn-aa-speak-welcome-demo" class="px-4 py-2.5 rounded-2xl bg-white/10 hover:bg-white/20 text-amber-300 border border-amber-400/30 font-extrabold text-xs transition flex items-center justify-center gap-2">
+          <div class="flex items-center gap-2 shrink-0">
+            <button type="button" id="btn-aa-speak-welcome-demo" class="px-3 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-amber-300 border border-amber-400/30 font-extrabold text-xs transition flex items-center gap-1.5">
               <span>🔊</span>
-              <span>اسمع مثالاً للنطق الأمريكي المتصل (Connected Speech)</span>
+              <span>مثال صوتي</span>
+            </button>
+            <button type="button" id="btn-aa-open-full-yt-tab" class="hidden sm:inline-flex px-3 py-2 rounded-xl bg-red-600/80 hover:bg-red-600 text-white font-bold text-xs transition items-center gap-1.5">
+              <span>▶️</span>
+              <span>مكتبة اليوتيوب</span>
             </button>
           </div>
         </div>
 
-        <!-- Sub-Section Mode Switcher (All / Lessons / Exercises / YouTube Course) -->
-        <div class="flex flex-wrap items-center justify-between gap-3">
-          <div class="flex flex-wrap items-center gap-2" id="aa-view-mode-tabs">
-            <button type="button" data-aa-view="all" class="aa-view-btn px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-black bg-amber-400 text-slate-950 shadow-md transition">
-              🌟 عرض شامل (الدروس + التدريبات + كورس الفيديو)
-            </button>
-            <button type="button" data-aa-view="lessons" class="aa-view-btn px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-bold bg-white/10 hover:bg-white/20 text-white border border-white/15 transition">
-              📚 دروس American Accent الكاملة (24 درساً)
-            </button>
-            <button type="button" data-aa-view="exercises" class="aa-view-btn px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-bold bg-white/10 hover:bg-white/20 text-white border border-white/15 transition">
-              🎯 تدريبات وامتحانات American Accent (4 أنماط تفاعلية)
-            </button>
-            <button type="button" data-aa-view="videos" class="aa-view-btn px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-bold bg-white/10 hover:bg-white/20 text-white border border-white/15 transition">
-              🎬 كورس اليوتيوب الكامل (20 حلقة مرتبة)
-            </button>
-          </div>
+        <!-- 4 Organized Separate Section Cards (2x2 Grid on Mobile, 4 Columns on Desktop) -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3" id="aa-view-mode-tabs">
+          <button type="button" data-aa-view="lessons" class="aa-view-btn p-3 sm:p-4 rounded-2xl text-right transition flex flex-col justify-between gap-2 bg-amber-400 text-slate-950 shadow-lg ring-2 ring-amber-200">
+            <div class="flex items-center justify-between w-full">
+              <span class="text-xl sm:text-2xl">📚</span>
+              <span class="px-2 py-0.5 rounded-md bg-slate-950/15 text-[10px] font-black">24 درساً</span>
+            </div>
+            <div>
+              <div class="text-xs sm:text-sm font-black leading-tight">1. دروس النطق الأمريكي</div>
+              <div class="text-[10px] sm:text-[11px] opacity-80 font-bold mt-0.5">Flap T • R • Linking • الاختصارات</div>
+            </div>
+          </button>
 
-          <div class="w-full md:w-72">
-            <input id="aa-global-search-input" type="text" placeholder="🔍 ابحث في دروس وكلمات American Accent (مثل: Flap T, Wanna, Water)..." class="w-full px-4 py-2.5 rounded-xl bg-slate-900/90 border border-blue-400/40 text-xs text-white placeholder-slate-400 focus:border-amber-300 focus:outline-none">
+          <button type="button" data-aa-view="trainer" class="aa-view-btn p-3 sm:p-4 rounded-2xl text-right transition flex flex-col justify-between gap-2 bg-white/10 hover:bg-white/20 text-white border border-white/15">
+            <div class="flex items-center justify-between w-full">
+              <span class="text-xl sm:text-2xl">🎙️</span>
+              <span class="px-2 py-0.5 rounded-md bg-emerald-500/30 text-emerald-200 text-[10px] font-black">تسجيل وتقييم</span>
+            </div>
+            <div>
+              <div class="text-xs sm:text-sm font-black leading-tight">2. مدرب النطق الذكي</div>
+              <div class="text-[10px] sm:text-[11px] text-blue-200 font-bold mt-0.5">استمع ببطء + سجّل صوتك وقيّمه</div>
+            </div>
+          </button>
+
+          <button type="button" data-aa-view="exercises" class="aa-view-btn p-3 sm:p-4 rounded-2xl text-right transition flex flex-col justify-between gap-2 bg-white/10 hover:bg-white/20 text-white border border-white/15">
+            <div class="flex items-center justify-between w-full">
+              <span class="text-xl sm:text-2xl">🎯</span>
+              <span class="px-2 py-0.5 rounded-md bg-amber-500/30 text-amber-200 text-[10px] font-black">78 تمريناً</span>
+            </div>
+            <div>
+              <div class="text-xs sm:text-sm font-black leading-tight">3. التدريبات التفاعلية</div>
+              <div class="text-[10px] sm:text-[11px] text-blue-200 font-bold mt-0.5">اختبارات • فك شفرة السمع • تحويل</div>
+            </div>
+          </button>
+
+          <button type="button" data-aa-view="videos" class="aa-view-btn p-3 sm:p-4 rounded-2xl text-right transition flex flex-col justify-between gap-2 bg-white/10 hover:bg-white/20 text-white border border-white/15">
+            <div class="flex items-center justify-between w-full">
+              <span class="text-xl sm:text-2xl">🎬</span>
+              <span class="px-2 py-0.5 rounded-md bg-red-500/30 text-red-200 text-[10px] font-black">20 فيديو</span>
+            </div>
+            <div>
+              <div class="text-xs sm:text-sm font-black leading-tight">4. كورس اليوتيوب الكامل</div>
+              <div class="text-[10px] sm:text-[11px] text-blue-200 font-bold mt-0.5">جميع الحلقات مرتبة بالترتيب</div>
+            </div>
+          </button>
+        </div>
+
+        <!-- Quick Search inside American Accent + Optional Show All Button -->
+        <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2 pt-1">
+          <div class="flex-1">
+            <input id="aa-global-search-input" type="text" placeholder="🔍 ابحث داخل دروس وكلمات American Accent (مثل: Flap T, Wanna, Water)..." class="w-full px-3.5 py-2 rounded-xl bg-slate-900/90 border border-blue-400/40 text-xs text-white placeholder-slate-400 focus:border-amber-300 focus:outline-none">
           </div>
+          <button type="button" id="btn-aa-toggle-all-cards-grid" class="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-extrabold text-amber-300 border border-amber-400/30 shrink-0 transition">
+            🗂️ عرض/إخفاء فهرس الـ 24 درساً كبطاقات
+          </button>
         </div>
       </div>
 
-      
-      <!-- ==================== DEDICATED AMERICAN PRONUNCIATION TRAINER STUDIO (مدرب النطق الأمريكي الذكي) ==================== -->
+<!-- ==================== DEDICATED AMERICAN PRONUNCIATION TRAINER STUDIO (مدرب النطق الأمريكي الذكي) ==================== -->
       <div id="aa-pronunciation-trainer-studio" class="bg-gradient-to-br from-slate-900 via-indigo-950 to-blue-950 text-white rounded-3xl p-5 sm:p-7 border-2 border-emerald-400/50 shadow-2xl space-y-6">
         <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-white/10 pb-4">
           <div class="space-y-1.5">
@@ -3115,14 +3146,14 @@
               <select id="aa-lesson-select-dropdown" class="w-full px-4 py-2.5 rounded-xl bg-slate-950 border-2 border-blue-400 text-white text-xs sm:text-sm font-extrabold focus:outline-none"></select>
             </div>
           </div>
-          <div id="aa-lesson-pills-strip" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 max-h-56 overflow-y-auto custom-scrollbar p-1"></div>
+          <div id="aa-lesson-pills-strip" class="hidden sm:grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 max-h-44 overflow-y-auto custom-scrollbar p-1"></div>
         </div>
 
         <!-- Active Lesson Interactive Study Workspace -->
         <div id="aa-active-lesson-workspace" class="rounded-3xl border-2 border-indigo-200 bg-gradient-to-br from-slate-50 via-white to-blue-50/40 p-5 sm:p-6 shadow-sm space-y-6"></div>
 
         <!-- All Filtered Lessons Overview Cards Grid -->
-        <div class="pt-4 border-t border-slate-100 space-y-3">
+        <div id="aa-bottom-cards-overview-wrapper" class="hidden pt-4 border-t border-slate-100 space-y-3">
           <div class="flex flex-wrap items-center justify-between gap-2">
             <h4 class="text-base sm:text-lg font-black text-slate-900">🗂️ فهرس جميع دروس الـ American Accent (اضغط على أي درس لفتحه أو سماع أمثلته):</h4>
             <span class="text-xs font-bold text-blue-700">كل درس يحتوي على شرح المخرج الصوتي + كلمات + جمل + تدريب فوري</span>
@@ -3803,7 +3834,7 @@
 
 
   <!-- ==================== GLOBAL INSTANT SEARCH MODAL (بحث سريع شامل في كل الأكاديمية) ==================== -->
-  <div id="global-search-modal" class="fixed inset-0 z-[75] hidden bg-slate-950/80 backdrop-blur-sm flex items-start justify-center p-3 sm:p-6 pt-12 sm:pt-20 no-print">
+  <div id="global-search-modal" class="fixed inset-0 z-[95] hidden bg-slate-950/80 backdrop-blur-sm flex items-start justify-center p-3 sm:p-6 pt-12 sm:pt-20 no-print">
     <div class="bg-white rounded-3xl max-w-2xl w-full p-5 sm:p-6 border-2 border-indigo-500 shadow-2xl space-y-4">
       <div class="flex items-center justify-between gap-2 border-b border-slate-100 pb-3">
         <div class="flex items-center gap-2">
@@ -18410,7 +18441,7 @@
     ];
 
     const americanAccentState = {
-      viewMode: 'all', // 'all' | 'lessons' | 'exercises' | 'videos'
+      viewMode: 'lessons', // 'all' | 'lessons' | 'exercises' | 'videos'
       lessonCat: 'ALL',
       searchQuery: '',
       selectedLessonId: 'aa_l1',
@@ -18454,17 +18485,21 @@
       const secVideos = document.getElementById('aa-section-videos');
       if (!secLessons || !secExercises || !secVideos) return;
 
-      // 1. Update View Mode Visibility & Buttons
-      const vMode = americanAccentState.viewMode || 'all';
-      secLessons.classList.toggle('hidden', vMode !== 'all' && vMode !== 'lessons');
-      secExercises.classList.toggle('hidden', vMode !== 'all' && vMode !== 'exercises');
-      secVideos.classList.toggle('hidden', vMode !== 'all' && vMode !== 'videos');
+      // 1. Update View Mode Visibility & Buttons (Each section is strictly separate!)
+      const secTrainer = document.getElementById('aa-pronunciation-trainer-studio');
+      const validModes = ['lessons', 'trainer', 'exercises', 'videos', 'all'];
+      const vMode = validModes.includes(americanAccentState.viewMode) ? americanAccentState.viewMode : 'lessons';
+
+      secLessons.classList.toggle('hidden', vMode !== 'lessons' && vMode !== 'all');
+      if (secTrainer) secTrainer.classList.toggle('hidden', vMode !== 'trainer' && vMode !== 'all');
+      secExercises.classList.toggle('hidden', vMode !== 'exercises' && vMode !== 'all');
+      secVideos.classList.toggle('hidden', vMode !== 'videos' && vMode !== 'all');
 
       document.querySelectorAll('[data-aa-view]').forEach(btn => {
         const isAct = btn.getAttribute('data-aa-view') === vMode;
         btn.className = isAct
-          ? 'aa-view-btn px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-black bg-amber-400 text-slate-950 shadow-md transition'
-          : 'aa-view-btn px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-bold bg-white/10 hover:bg-white/20 text-white border border-white/15 transition';
+          ? 'aa-view-btn p-3 sm:p-4 rounded-2xl text-right transition flex flex-col justify-between gap-2 bg-amber-400 text-slate-950 shadow-lg ring-2 ring-amber-200'
+          : 'aa-view-btn p-3 sm:p-4 rounded-2xl text-right transition flex flex-col justify-between gap-2 bg-white/10 hover:bg-white/20 text-white border border-white/15';
       });
 
       // 2. Update Top Mastery Badge
@@ -19264,9 +19299,7 @@
               const matchedEp = courseObj.episodes.find(ep => ep.videoId === vId) || courseObj.episodes[0];
               americanAccentState.activeYtEpisodeId = matchedEp.id;
             }
-            if (americanAccentState.viewMode === 'lessons') {
-              americanAccentState.viewMode = 'all';
-            }
+            americanAccentState.viewMode = 'videos';
             renderAmericanAccentModule();
             const vidSec = document.getElementById('aa-section-videos');
             if (vidSec) vidSec.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -20293,20 +20326,43 @@
       });
     }
 
+    function safeTextMatch(val, q) {
+      if (!val || !q) return false;
+      return String(val).toLowerCase().includes(q);
+    }
+
+    function openGlobalSearchModal(initialQuery) {
+      const searchModal = document.getElementById('global-search-modal');
+      const quickSearchInput = document.getElementById('global-quick-search-input');
+      if (!searchModal) return;
+      searchModal.classList.remove('hidden');
+      if (quickSearchInput) {
+        if (typeof initialQuery === 'string') quickSearchInput.value = initialQuery;
+        runGlobalQuickSearch(quickSearchInput.value || '');
+        setTimeout(() => {
+          try { quickSearchInput.focus(); } catch (e) {}
+        }, 50);
+      }
+    }
+
     function runGlobalQuickSearch(query) {
       const container = document.getElementById('global-quick-search-results');
       if (!container) return;
       const q = (query || '').trim().toLowerCase();
       if (!q) {
         container.innerHTML = `
-          <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 text-xs text-slate-600 space-y-2">
-            <p class="font-extrabold text-slate-800">💡 اقتراحات بحث سريعة (اضغط للتجربة):</p>
+          <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 text-xs text-slate-700 space-y-3">
+            <p class="font-extrabold text-slate-900">💡 ابحث عن أي كلمة، قاعدة، درس American Accent، محادثة، وظيفة، كتاب، أو فيديو في الأكاديمية (اضغط للتجربة):</p>
             <div class="flex flex-wrap gap-1.5">
-              <button type="button" data-quick-search-term="Flap T" class="px-3 py-1.5 rounded-xl bg-white border border-slate-300 font-bold hover:border-indigo-500">🇺🇸 Flap T</button>
-              <button type="button" data-quick-search-term="Wanna" class="px-3 py-1.5 rounded-xl bg-white border border-slate-300 font-bold hover:border-indigo-500">🇺🇸 Wanna & Gonna</button>
-              <button type="button" data-quick-search-term="المضارع" class="px-3 py-1.5 rounded-xl bg-white border border-slate-300 font-bold hover:border-indigo-500">🧩 المضارع البسيط</button>
-              <button type="button" data-quick-search-term="مقابلة" class="px-3 py-1.5 rounded-xl bg-white border border-slate-300 font-bold hover:border-indigo-500">👔 مقابلة عمل</button>
-              <button type="button" data-quick-search-term="مساحة" class="px-3 py-1.5 rounded-xl bg-white border border-slate-300 font-bold hover:border-indigo-500">📐 هندسة المساحة</button>
+              <button type="button" data-quick-search-term="Flap T" class="px-3 py-1.5 rounded-xl bg-white border border-slate-300 font-extrabold hover:border-indigo-500">🇺🇸 Flap T</button>
+              <button type="button" data-quick-search-term="Wanna" class="px-3 py-1.5 rounded-xl bg-white border border-slate-300 font-extrabold hover:border-indigo-500">🇺🇸 Wanna & Gonna</button>
+              <button type="button" data-quick-search-term="Water" class="px-3 py-1.5 rounded-xl bg-white border border-slate-300 font-extrabold hover:border-indigo-500">🔊 كلمة Water</button>
+              <button type="button" data-quick-search-term="المضارع" class="px-3 py-1.5 rounded-xl bg-white border border-slate-300 font-extrabold hover:border-indigo-500">🧩 المضارع البسيط والتام</button>
+              <button type="button" data-quick-search-term="مقابلة" class="px-3 py-1.5 rounded-xl bg-white border border-slate-300 font-extrabold hover:border-indigo-500">👔 المقابلات الشخصية</button>
+              <button type="button" data-quick-search-term="مساحة" class="px-3 py-1.5 rounded-xl bg-white border border-slate-300 font-extrabold hover:border-indigo-500">📐 هندسة المساحة</button>
+              <button type="button" data-quick-search-term="قصة" class="px-3 py-1.5 rounded-xl bg-white border border-slate-300 font-extrabold hover:border-indigo-500">📖 قصص المستويات</button>
+              <button type="button" data-quick-search-term="كتاب" class="px-3 py-1.5 rounded-xl bg-white border border-slate-300 font-extrabold hover:border-indigo-500">📚 كتب PDF</button>
+              <button type="button" data-quick-search-term="امتحان" class="px-3 py-1.5 rounded-xl bg-white border border-slate-300 font-extrabold hover:border-indigo-500">📝 الامتحانات وتحديد المستوى</button>
             </div>
           </div>
         `;
@@ -20315,96 +20371,364 @@
 
       const results = [];
 
-      // 1. Search American Accent Lessons
-      if (typeof AMERICAN_ACCENT_LESSONS !== 'undefined') {
-        AMERICAN_ACCENT_LESSONS.forEach(l => {
-          if (l.titleAr.toLowerCase().includes(q) || l.titleEn.toLowerCase().includes(q) || l.summaryAr.toLowerCase().includes(q)) {
+      // 1. Search Main Academy Sections & Tabs
+      try {
+        Object.keys(TAB_TITLES_AR).forEach(tabKey => {
+          const titleAr = TAB_TITLES_AR[tabKey];
+          if (safeTextMatch(titleAr, q) || safeTextMatch(tabKey, q)) {
             results.push({
-              badge: '🇺🇸 American Accent',
-              title: `${l.titleAr} (${l.titleEn})`,
-              sub: l.summaryAr,
-              tab: 'americanaccent',
-              aaLessonId: l.id
+              badge: '🧭 قسم رئيسي في الأكاديمية',
+              title: titleAr,
+              sub: 'اضغط للانتقال مباشرة إلى هذا القسم',
+              tab: tabKey
             });
           }
         });
-      }
+      } catch (e) {}
 
-      // 2. Search Grammar Lessons
-      if (typeof GRAMMAR_LESSONS !== 'undefined') {
-        GRAMMAR_LESSONS.forEach(g => {
-          if ((g.title && g.title.toLowerCase().includes(q)) || (g.explanation && g.explanation.toLowerCase().includes(q))) {
-            results.push({
-              badge: `🧩 قواعد ${g.level}`,
-              title: g.title,
-              sub: g.explanation,
-              tab: 'grammar',
-              level: g.level
-            });
-          }
-        });
-      }
-
-      // 3. Search Vocabulary
-      if (typeof VOCAB_DATA !== 'undefined') {
-        VOCAB_DATA.forEach(v => {
-          if (v.en.toLowerCase().includes(q) || v.ar.toLowerCase().includes(q)) {
-            results.push({
-              badge: `🗂️ مفردات ${v.level}`,
-              title: `${v.en} — ${v.ar}`,
-              sub: v.exEn || '',
-              tab: 'vocab',
-              level: v.level,
-              speak: v.en
-            });
-          }
-        });
-      }
-
-      // 4. Search YouTube Courses
-      if (typeof YOUTUBE_FULL_COURSES !== 'undefined') {
-        YOUTUBE_FULL_COURSES.forEach(c => {
-          c.episodes.forEach(ep => {
-            if (ep.title.toLowerCase().includes(q) || ep.desc.toLowerCase().includes(q)) {
+      // 2. Search American Accent Lessons (Titles, Golden Rules, Mouth Tips, Words Table & Sentences)
+      try {
+        if (typeof AMERICAN_ACCENT_LESSONS !== 'undefined') {
+          AMERICAN_ACCENT_LESSONS.forEach(l => {
+            const matchedWord = (l.wordsTable || []).find(w => safeTextMatch(w.word, q) || safeTextMatch(w.american, q) || safeTextMatch(w.school, q));
+            const matchedSent = (l.sentences || []).find(s => safeTextMatch(s.en, q) || safeTextMatch(s.ar, q) || safeTextMatch(s.amPhon, q));
+            if (
+              safeTextMatch(l.titleAr, q) ||
+              safeTextMatch(l.titleEn, q) ||
+              safeTextMatch(l.goldenRuleAr, q) ||
+              safeTextMatch(l.mouthTipAr, q) ||
+              safeTextMatch(l.badge, q) ||
+              matchedWord ||
+              matchedSent
+            ) {
               results.push({
-                badge: '🎬 كورس يوتيوب',
-                title: ep.title,
-                sub: c.titleAr,
-                tab: 'ytcourses',
-                ytCourseId: c.courseId,
-                ytEpId: ep.id
+                badge: '🇺🇸 درس American Accent',
+                title: `${l.titleAr} (${l.titleEn})`,
+                sub: matchedWord ? `مثال من الدرس: ${matchedWord.word} ⬅️ ${matchedWord.american}` : (l.goldenRuleAr || ''),
+                tab: 'americanaccent',
+                aaView: 'lessons',
+                aaLessonId: l.id,
+                speak: matchedWord ? matchedWord.word : (l.sentences && l.sentences[0] ? l.sentences[0].en : '')
               });
             }
           });
-        });
-      }
+        }
+      } catch (e) {}
+
+      // 3. Search American Pronunciation Trainer Sentences
+      try {
+        if (typeof PRONUNCIATION_TRAINER_SENTENCES !== 'undefined') {
+          PRONUNCIATION_TRAINER_SENTENCES.forEach((pt, idx) => {
+            if (safeTextMatch(pt.en, q) || safeTextMatch(pt.ar, q) || safeTextMatch(pt.focus, q) || safeTextMatch(pt.amGuide, q)) {
+              results.push({
+                badge: '🎙️ مدرب النطق الأمريكي',
+                title: pt.en,
+                sub: `${pt.ar} • (${pt.amGuide})`,
+                tab: 'americanaccent',
+                aaView: 'trainer',
+                pronIdx: idx,
+                speak: pt.en
+              });
+            }
+          });
+        }
+      } catch (e) {}
+
+      // 4. Search Stage 1 Phonetics & Alphabet
+      try {
+        if (typeof LEVEL_PHONETICS_DATA !== 'undefined') {
+          LEVEL_PHONETICS_DATA.forEach(ph => {
+            if (safeTextMatch(ph.title, q) || safeTextMatch(ph.rule, q) || safeTextMatch(ph.exEn, q) || safeTextMatch(ph.exAr, q)) {
+              results.push({
+                badge: `🔤 صوتيات مستوى ${ph.level}`,
+                title: ph.title,
+                sub: `${ph.rule} — مثال: ${ph.exEn}`,
+                tab: 'alphabet',
+                level: ph.level,
+                speak: ph.exEn
+              });
+            }
+          });
+        }
+      } catch (e) {}
+
+      // 5. Search Grammar Lessons & Full Grammar Encyclopedia
+      try {
+        if (typeof GRAMMAR_LESSONS !== 'undefined') {
+          GRAMMAR_LESSONS.forEach(g => {
+            if (safeTextMatch(g.title, q) || safeTextMatch(g.explanation, q) || safeTextMatch(g.formula, q)) {
+              results.push({
+                badge: `🧩 قواعد مستوى ${g.level}`,
+                title: g.title,
+                sub: g.explanation,
+                tab: 'grammar',
+                level: g.level,
+                grammarId: g.id
+              });
+            }
+          });
+        }
+        if (typeof ALL_GRAMMAR_ENCYCLOPEDIA !== 'undefined') {
+          ALL_GRAMMAR_ENCYCLOPEDIA.forEach(ag => {
+            if (safeTextMatch(ag.titleAr, q) || safeTextMatch(ag.titleEn, q) || safeTextMatch(ag.explainAr, q) || safeTextMatch(ag.ruleFormula, q)) {
+              results.push({
+                badge: `⚖️ موسوعة القواعد (${ag.level})`,
+                title: `${ag.titleAr} — ${ag.titleEn || ''}`,
+                sub: ag.explainAr || ag.ruleFormula || '',
+                tab: 'allgrammar',
+                level: ag.level
+              });
+            }
+          });
+        }
+      } catch (e) {}
+
+      // 6. Search Core Vocabulary & 5000 Words Bank
+      try {
+        if (typeof VOCAB_DATA !== 'undefined') {
+          VOCAB_DATA.forEach(v => {
+            if (safeTextMatch(v.en, q) || safeTextMatch(v.ar, q) || safeTextMatch(v.pron, q) || safeTextMatch(v.exEn, q)) {
+              results.push({
+                badge: `🗂️ كلمات مستوى ${v.level}`,
+                title: `${v.en} — ${v.ar}`,
+                sub: `النطق: ${v.pron || ''} • مثال: ${v.exEn || ''}`,
+                tab: 'vocab',
+                level: v.level,
+                speak: v.en
+              });
+            }
+          });
+        }
+        if (typeof getAll5000Words === 'function' && results.length < 40) {
+          const w5k = getAll5000Words();
+          for (let i = 0; i < w5k.length && results.length < 45; i++) {
+            const w = w5k[i];
+            if (safeTextMatch(w.en, q) || safeTextMatch(w.ar, q) || safeTextMatch(w.pron, q)) {
+              results.push({
+                badge: `📘 موسوعة 5000 كلمة (${w.level})`,
+                title: `${w.en} — ${w.ar}`,
+                sub: `النطق: ${w.pron || ''} • ${w.exEn || ''}`,
+                tab: 'words5000',
+                level: w.level,
+                w5kQuery: w.en,
+                speak: w.en
+              });
+            }
+          }
+        }
+      } catch (e) {}
+
+      // 7. Search Daily Sentences & 5000 Sentences Bank
+      try {
+        if (typeof DAILY_SENTENCES !== 'undefined') {
+          DAILY_SENTENCES.forEach(ds => {
+            if (safeTextMatch(ds.en, q) || safeTextMatch(ds.ar, q) || safeTextMatch(ds.pron, q)) {
+              results.push({
+                badge: `📅 جمل التدريب اليومية (${ds.level || 'A1'})`,
+                title: ds.en,
+                sub: `${ds.ar} — النطق: ${ds.pron}`,
+                tab: 'roadmap',
+                speak: ds.en
+              });
+            }
+          });
+        }
+        if (typeof getAll5000Sentences === 'function' && results.length < 55) {
+          const s5k = getAll5000Sentences();
+          for (let i = 0; i < s5k.length && results.length < 60; i++) {
+            const s = s5k[i];
+            if (safeTextMatch(s.en, q) || safeTextMatch(s.ar, q) || safeTextMatch(s.pron, q)) {
+              results.push({
+                badge: `🗣️ موسوعة 5000 جملة (${s.level})`,
+                title: s.en,
+                sub: `${s.ar} (${s.pron || ''})`,
+                tab: 'sentences5000',
+                s5kQuery: s.en,
+                speak: s.en
+              });
+            }
+          }
+        }
+      } catch (e) {}
+
+      // 8. Search Dialogues & Job Interviews
+      try {
+        if (typeof DIALOGUE_SCENARIOS !== 'undefined') {
+          DIALOGUE_SCENARIOS.forEach(d => {
+            if (safeTextMatch(d.title, q) || (d.lines || []).some(l => safeTextMatch(l.en, q) || safeTextMatch(l.ar, q))) {
+              results.push({
+                badge: `💬 محادثات مستوى ${d.level}`,
+                title: d.title,
+                sub: d.lines && d.lines[0] ? `${d.lines[0].en} — ${d.lines[0].ar}` : '',
+                tab: 'dialogues',
+                level: d.level,
+                dialogueId: d.id
+              });
+            }
+          });
+        }
+        if (typeof getAll5000Dialogues === 'function') {
+          const dList = getAll5000Dialogues();
+          for (let i = 0; i < dList.length && results.length < 70; i++) {
+            const it = dList[i];
+            if (safeTextMatch(it.qEn, q) || safeTextMatch(it.qAr, q) || safeTextMatch(it.aEn, q) || safeTextMatch(it.aAr, q) || safeTextMatch(it.title, q)) {
+              results.push({
+                badge: '👔 المقابلات الشخصية (Job Interviews)',
+                title: it.qEn || it.title || '',
+                sub: `${it.qAr || ''} — ${it.aAr || ''}`,
+                tab: 'dialogues5000',
+                speak: it.qEn || ''
+              });
+            }
+          }
+        }
+      } catch (e) {}
+
+      // 9. Search Stories & PDF Books
+      try {
+        if (typeof LEVEL_STORIES_DATA !== 'undefined') {
+          Object.keys(LEVEL_STORIES_DATA).forEach(lvKey => {
+            (LEVEL_STORIES_DATA[lvKey] || []).forEach(st => {
+              if (safeTextMatch(st.titleEn, q) || safeTextMatch(st.titleAr, q) || safeTextMatch(st.moralAr, q)) {
+                results.push({
+                  badge: `📖 قصة تفاعلية (${lvKey})`,
+                  title: `${st.titleEn} — ${st.titleAr}`,
+                  sub: st.moralAr || '',
+                  tab: 'stories',
+                  level: lvKey
+                });
+              }
+            });
+          });
+        }
+        if (typeof ENGLISH_BOOKS_LIBRARY !== 'undefined') {
+          ENGLISH_BOOKS_LIBRARY.forEach(bk => {
+            if (safeTextMatch(bk.titleAr, q) || safeTextMatch(bk.titleEn, q) || safeTextMatch(bk.descAr, q) || safeTextMatch(bk.authorAr, q)) {
+              results.push({
+                badge: `📚 كتاب PDF (${bk.level})`,
+                title: bk.titleAr,
+                sub: bk.descAr || bk.titleEn || '',
+                tab: 'books',
+                bookId: bk.id
+              });
+            }
+          });
+        }
+      } catch (e) {}
+
+      // 10. Search Jobs & Geomatics / Surveying Engineering
+      try {
+        if (typeof ALL_JOBS_DATA !== 'undefined') {
+          ALL_JOBS_DATA.forEach(jb => {
+            if (safeTextMatch(jb.en, q) || safeTextMatch(jb.ar, q) || safeTextMatch(jb.duties, q)) {
+              results.push({
+                badge: '📐 الوظائف وهندسة المساحة',
+                title: `${jb.en} — ${jb.ar}`,
+                sub: jb.duties || '',
+                tab: 'jobs',
+                speak: jb.en
+              });
+            }
+          });
+        }
+      } catch (e) {}
+
+      // 11. Search YouTube Courses & Episodes
+      try {
+        if (typeof YOUTUBE_FULL_COURSES !== 'undefined') {
+          YOUTUBE_FULL_COURSES.forEach(c => {
+            if (safeTextMatch(c.titleAr, q) || safeTextMatch(c.descAr, q)) {
+              results.push({
+                badge: '🎬 كورس يوتيوب كامل',
+                title: c.titleAr,
+                sub: c.descAr,
+                tab: 'ytcourses',
+                ytCourseId: c.courseId,
+                ytEpId: c.episodes[0] ? c.episodes[0].id : ''
+              });
+            }
+            c.episodes.forEach(ep => {
+              if (safeTextMatch(ep.title, q) || safeTextMatch(ep.desc, q)) {
+                results.push({
+                  badge: '▶️ حلقة يوتيوب',
+                  title: ep.title,
+                  sub: c.titleAr,
+                  tab: 'ytcourses',
+                  ytCourseId: c.courseId,
+                  ytEpId: ep.id
+                });
+              }
+            });
+          });
+        }
+      } catch (e) {}
 
       if (results.length === 0) {
-        container.innerHTML = `<p class="p-4 text-center text-xs font-bold text-slate-500">لا توجد نتائج مطابقة لـ "${query}". جرب البحث بكلمة أبسط بالعربية أو الإنجليزية.</p>`;
+        container.innerHTML = `<p class="p-4 text-center text-xs font-bold text-slate-500">لا توجد نتائج مطابقة لـ "${query}". جرب البحث بكلمة أبسط بالعربية أو الإنجليزية (مثل: Water, مضارع, Flap T, محادثة).</p>`;
         return;
       }
 
-      container.innerHTML = results.slice(0, 25).map((r, i) => `
-        <div data-search-res-idx="${i}" class="p-3.5 rounded-2xl bg-slate-50 hover:bg-indigo-50 border border-slate-200 hover:border-indigo-400 cursor-pointer transition flex items-center justify-between gap-3">
-          <div class="space-y-0.5">
-            <span class="px-2 py-0.5 rounded bg-indigo-100 text-indigo-800 text-[10px] font-extrabold">${r.badge}</span>
-            <h4 class="text-xs sm:text-sm font-black text-slate-900">${r.title}</h4>
-            <p class="text-[11px] text-slate-500 line-clamp-1">${r.sub || ''}</p>
+      container.innerHTML = `
+        <div class="text-[11px] font-extrabold text-indigo-700 px-1">تم العثور على ${results.length} نتيجة في الأكاديمية (اضغط على أي نتيجة لفتحها فوراً):</div>
+      ` + results.slice(0, 35).map((r, i) => `
+        <div data-search-res-idx="${i}" class="p-3 rounded-2xl bg-slate-50 hover:bg-indigo-50 border border-slate-200 hover:border-indigo-400 cursor-pointer transition flex items-center justify-between gap-2.5">
+          <div class="space-y-0.5 min-w-0 flex-1">
+            <span class="inline-block px-2 py-0.5 rounded bg-indigo-100 text-indigo-800 text-[10px] font-extrabold">${r.badge}</span>
+            <h4 class="text-xs sm:text-sm font-black text-slate-900 truncate">${r.title}</h4>
+            <p class="text-[11px] text-slate-600 line-clamp-1">${r.sub || ''}</p>
           </div>
-          <span class="text-xs font-extrabold text-indigo-600 shrink-0">افتح ⬅️</span>
+          <div class="flex items-center gap-1.5 shrink-0">
+            ${r.speak ? `<button type="button" data-search-only-speak="${r.speak.replace(/"/g, '&quot;')}" class="px-2.5 py-1.5 rounded-xl bg-amber-100 hover:bg-amber-200 text-amber-900 text-xs font-extrabold" title="استمع للنطق">🔊</button>` : ''}
+            <span class="px-2.5 py-1.5 rounded-xl bg-indigo-600 text-white text-xs font-extrabold">افتح ⬅️</span>
+          </div>
         </div>
       `).join('');
 
       container.querySelectorAll('[data-search-res-idx]').forEach(el => {
-        el.addEventListener('click', () => {
+        el.addEventListener('click', (ev) => {
+          const spkOnlyBtn = ev.target.closest('[data-search-only-speak]');
+          if (spkOnlyBtn) {
+            ev.stopPropagation();
+            speakEnglish(spkOnlyBtn.getAttribute('data-search-only-speak'));
+            return;
+          }
           const item = results[parseInt(el.getAttribute('data-search-res-idx'), 10)];
           if (!item) return;
           document.getElementById('global-search-modal').classList.add('hidden');
           if (item.level && CEFR_LEVELS.includes(item.level)) {
             state.studentLevel = item.level;
+            state.vocabCategory = item.level;
+            state.quizCat = item.level;
+          }
+          if (item.aaView && typeof americanAccentState !== 'undefined') {
+            americanAccentState.viewMode = item.aaView;
           }
           if (item.aaLessonId && typeof americanAccentState !== 'undefined') {
+            americanAccentState.viewMode = 'lessons';
             americanAccentState.selectedLessonId = item.aaLessonId;
+          }
+          if (typeof item.pronIdx === 'number' && typeof pronTrainerState !== 'undefined') {
+            pronTrainerState.customSentence = '';
+            pronTrainerState.selectedIndex = item.pronIdx;
+          }
+          if (item.grammarId) {
+            state.activeGrammarId = item.grammarId;
+          }
+          if (item.dialogueId) {
+            state.activeDialogueId = item.dialogueId;
+          }
+          if (item.bookId) {
+            state.activeBookId = item.bookId;
+          }
+          if (item.w5kQuery) {
+            state.w5000Search = item.w5kQuery;
+            const wIn = document.getElementById('w5000-search-input');
+            if (wIn) wIn.value = item.w5kQuery;
+          }
+          if (item.s5kQuery) {
+            state.s5000Search = item.s5kQuery;
+            const sIn = document.getElementById('s5000-search-input');
+            if (sIn) sIn.value = item.s5kQuery;
           }
           if (item.ytCourseId) {
             state.activeYtCourseGroupId = item.ytCourseId;
@@ -20415,6 +20739,8 @@
         });
       });
     }
+
+
 
     // ============================================================================
     // UPGRADE MODULE 5: REAL ADMIN CMS (NO-CODE LESSON & CONTENT MANAGER)
@@ -20671,7 +20997,9 @@
         practiceDailyBtn.addEventListener('click', () => {
           const safeIdx = ((state.dailyIdx % DAILY_SENTENCES.length) + DAILY_SENTENCES.length) % DAILY_SENTENCES.length;
           pronTrainerState.customSentence = DAILY_SENTENCES[safeIdx].en;
+          if (typeof americanAccentState !== 'undefined') americanAccentState.viewMode = 'trainer';
           switchTab('americanaccent');
+          renderAmericanAccentModule();
           renderPronunciationTrainerStudio();
           const st = document.getElementById('aa-pronunciation-trainer-studio');
           if (st) st.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -21004,8 +21332,33 @@
         btn.addEventListener('click', () => switchTab(btn.getAttribute('data-mobile-bottom-tab')));
       });
 
-      // Delegated clicks for [data-tab-jump] and [data-sd-select-level]
+      const btnToggleAaCards = document.getElementById('btn-aa-toggle-all-cards-grid');
+      if (btnToggleAaCards) {
+        btnToggleAaCards.addEventListener('click', () => {
+          if (typeof americanAccentState !== 'undefined' && americanAccentState.viewMode !== 'lessons') {
+            americanAccentState.viewMode = 'lessons';
+            renderAmericanAccentModule();
+          }
+          const stripEl = document.getElementById('aa-lesson-pills-strip');
+          const bottomWrap = document.getElementById('aa-bottom-cards-overview-wrapper');
+          if (stripEl) stripEl.classList.toggle('hidden');
+          if (bottomWrap) {
+            bottomWrap.classList.toggle('hidden');
+            if (!bottomWrap.classList.contains('hidden')) {
+              bottomWrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+          }
+        });
+      }
+
+      // Delegated clicks for #btn-open-global-search, [data-tab-jump], and [data-sd-select-level]
       document.body.addEventListener('click', (e) => {
+        const searchBtnEl = e.target.closest('#btn-open-global-search');
+        if (searchBtnEl) {
+          e.preventDefault();
+          openGlobalSearchModal();
+          return;
+        }
         const jumpEl = e.target.closest('[data-tab-jump]');
         if (jumpEl) {
           switchTab(jumpEl.getAttribute('data-tab-jump'));
