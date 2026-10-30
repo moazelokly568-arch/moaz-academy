@@ -308,6 +308,35 @@
     .font-cert-serif {
       font-family: 'Cinzel', 'Georgia', 'Times New Roman', serif;
     }
+    
+    html, body {
+      max-width: 100%;
+      overflow-x: hidden !important;
+    }
+    select {
+      max-width: 100% !important;
+      min-width: 0 !important;
+    }
+
+    
+    html, body {
+      width: 100% !important;
+      max-width: 100vw !important;
+      overflow-x: hidden !important;
+      position: relative;
+    }
+    header, main, section, footer, div, nav {
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+    select {
+      width: 100% !important;
+      max-width: 100% !important;
+      min-width: 0 !important;
+      box-sizing: border-box !important;
+      text-overflow: ellipsis !important;
+    }
+
     /* Mobile non-overlapping buttons & clean header layout */
     @media (max-width: 640px) {
       header.compact-academy-header {
@@ -1077,93 +1106,84 @@
   <!-- Main Content Container -->
   <main class="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 py-4 sm:py-6 space-y-5">
 
-    <!-- ==================== PERSISTENT GUIDED STUDY BAR: 6 LEVELS + 6 STAGES SIDE-BY-SIDE + QUICK SECTIONS ==================== -->
-    <div id="academy-master-navigator" class="bg-white rounded-3xl p-3.5 sm:p-5 border-2 border-indigo-200 shadow-md space-y-3.5 no-print">
-      <!-- Top Row: Side-by-Side 1) 6 Levels (A1-C2) & 2) 6 Ordered Stages (1..6) -->
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-3 items-stretch">
-        <!-- Box 1: The 6 CEFR Levels (A1 -> C2) -->
-        <div class="lg:col-span-5 p-3 rounded-2xl bg-slate-900 text-white border border-indigo-500/40 flex flex-col justify-between space-y-2">
-          <div class="flex items-center justify-between gap-2">
-            <span class="text-[11px] sm:text-xs font-black text-amber-300">🌍 أولاً: اختر المستوى الدراسي (A1 – C2)</span>
-            <span id="nav-bar-active-level-badge" class="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 text-[10px] font-extrabold">المستوى الحالي: A1</span>
+    <!-- ==================== ULTRA-SLIM MOBILE-FITTED GUIDED BAR (6 LEVELS + 6 STAGES + COMPACT MENU) ==================== -->
+    <div id="academy-master-navigator" class="bg-white rounded-2xl p-2 sm:p-3 border border-indigo-200 shadow-sm space-y-1.5 no-print overflow-hidden w-full max-w-full">
+      <!-- Line 1: 6 Levels (A1..C2) + Next/Prev Stage in a single slim row -->
+      <div class="flex items-center justify-between gap-1 bg-slate-900 text-white px-2 py-1.5 rounded-xl">
+        <div class="flex items-center gap-1 min-w-0">
+          <span class="text-[10px] font-black text-amber-300 shrink-0">🌍 المستوى:</span>
+          <div class="grid grid-cols-6 gap-1" id="persistent-levels-strip">
+            <button type="button" data-bar-level="A1" class="bar-level-btn px-1.5 py-0.5 rounded-md text-[10px] sm:text-xs font-black transition bg-emerald-400 text-slate-950">A1</button>
+            <button type="button" data-bar-level="A2" class="bar-level-btn px-1.5 py-0.5 rounded-md text-[10px] sm:text-xs font-extrabold transition bg-white/10 hover:bg-white/20 text-white">A2</button>
+            <button type="button" data-bar-level="B1" class="bar-level-btn px-1.5 py-0.5 rounded-md text-[10px] sm:text-xs font-extrabold transition bg-white/10 hover:bg-white/20 text-white">B1</button>
+            <button type="button" data-bar-level="B2" class="bar-level-btn px-1.5 py-0.5 rounded-md text-[10px] sm:text-xs font-extrabold transition bg-white/10 hover:bg-white/20 text-white">B2</button>
+            <button type="button" data-bar-level="C1" class="bar-level-btn px-1.5 py-0.5 rounded-md text-[10px] sm:text-xs font-extrabold transition bg-white/10 hover:bg-white/20 text-white">C1</button>
+            <button type="button" data-bar-level="C2" class="bar-level-btn px-1.5 py-0.5 rounded-md text-[10px] sm:text-xs font-extrabold transition bg-white/10 hover:bg-white/20 text-white">C2</button>
           </div>
-          <div class="grid grid-cols-6 gap-1.5" id="persistent-levels-strip">
-            <button type="button" data-bar-level="A1" class="bar-level-btn py-2 px-1 rounded-xl text-xs font-black transition bg-emerald-400 text-slate-950 shadow-sm text-center">A1</button>
-            <button type="button" data-bar-level="A2" class="bar-level-btn py-2 px-1 rounded-xl text-xs font-extrabold transition bg-white/10 hover:bg-white/20 text-white text-center">A2</button>
-            <button type="button" data-bar-level="B1" class="bar-level-btn py-2 px-1 rounded-xl text-xs font-extrabold transition bg-white/10 hover:bg-white/20 text-white text-center">B1</button>
-            <button type="button" data-bar-level="B2" class="bar-level-btn py-2 px-1 rounded-xl text-xs font-extrabold transition bg-white/10 hover:bg-white/20 text-white text-center">B2</button>
-            <button type="button" data-bar-level="C1" class="bar-level-btn py-2 px-1 rounded-xl text-xs font-extrabold transition bg-white/10 hover:bg-white/20 text-white text-center">C1</button>
-            <button type="button" data-bar-level="C2" class="bar-level-btn py-2 px-1 rounded-xl text-xs font-extrabold transition bg-white/10 hover:bg-white/20 text-white text-center">C2</button>
-          </div>
+          <span id="nav-bar-active-level-badge" class="hidden md:inline-block px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-extrabold">A1</span>
         </div>
 
-        <!-- Box 2: The 6 Stages Side-by-Side (1 -> 6) + Next Stage Button -->
-        <div class="lg:col-span-7 p-3 rounded-2xl bg-indigo-950 text-white border border-indigo-400/40 flex flex-col justify-between space-y-2">
-          <div class="flex flex-wrap items-center justify-between gap-2">
-            <span class="text-[11px] sm:text-xs font-black text-amber-300">🎯 ثانياً: المراحل الـ 6 للمستوى بالترتيب (اضغط على أي مرحلة أو انتقل للتالية)</span>
-            <div class="flex items-center gap-1.5">
-              <button type="button" id="btn-bar-prev-stage" class="px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-white text-[11px] font-extrabold transition">⏮️ السابقة</button>
-              <button type="button" id="btn-bar-next-stage" class="px-3 py-1 rounded-lg bg-emerald-400 hover:bg-emerald-300 text-slate-950 text-[11px] font-black shadow-sm transition">⏭️ المرحلة التالية</button>
-            </div>
-          </div>
-          <div class="grid grid-cols-3 sm:grid-cols-6 gap-1.5" id="persistent-6stages-strip">
-            <button type="button" data-bar-stage="alphabet" data-stage-idx="1" class="bar-stage-btn p-2 rounded-xl text-[11px] font-extrabold transition bg-white/10 hover:bg-white/20 text-white text-center flex flex-col items-center gap-0.5">
-              <span class="font-en text-[10px] text-amber-300 font-black">مرحلة 1</span>
-              <span class="truncate w-full">🔤 الصوتيات</span>
-            </button>
-            <button type="button" data-bar-stage="vocab" data-stage-idx="2" class="bar-stage-btn p-2 rounded-xl text-[11px] font-extrabold transition bg-white/10 hover:bg-white/20 text-white text-center flex flex-col items-center gap-0.5">
-              <span class="font-en text-[10px] text-amber-300 font-black">مرحلة 2</span>
-              <span class="truncate w-full">🗂️ الكلمات</span>
-            </button>
-            <button type="button" data-bar-stage="grammar" data-stage-idx="3" class="bar-stage-btn p-2 rounded-xl text-[11px] font-extrabold transition bg-white/10 hover:bg-white/20 text-white text-center flex flex-col items-center gap-0.5">
-              <span class="font-en text-[10px] text-amber-300 font-black">مرحلة 3</span>
-              <span class="truncate w-full">🧩 القواعد</span>
-            </button>
-            <button type="button" data-bar-stage="dialogues" data-stage-idx="4" class="bar-stage-btn p-2 rounded-xl text-[11px] font-extrabold transition bg-white/10 hover:bg-white/20 text-white text-center flex flex-col items-center gap-0.5">
-              <span class="font-en text-[10px] text-amber-300 font-black">مرحلة 4</span>
-              <span class="truncate w-full">💬 المحادثات</span>
-            </button>
-            <button type="button" data-bar-stage="videos" data-stage-idx="5" class="bar-stage-btn p-2 rounded-xl text-[11px] font-extrabold transition bg-white/10 hover:bg-white/20 text-white text-center flex flex-col items-center gap-0.5">
-              <span class="font-en text-[10px] text-amber-300 font-black">مرحلة 5</span>
-              <span class="truncate w-full">🎬 الاستماع</span>
-            </button>
-            <button type="button" data-bar-stage="quiz" data-stage-idx="6" class="bar-stage-btn p-2 rounded-xl text-[11px] font-extrabold transition bg-white/10 hover:bg-white/20 text-white text-center flex flex-col items-center gap-0.5">
-              <span class="font-en text-[10px] text-amber-300 font-black">مرحلة 6</span>
-              <span class="truncate w-full">🏆 الاختبار</span>
-            </button>
-          </div>
+        <div class="flex items-center gap-1 shrink-0">
+          <button type="button" id="btn-bar-prev-stage" class="px-1.5 py-0.5 rounded-md bg-white/10 hover:bg-white/20 text-white text-[10px] font-extrabold transition" title="المرحلة السابقة">⏮️</button>
+          <button type="button" id="btn-bar-next-stage" class="px-2 py-0.5 rounded-md bg-emerald-400 hover:bg-emerald-300 text-slate-950 text-[10px] font-black shadow-sm transition truncate max-w-[115px] sm:max-w-none">⏭️ التالية</button>
         </div>
       </div>
 
-      <!-- Bottom Row: Clear Categorized Academy Sections (No Clutter, Everything Clear at a Glance) -->
-      <div class="pt-1 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2">
-        <div class="flex flex-wrap items-center gap-1.5">
-          <span class="text-[11px] font-black text-slate-500 ml-1">🧭 أقسام الأكاديمية السريعة:</span>
-          <button type="button" data-quick-nav-tab="roadmap" class="qnav-pill px-3 py-1.5 rounded-xl text-xs font-extrabold bg-indigo-600 text-white shadow-sm transition">🏠 الرئيسية</button>
-          <button type="button" data-quick-nav-tab="studentdashboard" class="qnav-pill px-3 py-1.5 rounded-xl text-xs font-extrabold bg-emerald-50 text-emerald-800 border border-emerald-200 hover:bg-emerald-100 transition">📊 لوحة الطالب</button>
-          <button type="button" data-quick-nav-tab="placement" class="qnav-pill px-3 py-1.5 rounded-xl text-xs font-extrabold bg-amber-50 text-amber-900 border border-amber-200 hover:bg-amber-100 transition">🧭 تحديد المستوى</button>
-          <button type="button" data-quick-nav-tab="americanaccent" class="qnav-pill px-3 py-1.5 rounded-xl text-xs font-extrabold bg-blue-50 text-blue-800 border border-blue-200 hover:bg-blue-100 transition">🇺🇸 American Accent</button>
-          <button type="button" data-quick-nav-tab="ytcourses" class="qnav-pill px-3 py-1.5 rounded-xl text-xs font-extrabold bg-red-50 text-red-700 border border-red-200 hover:bg-red-100 transition">▶️ كورسات اليوتيوب</button>
-          <button type="button" data-quick-nav-tab="certificate" class="qnav-pill px-3 py-1.5 rounded-xl text-xs font-extrabold bg-amber-100 text-amber-950 border border-amber-300 hover:bg-amber-200 transition">🎓 شهادة المستوى</button>
-        </div>
-
-        <!-- Dropdown for Extra Libraries & Encyclopedias so Student Never Gets Lost -->
-        <div class="flex items-center gap-1.5 w-full sm:w-auto">
-          <label for="quick-extra-libraries-select" class="text-[11px] font-extrabold text-indigo-900 shrink-0">📚 الموسوعات والتدريبات الإضافية:</label>
-          <select id="quick-extra-libraries-select" class="flex-1 sm:w-56 px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-300 text-xs font-extrabold text-slate-900 cursor-pointer focus:outline-none focus:ring-2 focus:ring-indigo-500">
-            <option value="">📂 اختر مكتبة أو قسماً إضافياً...</option>
-            <option value="allgrammar">⚖️ موسوعة كل القواعد الشاملة (60 قاعدة)</option>
-            <option value="exams">📝 90 امتحان تفاعلي للمستويات</option>
-            <option value="books">📕 مكتبة كتب الإنجليزية (PDF)</option>
-            <option value="stories">📖 قصص المستويات التفاعلية</option>
-            <option value="words5000">📘 موسوعة أهم 5000 كلمة</option>
-            <option value="sentences5000">🗣️ موسوعة أهم 5000 جملة</option>
-            <option value="dialogues5000">👔 المقابلات الشخصية (Job Interviews)</option>
-            <option value="jobs">📐 الوظائف وهندسة المساحة</option>
-            <option value="wordgame">🎮 لعبة الكلمات الذكية</option>
-          </select>
+      <!-- Line 2: The 6 Stages Side-by-Side in a Ultra-Compact 6-Column Strip -->
+      <div class="bg-indigo-950 text-white px-1.5 py-1 rounded-xl">
+        <div class="grid grid-cols-6 gap-1" id="persistent-6stages-strip">
+          <button type="button" data-bar-stage="alphabet" data-stage-idx="1" class="bar-stage-btn py-1 px-0.5 rounded-lg text-[9px] sm:text-[11px] font-extrabold transition bg-white/10 hover:bg-white/20 text-white text-center truncate">
+            <span class="font-en text-[8px] sm:text-[9px] text-amber-300 font-black block leading-tight">1</span>
+            <span class="block truncate leading-tight">صوتيات</span>
+          </button>
+          <button type="button" data-bar-stage="vocab" data-stage-idx="2" class="bar-stage-btn py-1 px-0.5 rounded-lg text-[9px] sm:text-[11px] font-extrabold transition bg-white/10 hover:bg-white/20 text-white text-center truncate">
+            <span class="font-en text-[8px] sm:text-[9px] text-amber-300 font-black block leading-tight">2</span>
+            <span class="block truncate leading-tight">كلمات</span>
+          </button>
+          <button type="button" data-bar-stage="grammar" data-stage-idx="3" class="bar-stage-btn py-1 px-0.5 rounded-lg text-[9px] sm:text-[11px] font-extrabold transition bg-white/10 hover:bg-white/20 text-white text-center truncate">
+            <span class="font-en text-[8px] sm:text-[9px] text-amber-300 font-black block leading-tight">3</span>
+            <span class="block truncate leading-tight">قواعد</span>
+          </button>
+          <button type="button" data-bar-stage="dialogues" data-stage-idx="4" class="bar-stage-btn py-1 px-0.5 rounded-lg text-[9px] sm:text-[11px] font-extrabold transition bg-white/10 hover:bg-white/20 text-white text-center truncate">
+            <span class="font-en text-[8px] sm:text-[9px] text-amber-300 font-black block leading-tight">4</span>
+            <span class="block truncate leading-tight">محادثات</span>
+          </button>
+          <button type="button" data-bar-stage="videos" data-stage-idx="5" class="bar-stage-btn py-1 px-0.5 rounded-lg text-[9px] sm:text-[11px] font-extrabold transition bg-white/10 hover:bg-white/20 text-white text-center truncate">
+            <span class="font-en text-[8px] sm:text-[9px] text-amber-300 font-black block leading-tight">5</span>
+            <span class="block truncate leading-tight">استماع</span>
+          </button>
+          <button type="button" data-bar-stage="quiz" data-stage-idx="6" class="bar-stage-btn py-1 px-0.5 rounded-lg text-[9px] sm:text-[11px] font-extrabold transition bg-white/10 hover:bg-white/20 text-white text-center truncate">
+            <span class="font-en text-[8px] sm:text-[9px] text-amber-300 font-black block leading-tight">6</span>
+            <span class="block truncate leading-tight">اختبار</span>
+          </button>
         </div>
       </div>
+
+      <!-- Line 3: Single Compact Row of Quick Pills + Collapsible "📚 المزيد" Button (Replaces wide <select>!) -->
+      <div class="grid grid-cols-6 gap-1 pt-0.5">
+        <button type="button" data-quick-nav-tab="roadmap" class="qnav-pill py-1 px-1 rounded-lg text-[10px] sm:text-[11px] font-extrabold bg-indigo-600 text-white transition text-center truncate">🏠 الرئيسية</button>
+        <button type="button" data-quick-nav-tab="studentdashboard" class="qnav-pill py-1 px-1 rounded-lg text-[10px] sm:text-[11px] font-extrabold bg-emerald-50 text-emerald-800 border border-emerald-200 transition text-center truncate">📊 لوحتي</button>
+        <button type="button" data-quick-nav-tab="americanaccent" class="qnav-pill py-1 px-1 rounded-lg text-[10px] sm:text-[11px] font-extrabold bg-blue-50 text-blue-800 border border-blue-200 transition text-center truncate">🇺🇸 النطق</button>
+        <button type="button" data-quick-nav-tab="ytcourses" class="qnav-pill py-1 px-1 rounded-lg text-[10px] sm:text-[11px] font-extrabold bg-red-50 text-red-700 border border-red-200 transition text-center truncate">▶️ يوتيوب</button>
+        <button type="button" data-quick-nav-tab="certificate" class="qnav-pill py-1 px-1 rounded-lg text-[10px] sm:text-[11px] font-extrabold bg-amber-100 text-amber-950 border border-amber-300 transition text-center truncate">🎓 الشهادة</button>
+        <button type="button" id="btn-toggle-extra-libraries-grid" class="py-1 px-1 rounded-lg text-[10px] sm:text-[11px] font-black bg-slate-900 text-amber-300 transition text-center truncate">📚 المزيد ▾</button>
+      </div>
+
+      <!-- Collapsible Extra Libraries Grid (Hidden by default so it takes ZERO height until tapped!) -->
+      <div id="extra-libraries-collapsible-grid" class="hidden pt-1.5 border-t border-slate-100 grid grid-cols-2 sm:grid-cols-5 gap-1.5">
+        <button type="button" data-quick-nav-tab="placement" class="qnav-pill py-1.5 px-2 rounded-lg text-[11px] font-extrabold bg-amber-50 text-amber-900 border border-amber-200 text-right truncate">🧭 تحديد المستوى</button>
+        <button type="button" data-quick-nav-tab="allgrammar" class="qnav-pill py-1.5 px-2 rounded-lg text-[11px] font-extrabold bg-slate-50 text-slate-800 border border-slate-200 text-right truncate">⚖️ كل القواعد (60)</button>
+        <button type="button" data-quick-nav-tab="exams" class="qnav-pill py-1.5 px-2 rounded-lg text-[11px] font-extrabold bg-slate-50 text-slate-800 border border-slate-200 text-right truncate">📝 90 امتحان</button>
+        <button type="button" data-quick-nav-tab="books" class="qnav-pill py-1.5 px-2 rounded-lg text-[11px] font-extrabold bg-slate-50 text-slate-800 border border-slate-200 text-right truncate">📕 كتب PDF</button>
+        <button type="button" data-quick-nav-tab="stories" class="qnav-pill py-1.5 px-2 rounded-lg text-[11px] font-extrabold bg-slate-50 text-slate-800 border border-slate-200 text-right truncate">📖 القصص</button>
+        <button type="button" data-quick-nav-tab="words5000" class="qnav-pill py-1.5 px-2 rounded-lg text-[11px] font-extrabold bg-slate-50 text-slate-800 border border-slate-200 text-right truncate">📘 5000 كلمة</button>
+        <button type="button" data-quick-nav-tab="sentences5000" class="qnav-pill py-1.5 px-2 rounded-lg text-[11px] font-extrabold bg-slate-50 text-slate-800 border border-slate-200 text-right truncate">🗣️ 5000 جملة</button>
+        <button type="button" data-quick-nav-tab="dialogues5000" class="qnav-pill py-1.5 px-2 rounded-lg text-[11px] font-extrabold bg-slate-50 text-slate-800 border border-slate-200 text-right truncate">👔 المقابلات</button>
+        <button type="button" data-quick-nav-tab="jobs" class="qnav-pill py-1.5 px-2 rounded-lg text-[11px] font-extrabold bg-slate-50 text-slate-800 border border-slate-200 text-right truncate">📐 الوظائف والمساحة</button>
+        <button type="button" data-quick-nav-tab="wordgame" class="qnav-pill py-1.5 px-2 rounded-lg text-[11px] font-extrabold bg-slate-50 text-slate-800 border border-slate-200 text-right truncate">🎮 لعبة الكلمات</button>
+      </div>
+      <!-- Hidden select hook for compatibility -->
+      <select id="quick-extra-libraries-select" class="hidden"><option value=""></option></select>
     </div>
 
     <!-- ==================== TAB 1: ROADMAP & 6 CEFR LEVELS ==================== -->
@@ -6646,7 +6666,7 @@
 
       // Update Global Top CEFR Bar
       const headerTxt = document.getElementById('header-active-level-text');
-      if (headerTxt) headerTxt.textContent = meta.shortAr;
+      if (headerTxt) headerTxt.textContent = lv;
 
       document.querySelectorAll('.global-level-pill').forEach(btn => {
         const bLv = btn.getAttribute('data-global-level');
@@ -25098,17 +25118,14 @@
       function buildSubSelectorBar(barId, titleText, items, onSelect) {
         const wrapper = document.createElement('div');
         wrapper.id = barId;
-        wrapper.className = 'p-3 sm:p-4 rounded-2xl bg-gradient-to-l from-slate-900 via-indigo-950 to-slate-900 text-white border border-indigo-500/40 shadow-md space-y-2.5 no-print';
+        wrapper.className = 'p-2 sm:p-3 rounded-2xl bg-slate-900 text-white border border-indigo-500/40 shadow-sm space-y-1.5 no-print overflow-hidden max-w-full';
         wrapper.innerHTML = `
-          <div class="flex items-center justify-between gap-2">
-            <span class="text-xs font-extrabold text-amber-300">📂 ${titleText}:</span>
-            <span class="text-[11px] text-indigo-200 font-bold">اختر الجزء الذي تريد دراسته الآن</span>
-          </div>
-          <div class="sub-section-nav-grid">
+          <div class="text-[11px] font-extrabold text-amber-300 truncate">📂 ${titleText}:</div>
+          <div class="grid grid-cols-2 sm:flex sm:flex-wrap gap-1.5">
             ${items.map((it, idx) => `
-              <button type="button" data-sub-target="${it.key}" class="sub-nav-pill-btn ${idx === 0 ? 'active-sub-pill' : ''} px-3 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white border border-white/15 text-xs font-extrabold text-right flex items-center justify-between gap-2">
+              <button type="button" data-sub-target="${it.key}" class="sub-nav-pill-btn ${idx === 0 ? 'active-sub-pill' : ''} px-2.5 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white border border-white/15 text-[11px] font-extrabold text-right flex items-center justify-between gap-1 min-w-0">
                 <span class="truncate">${it.label}</span>
-                <span class="text-[10px] opacity-80 shrink-0">⬅️</span>
+                <span class="text-[9px] opacity-80 shrink-0">⬅️</span>
               </button>
             `).join('')}
           </div>
@@ -27123,8 +27140,8 @@
         const bLv = btn.getAttribute('data-bar-level');
         const isAct = bLv === lv;
         btn.className = isAct
-          ? 'bar-level-btn py-2 px-1 rounded-xl text-xs font-black transition bg-emerald-400 text-slate-950 shadow-md ring-2 ring-emerald-200 text-center'
-          : 'bar-level-btn py-2 px-1 rounded-xl text-xs font-extrabold transition bg-white/10 hover:bg-white/20 text-white text-center';
+          ? 'bar-level-btn px-1.5 py-0.5 rounded-md text-[10px] sm:text-xs font-black transition bg-emerald-400 text-slate-950 shadow-sm'
+          : 'bar-level-btn px-1.5 py-0.5 rounded-md text-[10px] sm:text-xs font-extrabold transition bg-white/10 hover:bg-white/20 text-white';
       });
 
       // 2. Update 6 Ordered Stage Buttons
@@ -27139,15 +27156,15 @@
         const isAct = stTab === activeTab;
 
         btn.className = isAct
-          ? 'bar-stage-btn p-2 rounded-xl text-[11px] font-black transition bg-amber-400 text-slate-950 shadow-md ring-2 ring-amber-200 text-center flex flex-col items-center gap-0.5'
+          ? 'bar-stage-btn py-1 px-0.5 rounded-lg text-[9px] sm:text-[11px] font-black transition bg-amber-400 text-slate-950 shadow-sm text-center truncate'
           : isDone
-          ? 'bar-stage-btn p-2 rounded-xl text-[11px] font-extrabold transition bg-emerald-600/35 text-emerald-100 border border-emerald-400/40 hover:bg-emerald-600/50 text-center flex flex-col items-center gap-0.5'
-          : 'bar-stage-btn p-2 rounded-xl text-[11px] font-extrabold transition bg-white/10 hover:bg-white/20 text-white text-center flex flex-col items-center gap-0.5';
+          ? 'bar-stage-btn py-1 px-0.5 rounded-lg text-[9px] sm:text-[11px] font-extrabold transition bg-emerald-600/40 text-emerald-100 border border-emerald-400/40 text-center truncate'
+          : 'bar-stage-btn py-1 px-0.5 rounded-lg text-[9px] sm:text-[11px] font-extrabold transition bg-white/10 hover:bg-white/20 text-white text-center truncate';
 
         const topSpan = btn.querySelector('span:first-child');
         if (topSpan) {
-          topSpan.className = isAct ? 'font-en text-[10px] text-slate-950 font-black' : 'font-en text-[10px] text-amber-300 font-black';
-          topSpan.textContent = isDone ? `✓ مرحلة ${stNum}` : `مرحلة ${stNum}`;
+          topSpan.className = isAct ? 'font-en text-[8px] sm:text-[9px] text-slate-950 font-black block leading-tight' : 'font-en text-[8px] sm:text-[9px] text-amber-300 font-black block leading-tight';
+          topSpan.textContent = isDone ? `✓ ${stNum}` : `${stNum}`;
         }
       });
 
@@ -27387,11 +27404,15 @@
         });
       });
 
-      const extraSel = document.getElementById('quick-extra-libraries-select');
-      if (extraSel) {
-        extraSel.addEventListener('change', (e) => {
-          if (e.target.value) {
-            switchTab(e.target.value);
+      const toggleExtraBtn = document.getElementById('btn-toggle-extra-libraries-grid');
+      const extraGrid = document.getElementById('extra-libraries-collapsible-grid');
+      if (toggleExtraBtn && extraGrid) {
+        toggleExtraBtn.addEventListener('click', () => {
+          extraGrid.classList.toggle('hidden');
+        });
+        extraGrid.addEventListener('click', (e) => {
+          if (e.target.closest('[data-quick-nav-tab]')) {
+            extraGrid.classList.add('hidden');
           }
         });
       }
