@@ -207,6 +207,58 @@
       border-color: #e2d1b8 !important;
     }
 
+
+    /* ==================== MOBILE UX, COMFORTABLE TYPOGRAPHY & FAST LOAD OPTIMIZATION ==================== */
+    html {
+      scroll-behavior: smooth;
+      -webkit-tap-highlight-color: transparent;
+      text-size-adjust: 100%;
+    }
+    body {
+      line-height: 1.7;
+      letter-spacing: 0.01em;
+    }
+    body.font-scale-lg {
+      font-size: 108% !important;
+    }
+    body.font-scale-xl {
+      font-size: 116% !important;
+    }
+    body.font-scale-sm {
+      font-size: 94% !important;
+    }
+    @media (max-width: 768px) {
+      body {
+        padding-bottom: 4.75rem !important; /* Space for fixed mobile bottom navigation bar */
+        font-size: 15.5px;
+        line-height: 1.75;
+      }
+      .tab-panel {
+        padding-bottom: 1rem;
+      }
+      button, a, select, input {
+        min-height: 40px;
+      }
+      h1, h2, h3 {
+        line-height: 1.4 !important;
+      }
+      p {
+        line-height: 1.75 !important;
+      }
+    }
+    @keyframes soundwave {
+      0%, 100% { transform: scaleY(0.35); }
+      50% { transform: scaleY(1.15); }
+    }
+    .soundwave-bar {
+      animation: soundwave 0.75s ease-in-out infinite;
+      transform-origin: bottom;
+    }
+    .soundwave-bar:nth-child(2) { animation-delay: 0.12s; }
+    .soundwave-bar:nth-child(3) { animation-delay: 0.24s; }
+    .soundwave-bar:nth-child(4) { animation-delay: 0.36s; }
+    .soundwave-bar:nth-child(5) { animation-delay: 0.18s; }
+
   </style>
 </head>
 <body class="min-h-screen flex flex-col bg-slate-50 text-slate-900">
@@ -262,11 +314,30 @@
           <span>مكتمل</span>
         </div>
 
-        <!-- Salawat 5-Min Reminder Badge Button -->
-        <button id="btn-header-salawat-now" type="button" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-extrabold bg-rose-50 hover:bg-rose-100 text-rose-800 border border-rose-200 shadow-sm transition" title="إشعار الصلاة على النبي ﷺ يعمل تلقائياً كل 5 دقائق — اضغط للتذكير الآن">
+        <!-- Instant Global Search Trigger Button -->
+        <button id="btn-open-global-search" type="button" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-extrabold bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm transition" title="بحث سريع شامل في كل الدروس والكلمات والقواعد (Ctrl+K)">
+          <span>🔍</span>
+          <span>بحث سريع</span>
+        </button>
+
+        <!-- Comfortable Mobile Font Size Scaler -->
+        <div class="inline-flex items-center rounded-full bg-slate-100 border border-slate-200 p-0.5 text-xs font-extrabold" title="تكبير أو تصغير حجم الخط لراحة العين على الموبايل">
+          <button id="btn-font-scale-up" type="button" class="px-2 py-1 rounded-full hover:bg-white text-slate-800 transition" title="تكبير الخط">أ+</button>
+          <button id="btn-font-scale-reset" type="button" class="px-1.5 py-1 text-[10px] text-slate-500 hover:text-indigo-600 transition" title="الحجم الافتراضي">خط</button>
+          <button id="btn-font-scale-down" type="button" class="px-2 py-1 rounded-full hover:bg-white text-slate-800 transition" title="تصغير الخط">أ-</button>
+        </div>
+
+        <!-- Low-Bandwidth / Fast Mode Toggle for Slow Internet -->
+        <button id="btn-low-bandwidth-toggle" type="button" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-extrabold bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 transition" title="وضع التصفح السريع وتوفير الباقة للإنترنت البطيء">
+          <span id="low-bw-icon">⚡</span>
+          <span id="low-bw-label" class="hidden sm:inline">تصفح سريع</span>
+        </button>
+
+        <!-- Azkar 5-Min Rotating Reminder Badge Button -->
+        <button id="btn-header-salawat-now" type="button" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-extrabold bg-rose-50 hover:bg-rose-100 text-rose-800 border border-rose-200 shadow-sm transition" title="إشعار الأذكار يعمل تلقائياً كل 5 دقائق بذكر مختلف — اضغط لعرض الذكر التالي الآن">
           <span>💗</span>
-          <span class="hidden md:inline">اللَّهُمَّ صَلِّ وَسَلِّمْ عَلَى نَبِيِّنَا مُحَمَّدٍ</span>
-          <span class="md:hidden">صلِّ على النبي 💗</span>
+          <span id="header-azkar-short-text" class="hidden md:inline">اللَّهُمَّ صَلِّ وَسَلِّمْ عَلَى نَبِيِّنَا مُحَمَّدٍ. 💗</span>
+          <span class="md:hidden">أذكار كل 5د 💗</span>
         </button>
 
         <!-- Direct WhatsApp Subscription Button (Displays ONLY "اشتراك") -->
@@ -306,9 +377,21 @@
     <!-- Navigation Tabs (Stages of the Selected Level) -->
     <nav class="max-w-7xl mx-auto px-4 sm:px-6 overflow-x-auto custom-scrollbar border-t border-slate-100 bg-slate-50/60">
       <div class="flex items-center gap-1.5 py-2 min-w-max" id="main-nav">
+        <button type="button" id="btn-open-mobile-drawer-top" class="lg:hidden px-3 py-2 rounded-xl text-xs font-extrabold bg-slate-900 text-amber-300 border border-amber-400/40 flex items-center gap-1.5 shadow-sm">
+          <span>☰</span>
+          <span>كل الأقسام</span>
+        </button>
         <button type="button" data-tab="roadmap" class="nav-tab px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition flex items-center gap-2 bg-indigo-600 text-white shadow-sm">
           <span>🗺️</span>
           <span>المستويات الـ 6 ومراحلها</span>
+        </button>
+        <button type="button" data-tab="studentdashboard" class="nav-tab px-3.5 py-2 rounded-xl text-xs sm:text-sm font-extrabold transition flex items-center gap-2 text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-300 shadow-sm">
+          <span>📊</span>
+          <span>لوحة تحكم الطالب</span>
+        </button>
+        <button type="button" data-tab="placement" class="nav-tab px-3.5 py-2 rounded-xl text-xs sm:text-sm font-extrabold transition flex items-center gap-2 text-amber-900 bg-amber-50 hover:bg-amber-100 border border-amber-300 shadow-sm">
+          <span>🧭</span>
+          <span>اختبار تحديد المستوى</span>
         </button>
         <button type="button" data-tab="alphabet" class="nav-tab px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition flex items-center gap-2 text-slate-600 hover:bg-slate-200/70">
           <span>🔤</span>
@@ -413,26 +496,31 @@
   <!-- Toast Notification -->
   <div id="toast-container" class="fixed bottom-5 left-5 z-50 pointer-events-none flex flex-col gap-2"></div>
 
-  <!-- Floating 5-Minute Spiritual Notification Banner (اللَّهُمَّ صَلِّ وَسَلِّمْ عَلَى نَبِيِّنَا مُحَمَّدٍ💗) -->
-  <div id="salawat-notification-banner" class="fixed top-4 left-1/2 -translate-x-1/2 z-[70] hidden max-w-lg w-[92%] sm:w-auto pointer-events-auto transition-all duration-300">
-    <div class="bg-gradient-to-l from-emerald-950 via-indigo-950 to-slate-900 text-white px-5 py-4 rounded-3xl shadow-2xl border-2 border-amber-400 flex items-center justify-between gap-4">
+  <!-- Floating 5-Minute Rotating Azkar Notification Banner (3 Rotating Azkar Every 5 Minutes) -->
+  <div id="salawat-notification-banner" class="fixed top-4 left-1/2 -translate-x-1/2 z-[70] hidden max-w-xl w-[94%] sm:w-auto pointer-events-auto transition-all duration-300">
+    <div class="bg-gradient-to-l from-emerald-950 via-indigo-950 to-slate-900 text-white px-5 py-4 rounded-3xl shadow-2xl border-2 border-amber-400 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3.5">
       <div class="flex items-center gap-3.5">
-        <div class="w-12 h-12 rounded-2xl bg-amber-400/20 border border-amber-300/50 flex items-center justify-center text-2xl shrink-0 animate-bounce">
+        <div class="w-12 h-12 rounded-2xl bg-rose-500/20 border border-rose-300/50 flex items-center justify-center text-2xl shrink-0 animate-bounce">
           💗
         </div>
-        <div class="space-y-0.5">
-          <div class="flex items-center gap-2">
-            <span class="px-2 py-0.5 rounded-full bg-amber-400 text-slate-950 text-[10px] font-extrabold">تذكير كل 5 دقائق • ME Learning</span>
-            <span id="salawat-counter-badge" class="text-[11px] text-emerald-300 font-bold"></span>
+        <div class="space-y-1">
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="px-2.5 py-0.5 rounded-full bg-amber-400 text-slate-950 text-[10px] font-extrabold">إشعار الأذكار كل 5 دقائق • ME Learning</span>
+            <span id="salawat-counter-badge" class="text-[11px] text-emerald-300 font-bold">ذكر 1 من 3</span>
           </div>
-          <p id="salawat-banner-text" class="text-base sm:text-xl font-extrabold text-amber-200 tracking-wide">
-            اللَّهُمَّ صَلِّ وَسَلِّمْ عَلَى نَبِيِّنَا مُحَمَّدٍ💗
+          <p id="salawat-banner-text" class="text-sm sm:text-lg font-extrabold text-amber-200 leading-relaxed tracking-wide">
+            اللَّهُمَّ صَلِّ وَسَلِّمْ عَلَى نَبِيِّنَا مُحَمَّدٍ. 💗
           </p>
         </div>
       </div>
-      <button type="button" id="btn-dismiss-salawat-banner" class="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-extrabold text-amber-200 shrink-0 transition">
-        ﷺ حسناً
-      </button>
+      <div class="flex items-center gap-2 self-end sm:self-center shrink-0">
+        <button type="button" id="btn-next-azkar-banner" class="px-3 py-1.5 rounded-xl bg-amber-400/20 hover:bg-amber-400/30 border border-amber-300/40 text-xs font-extrabold text-amber-200 transition" title="عرض الذكر التالي">
+          ⏭️ الذكر التالي
+        </button>
+        <button type="button" id="btn-dismiss-salawat-banner" class="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-extrabold text-white transition">
+          ﷺ حسناً
+        </button>
+      </div>
     </div>
   </div>
 
@@ -891,17 +979,28 @@
               </div>
               <p id="roadmap-progress-hint" class="text-xs text-indigo-200">اختر مستواك من الأسفل (من A1 إلى C2) ثم ابدأ المراحل الـ 6 الخاصة بمستواك بالترتيب.</p>
             </div>
-            <div class="flex flex-wrap items-center gap-3 pt-1">
+            <div class="flex flex-wrap items-center gap-2.5 pt-1">
+              <button type="button" id="btn-hero-resume-last-lesson" class="px-5 py-3 rounded-xl bg-gradient-to-l from-amber-400 to-yellow-300 hover:from-amber-300 hover:to-yellow-200 text-slate-950 font-black text-sm shadow-xl ring-2 ring-amber-200/70 transition flex items-center gap-2">
+                <span>▶️</span>
+                <span id="btn-hero-resume-text">أكمل من حيث توقفت</span>
+              </button>
               <button type="button" id="btn-start-journey" class="px-5 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-sm shadow-lg transition flex items-center gap-2">
                 <span id="btn-start-journey-text">🚀 ابدأ المرحلة 1 في مستواك المختار (A1)</span>
               </button>
-              <button type="button" id="btn-hero-certificate" class="px-4 py-3 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-extrabold text-sm shadow-lg transition flex items-center gap-2">
+              <button type="button" id="btn-hero-placement-test" class="px-4 py-3 rounded-xl bg-indigo-500 hover:bg-indigo-400 text-white font-extrabold text-sm shadow-lg border border-indigo-300/40 transition flex items-center gap-2">
+                <span>🧭</span>
+                <span>اختبار تحديد المستوى الحقيقي</span>
+              </button>
+              <button type="button" id="btn-hero-student-dashboard" class="px-4 py-3 rounded-xl bg-teal-500/30 hover:bg-teal-500/50 text-teal-100 font-extrabold text-sm border border-teal-300/40 transition flex items-center gap-2">
+                <span>📊</span>
+                <span>لوحة تحكم الطالب</span>
+              </button>
+              <button type="button" id="btn-hero-certificate" class="px-4 py-3 rounded-xl bg-amber-400/90 hover:bg-amber-300 text-slate-950 font-extrabold text-sm shadow-lg transition flex items-center gap-2">
                 <span>🎓 شهادة إتمام المستوى</span>
               </button>
               <button type="button" id="btn-daily-phrase-speak" class="px-4 py-3 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-sm border border-white/20 transition flex items-center gap-2">
                 <span>🔊 استمع لجملة اليوم</span>
               </button>
-
             </div>
             <!-- Quick Access to New Mega Encyclopedias & YouTube Courses -->
             <div class="pt-2 flex flex-wrap items-center gap-2">
@@ -949,7 +1048,7 @@
               </button>
               <button type="button" id="btn-hero-ytcourses" class="px-3.5 py-2 rounded-xl bg-rose-500/30 hover:bg-rose-500/50 text-rose-100 border border-rose-400/40 text-xs font-extrabold transition flex items-center gap-1.5">
                 <span>▶️</span>
-                <span>أقوى كورسات اليوتيوب من الصفر (إبراهيم عادل + دروس أونلاين + AUC)</span>
+                <span>أقوى كورسات اليوتيوب من الصفر (إبراهيم عادل + American Accent 🇺🇸 + AUC)</span>
               </button>
             </div>
           </div>
@@ -970,6 +1069,51 @@
         </div>
       </div>
 
+      <!-- STUDENT QUICK DASHBOARD STRIP & RESUME WHERE YOU LEFT OFF -->
+      <div id="home-student-dashboard-card" class="bg-white rounded-3xl p-5 sm:p-6 border-2 border-emerald-200 shadow-md space-y-4">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-slate-100 pb-4">
+          <div class="space-y-1">
+            <div class="inline-flex flex-wrap items-center gap-2">
+              <span class="px-3 py-1 rounded-full bg-emerald-600 text-white text-xs font-extrabold">📊 ملخص لوحة تحكم الطالب الفورية</span>
+              <span id="home-dash-placement-badge" class="px-3 py-1 rounded-full bg-amber-50 text-amber-800 border border-amber-200 text-xs font-extrabold">🧭 لم تحدد مستواك بعد؟ جرب اختبار تحديد المستوى</span>
+            </div>
+            <h3 class="text-lg sm:text-xl font-black text-slate-900">مرحباً بك في مسيرتك التعليمية — تابع تقدمك أو أكمل آخر درس توقفت عنده بضغطة واحدة</h3>
+          </div>
+          <div class="flex flex-wrap items-center gap-2">
+            <button type="button" id="btn-home-resume-lesson" class="px-5 py-2.5 rounded-2xl bg-gradient-to-l from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white text-xs sm:text-sm font-black shadow-md transition flex items-center gap-2">
+              <span>▶️</span>
+              <span id="home-resume-btn-label">أكمل من حيث توقفت</span>
+            </button>
+            <button type="button" id="btn-home-open-full-dashboard" class="px-4 py-2.5 rounded-2xl bg-slate-900 hover:bg-indigo-950 text-amber-300 text-xs sm:text-sm font-extrabold transition">
+              📊 فتح لوحة تحكم الطالب الكاملة ⬅️
+            </button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+          <div class="p-4 rounded-2xl bg-indigo-50/70 border border-indigo-200 space-y-1">
+            <span class="text-xs font-bold text-indigo-700 block">🎯 المستوى الحالي المختار</span>
+            <strong id="home-dash-current-level" class="text-lg sm:text-xl font-black text-indigo-950 block">A1 • المبتدئ والتأسيس</strong>
+            <span id="home-dash-level-pct" class="text-xs font-extrabold text-emerald-700 block">نسبة إنجاز المستوى: 0%</span>
+          </div>
+          <div class="p-4 rounded-2xl bg-emerald-50/70 border border-emerald-200 space-y-1">
+            <span class="text-xs font-bold text-emerald-700 block">✅ الدروس والعناصر المكتملة</span>
+            <strong id="home-dash-completed-count" class="text-lg sm:text-xl font-black text-emerald-950 block">0 درس وعنصر</strong>
+            <span id="home-dash-xp-Sub" class="text-xs font-extrabold text-emerald-700 block">إجمالي النقاط: 0 XP ⭐</span>
+          </div>
+          <div class="p-4 rounded-2xl bg-amber-50/70 border border-amber-200 space-y-1">
+            <span class="text-xs font-bold text-amber-800 block">🏆 نتائج الاختبارات والامتحانات</span>
+            <strong id="home-dash-quiz-summary" class="text-lg sm:text-xl font-black text-amber-950 block">أعلى درجة: 0 / 12</strong>
+            <span id="home-dash-exams-count" class="text-xs font-extrabold text-amber-800 block">سجل الاختبارات محفوظ بالكامل</span>
+          </div>
+          <div class="p-4 rounded-2xl bg-rose-50/70 border border-rose-200 space-y-1">
+            <span class="text-xs font-bold text-rose-700 block">📍 آخر درس وصلت إليه</span>
+            <strong id="home-dash-last-lesson-title" class="text-sm sm:text-base font-black text-rose-950 block line-clamp-1">المرحلة 1: الصوتيات والحروف (A1)</strong>
+            <span id="home-dash-last-lesson-time" class="text-[11px] font-bold text-rose-700 block">اضغط «أكمل من حيث توقفت» للمتابعة</span>
+          </div>
+        </div>
+      </div>
+
       <!-- SECTION 1: THE 6 GLOBALLY ACCREDITED CEFR LEVELS (A1 -> C2) -->
       <div class="bg-white rounded-3xl p-5 sm:p-6 border-2 border-indigo-100 shadow-sm space-y-5">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-4">
@@ -981,6 +1125,21 @@
           <span id="active-level-pill" class="self-start sm:self-center px-4 py-2 rounded-full bg-emerald-50 border-2 border-emerald-300 text-emerald-900 text-xs sm:text-sm font-extrabold shrink-0 shadow-sm">
             المستوى المختار: A1 • المبتدئ والتأسيس
           </span>
+        </div>
+
+        <!-- Placement Test Smart Suggestion Banner + Manual Freedom Notice -->
+        <div class="p-4 rounded-2xl bg-gradient-to-l from-indigo-950 via-slate-900 to-indigo-900 text-white border border-indigo-400/40 flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div class="space-y-1">
+            <div class="inline-flex items-center gap-2">
+              <span class="px-2.5 py-0.5 rounded-full bg-amber-400 text-slate-950 text-[11px] font-black">🧭 اختبار تحديد المستوى الذكي + حرية الاختيار</span>
+              <span id="roadmap-recommended-level-pill" class="hidden px-2.5 py-0.5 rounded-full bg-emerald-400 text-slate-950 text-[11px] font-black">المستوى المقترح لك: A1</span>
+            </div>
+            <h4 class="text-sm sm:text-base font-extrabold text-white">احتار من أي مستوى تبدأ؟ امتحن اختبار تحديد المستوى المتدرج ليقترح عليك نقطة البداية المناسبة لقدرتك!</h4>
+            <p class="text-xs text-indigo-200">💡 يقترح عليك الاختبار المستوى الأنسب لك بدقة حتى لا تبدأ من مستوى أعلى أو أقل من قدرتك، <strong>ومع ذلك يظل اختيار أي مستوى بالأسفل متاحاً ومفتوحاً لك دائماً بحرية كاملة</strong>.</p>
+          </div>
+          <button type="button" id="btn-roadmap-open-placement" class="px-5 py-3 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 text-xs sm:text-sm font-black shrink-0 shadow-lg transition">
+            🧭 ابدأ اختبار تحديد المستوى الآن
+          </button>
         </div>
 
         <!-- 6 CEFR Levels Grid (Populated dynamically with live stage counts & progress) -->
@@ -1019,21 +1178,39 @@
 
       <!-- Quick Word of the Day + Pronunciation Tester -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div class="md:col-span-2 bg-white rounded-2xl p-5 border border-slate-200 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <div class="space-y-1">
-            <span class="inline-block px-2.5 py-0.5 rounded-md bg-indigo-50 text-indigo-700 text-xs font-bold">جملة التدريب اليومية</span>
-            <p class="font-en text-xl font-extrabold text-slate-900" id="daily-sentence-en">I am learning English step by step.</p>
-            <p class="text-xs text-indigo-600 font-semibold" id="daily-sentence-pron">النطق التقريبي: آي آم ليرنينج إنجلش ستيب باي ستيب</p>
-            <p class="text-sm text-slate-600" id="daily-sentence-ar">الترجمة: أنا أتعلم اللغة الإنجليزية خطوة بخطوة.</p>
+        <div class="md:col-span-2 bg-white rounded-2xl p-5 border-2 border-indigo-200 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div class="space-y-1.5 flex-1">
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="inline-block px-2.5 py-0.5 rounded-md bg-indigo-600 text-white text-xs font-extrabold">📅 جملة التدريب اليومية المتجددة</span>
+              <span id="daily-sentence-date-badge" class="inline-block px-2.5 py-0.5 rounded-md bg-emerald-50 text-emerald-800 border border-emerald-200 text-[11px] font-extrabold">جملة اليوم التلقائية</span>
+              <span id="daily-sentence-level-badge" class="inline-block px-2 py-0.5 rounded-md bg-amber-50 text-amber-800 border border-amber-200 text-[11px] font-extrabold font-en">A1</span>
+            </div>
+            <p class="font-en text-xl sm:text-2xl font-extrabold text-slate-900 leading-snug" id="daily-sentence-en">I am learning English step by step.</p>
+            <p class="text-xs sm:text-sm text-indigo-700 font-bold" id="daily-sentence-pron">النطق التقريبي: آي آم ليرنينج إنجلش ستيب باي ستيب</p>
+            <p class="text-sm text-slate-700 font-bold" id="daily-sentence-ar">الترجمة: أنا أتعلم اللغة الإنجليزية خطوة بخطوة.</p>
+            <p class="text-xs text-emerald-700 font-semibold" id="daily-sentence-tip">💡 نصيحة النطق الأمريكي: تتغير هذه الجملة تلقائياً كل يوم لتتعلم 365 تعبيراً وجملة حيوية على مدار العام.</p>
           </div>
-          <div class="flex sm:flex-col gap-2 shrink-0 w-full sm:w-auto">
-            <button type="button" id="btn-speak-daily-card" class="flex-1 sm:flex-initial px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold transition flex items-center justify-center gap-1.5">
+          <div class="flex flex-wrap sm:flex-col gap-2 shrink-0 w-full sm:w-auto">
+            <button type="button" id="btn-speak-daily-card" class="flex-1 sm:flex-initial px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-extrabold transition flex items-center justify-center gap-1.5 shadow-sm">
               <span>🔊</span>
               <span>استمع للنطق</span>
             </button>
-            <button type="button" id="btn-next-daily-card" class="flex-1 sm:flex-initial px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition">
-              🔄 جملة أخرى
+            <button type="button" id="btn-speak-daily-slow" class="flex-1 sm:flex-initial px-4 py-2 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 text-xs font-extrabold transition flex items-center justify-center gap-1.5">
+              <span>🐢</span>
+              <span>استمع ببطء للتدريب</span>
             </button>
+            <button type="button" id="btn-practice-daily-in-trainer" class="flex-1 sm:flex-initial px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-extrabold transition flex items-center justify-center gap-1.5">
+              <span>🎙️</span>
+              <span>تدرّب وسجّل صوتك</span>
+            </button>
+            <div class="flex gap-1.5 w-full">
+              <button type="button" id="btn-next-daily-card" class="flex-1 px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-extrabold transition">
+                🔄 جملة أخرى
+              </button>
+              <button type="button" id="btn-today-daily-card" class="px-3 py-2 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs font-extrabold transition" title="العودة لجملة تاريخ اليوم">
+                📅 اليوم
+              </button>
+            </div>
           </div>
         </div>
 
@@ -1718,7 +1895,7 @@
           <div class="space-y-1">
             <div class="inline-flex flex-wrap items-center gap-2">
               <span class="px-3 py-1 rounded-lg bg-red-600 text-white text-xs font-extrabold">▶️ مكتبة كورسات اليوتيوب الكاملة • ME Learning</span>
-              <span id="yt-total-progress-pill" class="px-3 py-1 rounded-lg bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-extrabold">8 كورسات كاملة (بما فيها كورس American Accent 🇺🇸) • جميع الفيديوهات والحلقات بالترتيب</span>
+              <span id="yt-total-progress-pill" class="px-3 py-1 rounded-lg bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-extrabold">7 كورسات كاملة (بما فيها كورس American Accent 🇺🇸) • جميع الفيديوهات والحلقات بالترتيب</span>
             </div>
             <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 mt-1">🎬 كورسات اليوتيوب الشاملة (كل كورس يحتوي على جميع فيديوهاته وحلقاته كاملة بالترتيب)</h2>
             <p class="text-xs sm:text-sm text-slate-600">اختر الكورس الذي تريد دراسته من البطاقات بالأسفل لتفتح لك <strong>قائمة جميع حلقات وفيديوهات هذا الكورس بالكامل</strong> بالترتيب من الحلقة الأولى حتى النهاية مع مشغل مدمج وتدريب نطق لكل حلقة.</p>
@@ -2692,6 +2869,149 @@
         </div>
       </div>
 
+      
+      <!-- ==================== DEDICATED AMERICAN PRONUNCIATION TRAINER STUDIO (مدرب النطق الأمريكي الذكي) ==================== -->
+      <div id="aa-pronunciation-trainer-studio" class="bg-gradient-to-br from-slate-900 via-indigo-950 to-blue-950 text-white rounded-3xl p-5 sm:p-7 border-2 border-emerald-400/50 shadow-2xl space-y-6">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-white/10 pb-4">
+          <div class="space-y-1.5">
+            <div class="inline-flex flex-wrap items-center gap-2">
+              <span class="px-3 py-1 rounded-full bg-emerald-400 text-slate-950 text-xs font-black">🎙️ مدرب النطق الأمريكي الذكي (American Pronunciation Trainer)</span>
+              <span id="pron-trainer-rep-badge" class="px-3 py-1 rounded-full bg-amber-400/20 text-amber-300 border border-amber-400/30 text-xs font-extrabold">عدد مرات التكرار اليوم: 0</span>
+              <span id="pron-trainer-best-score-badge" class="px-3 py-1 rounded-full bg-blue-500/20 text-blue-200 border border-blue-400/30 text-xs font-extrabold">أفضل تقييم نطق: --%</span>
+            </div>
+            <h3 class="text-xl sm:text-2xl font-black text-white">استمع للنطق الأمريكي ببطء، سجّل صوتك الحقيقي وكرّر الجمل، واحصل على تقييم فوري لدقة نطقك كلمة بكلمة</h3>
+            <p class="text-xs sm:text-sm text-blue-100">يعمل بـ 3 خطوات عملية: (1) استمع للنطق الصحيح بالسرعة البطيئة ثم الطبيعية، (2) سجّل صوتك بالمايكروفون واسمع تسجيلك وقارنه بالمتحدث الأصلي، (3) احصل على تقييم ذكي للنطق مع تلوين كل كلمة حسب دقتها.</p>
+          </div>
+          <div class="flex flex-wrap gap-2 shrink-0">
+            <button type="button" id="btn-pron-trainer-loop-shadow" class="px-4 py-2.5 rounded-2xl bg-amber-400 hover:bg-amber-300 text-slate-950 text-xs font-black shadow-lg transition flex items-center gap-1.5">
+              <span>🔁</span>
+              <span>تكرار صوتي تلقائي (بطيء ← طبيعي × 3)</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Sentence Picker & Custom Input Row -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+          <div class="lg:col-span-7 space-y-2">
+            <label for="pron-trainer-preset-select" class="block text-xs font-extrabold text-amber-300">📌 اختر جملة للتدريب من القائمة المصنفة (أو اكتب جملتك الخاصة):</label>
+            <div class="flex gap-2">
+              <select id="pron-trainer-preset-select" class="flex-1 px-3.5 py-2.5 rounded-xl bg-slate-950 border border-blue-400/50 text-white text-xs sm:text-sm font-extrabold focus:outline-none"></select>
+              <button type="button" id="btn-pron-trainer-prev-sent" class="px-3 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-extrabold transition" title="الجملة السابقة">➡️</button>
+              <button type="button" id="btn-pron-trainer-next-sent" class="px-3 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-extrabold transition" title="الجملة التالية">⬅️</button>
+            </div>
+          </div>
+          <div class="lg:col-span-5 space-y-2">
+            <label for="pron-trainer-custom-input" class="block text-xs font-extrabold text-emerald-300">✍️ أو اكتب أي جملة إنجليزية تريد التدرب على نطقها وتقييمها:</label>
+            <div class="flex gap-2">
+              <input id="pron-trainer-custom-input" type="text" dir="ltr" placeholder="Type any English sentence to practice..." class="font-en flex-1 px-3.5 py-2 rounded-xl bg-slate-950 border border-emerald-400/50 text-white text-xs sm:text-sm font-bold focus:outline-none" />
+              <button type="button" id="btn-pron-trainer-use-custom" class="px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-black shrink-0 transition">تطبيق</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Active Target Sentence Display Card -->
+        <div class="p-5 sm:p-6 rounded-3xl bg-slate-950/90 border-2 border-blue-500/40 space-y-4">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <span id="pron-trainer-focus-badge" class="px-3 py-1 rounded-lg bg-blue-500/20 text-blue-300 border border-blue-400/30 text-xs font-extrabold">قاعدة النطق: Flap T & Connected Speech</span>
+            <span class="text-xs text-slate-400 font-bold">اضغط على أي كلمة بالأسفل لسماع نطقها بمفردها ببطء 🔊</span>
+          </div>
+
+          <!-- Interactive Clickable Word-by-Word Target Sentence -->
+          <div id="pron-trainer-words-interactive" class="flex flex-wrap items-center gap-2 py-1" dir="ltr"></div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2 border-t border-slate-800">
+            <div>
+              <span class="text-[11px] text-amber-300 font-bold block">🇺🇸 النطق الصوتي الأمريكي المتصل (Connected Speech):</span>
+              <p id="pron-trainer-am-guide" class="font-en text-sm sm:text-base font-extrabold text-amber-200 mt-0.5">K-nai ge-da bo-dl-ə wa-der, pleez?</p>
+            </div>
+            <div>
+              <span class="text-[11px] text-emerald-300 font-bold block">🇪🇬 النطق التقريبي والترجمة بالعربية:</span>
+              <p id="pron-trainer-ar-guide" class="text-xs sm:text-sm font-bold text-slate-200 mt-0.5">كَناي جيدا بودل أُف وودر بليز؟ — هل يمكنني الحصول على زجاجة ماء من فضلك؟</p>
+            </div>
+          </div>
+
+          <!-- Step 1, Step 2, Step 3 Action Controls -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-3 pt-3 border-t border-slate-800">
+            <!-- Step 1: Slow & Normal Listening -->
+            <div class="p-3.5 rounded-2xl bg-slate-900 border border-blue-500/30 space-y-2.5">
+              <div class="text-xs font-black text-blue-300 flex items-center justify-between">
+                <span>1️⃣ الخطوة 1: استمع للنطق الصحيح</span>
+                <span>🔊</span>
+              </div>
+              <div class="grid grid-cols-2 gap-2">
+                <button type="button" id="btn-pron-listen-very-slow" class="px-3 py-2.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 text-xs font-black transition shadow">
+                  🐢 بطيء جداً (0.55x)
+                </button>
+                <button type="button" id="btn-pron-listen-slow" class="px-3 py-2.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 text-amber-200 border border-amber-400/40 text-xs font-extrabold transition">
+                  🚶 بطيء (0.75x)
+                </button>
+                <button type="button" id="btn-pron-listen-normal" class="col-span-2 px-3 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-black transition shadow">
+                  🇺🇸 السرعة الأمريكية الطبيعية (1.0x)
+                </button>
+              </div>
+            </div>
+
+            <!-- Step 2: Record Student Voice & Replay -->
+            <div class="p-3.5 rounded-2xl bg-slate-900 border border-rose-500/30 space-y-2.5">
+              <div class="text-xs font-black text-rose-300 flex items-center justify-between">
+                <span>2️⃣ الخطوة 2: سجّل صوتك وقيّم نطقك</span>
+                <span id="pron-rec-timer-badge" class="font-en text-[11px] text-rose-400 font-extrabold">00:00</span>
+              </div>
+              <div class="flex flex-col gap-2">
+                <button type="button" id="btn-pron-record-toggle" class="w-full px-4 py-3 rounded-xl bg-rose-600 hover:bg-rose-500 text-white text-xs sm:text-sm font-black shadow-lg transition flex items-center justify-center gap-2">
+                  <span id="pron-record-btn-icon">🎤</span>
+                  <span id="pron-record-btn-text">ابدأ تسجيل صوتك وتقييم النطق</span>
+                </button>
+                <div class="flex gap-2">
+                  <button type="button" id="btn-pron-play-my-voice" disabled class="flex-1 px-3 py-2 rounded-xl bg-slate-800 text-slate-400 border border-slate-700 text-xs font-extrabold transition disabled:opacity-50">
+                    ▶️ اسمع صوتي
+                  </button>
+                  <button type="button" id="btn-pron-compare-voices" disabled class="flex-1 px-3 py-2 rounded-xl bg-slate-800 text-slate-400 border border-slate-700 text-xs font-extrabold transition disabled:opacity-50" title="يُشغّل تسجيل صوتك ثم النطق الأمريكي الأصلي للمقارنة">
+                    🔄 قارن بالأصلي
+                  </button>
+                </div>
+              </div>
+              <audio id="pron-recorded-audio-player" class="hidden"></audio>
+            </div>
+
+            <!-- Step 3: Repetition & Mastery Tracker -->
+            <div class="p-3.5 rounded-2xl bg-slate-900 border border-emerald-500/30 space-y-2.5 flex flex-col justify-between">
+              <div class="space-y-1">
+                <div class="text-xs font-black text-emerald-300 flex items-center justify-between">
+                  <span>3️⃣ الخطوة 3: التكرار والإتقان</span>
+                  <span>🎯</span>
+                </div>
+                <p class="text-[11px] text-slate-300 leading-relaxed">كرّر الجملة بصوت مسموع 3 مرات على الأقل بعد سماعها ببطء لتثبيت مخارج الحروف الأمريكية.</p>
+              </div>
+              <div class="flex flex-col gap-2">
+                <button type="button" id="btn-pron-count-repetition" class="w-full px-3 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-black transition shadow">
+                  🔁 كرّرت الجملة الآن (+1 تكرار • +10 XP)
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Live Pronunciation Evaluation Result & Word-by-Word Feedback Box -->
+          <div id="pron-evaluation-result-panel" class="hidden p-4 sm:p-5 rounded-2xl bg-slate-900/95 border-2 border-emerald-400/50 space-y-3">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+              <div class="space-y-0.5">
+                <span class="text-xs font-extrabold text-emerald-300 block">📊 نتيجة تقييم النطق الفوري (AI Pronunciation Diagnostic):</span>
+                <h5 id="pron-eval-headline" class="text-base sm:text-lg font-black text-white">دقة نطقك: 92% — ممتاز جداً! 🌟</h5>
+              </div>
+              <div class="px-4 py-2 rounded-2xl bg-slate-950 border border-emerald-400/40 text-center">
+                <span class="text-[10px] text-slate-400 block font-bold">نسبة التطابق الصوتي</span>
+                <strong id="pron-eval-score-pct" class="font-en text-xl sm:text-2xl font-black text-emerald-400">92%</strong>
+              </div>
+            </div>
+            <p id="pron-eval-heard-transcript" class="text-xs sm:text-sm text-blue-200 font-bold"></p>
+            <div class="space-y-1.5">
+              <span class="text-[11px] text-amber-300 font-bold block">🔍 تقييم الكلمات كلمة بكلمة (اضغط على أي كلمة باللون الأصفر أو الأحمر لسماع نطقها الصحيح ببطء):</span>
+              <div id="pron-eval-word-breakdown" class="flex flex-wrap gap-2 pt-1" dir="ltr"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- ==================== PART 1: ALL 24 AMERICAN ACCENT LESSONS ==================== -->
       <div id="aa-section-lessons" class="bg-white rounded-3xl p-5 sm:p-7 border-2 border-blue-100 shadow-sm space-y-6">
         <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-slate-100 pb-4">
@@ -2846,6 +3166,146 @@
           </div>
         </div>
       </div>
+    </section>
+
+    
+    <!-- ==================== TAB: STUDENT DASHBOARD (لوحة تحكم الطالب الشاملة) ==================== -->
+    <section id="tab-studentdashboard" class="tab-panel hidden space-y-6">
+      <div class="rounded-3xl p-6 md:p-8 bg-gradient-to-br from-slate-950 via-emerald-950 to-indigo-950 text-white border-2 border-emerald-400/40 shadow-2xl space-y-6">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-5 border-b border-white/10 pb-5">
+          <div class="space-y-2">
+            <div class="inline-flex flex-wrap items-center gap-2">
+              <span class="px-3 py-1 rounded-full bg-emerald-500 text-slate-950 text-xs font-black">📊 لوحة تحكم الطالب الشخصية</span>
+              <span id="sd-student-name-badge" class="px-3 py-1 rounded-full bg-white/10 text-amber-300 border border-amber-400/30 text-xs font-extrabold">طالب أكاديمية ME Learning</span>
+            </div>
+            <h2 class="text-2xl sm:text-3xl font-black text-white">متابعة المستوى الحالي، الدروس المكتملة، نتائج الاختبارات، وآخر درس وصلت إليه</h2>
+            <p class="text-xs sm:text-sm text-emerald-100">كل خطوة تدرسها أو تتقنها في الأكاديمية تُحفظ هنا تلقائياً لتتمكن من إكمال دراستك في أي وقت من حيث توقفت تماماً.</p>
+          </div>
+          <div class="flex flex-wrap items-center gap-3 shrink-0">
+            <button type="button" id="btn-sd-resume-main" class="px-6 py-3.5 rounded-2xl bg-gradient-to-l from-amber-400 to-yellow-300 hover:from-amber-300 hover:to-yellow-200 text-slate-950 font-black text-xs sm:text-sm shadow-xl transition flex items-center gap-2">
+              <span>▶️</span>
+              <span id="sd-resume-main-label">أكمل من حيث توقفت الآن</span>
+            </button>
+            <button type="button" id="btn-sd-take-placement" class="px-4 py-3 rounded-2xl bg-white/10 hover:bg-white/20 text-white border border-white/20 font-extrabold text-xs sm:text-sm transition">
+              🧭 اختبار تحديد المستوى
+            </button>
+          </div>
+        </div>
+
+        <!-- Top 4 KPI Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="p-4 rounded-2xl bg-white/10 border border-white/15 space-y-1.5">
+            <span class="text-xs text-emerald-300 font-bold block">🌍 المستوى الحالي ونسبة الإنجاز</span>
+            <strong id="sd-kpi-level" class="text-xl sm:text-2xl font-black text-white block">A1 • المبتدئ والتأسيس</strong>
+            <div class="w-full h-2.5 bg-slate-900 rounded-full overflow-hidden">
+              <div id="sd-kpi-level-bar" class="h-full bg-emerald-400 rounded-full transition-all" style="width: 0%"></div>
+            </div>
+            <span id="sd-kpi-level-sub" class="text-xs text-slate-300 font-bold block">إنجاز المستوى الحالي: 0%</span>
+          </div>
+
+          <div class="p-4 rounded-2xl bg-white/10 border border-white/15 space-y-1.5">
+            <span class="text-xs text-amber-300 font-bold block">✅ إجمالي الدروس والعناصر المكتملة</span>
+            <strong id="sd-kpi-completed-total" class="text-xl sm:text-2xl font-black text-white block">0 درس مكتمل</strong>
+            <span id="sd-kpi-xp-total" class="text-xs text-amber-200 font-bold block">نقاط الخبرة: 0 XP ⭐</span>
+          </div>
+
+          <div class="p-4 rounded-2xl bg-white/10 border border-white/15 space-y-1.5">
+            <span class="text-xs text-sky-300 font-bold block">🏆 نتائج الاختبارات وتحديد المستوى</span>
+            <strong id="sd-kpi-quiz-best" class="text-xl sm:text-2xl font-black text-white block">0 / 12 في اختبار المستوى</strong>
+            <span id="sd-kpi-placement-rec" class="text-xs text-sky-200 font-bold block">المستوى المقترح: لم يُختبر بعد</span>
+          </div>
+
+          <div class="p-4 rounded-2xl bg-amber-400/15 border-2 border-amber-400/50 space-y-1.5">
+            <span class="text-xs text-amber-300 font-extrabold block">📍 آخر درس وصلت إليه</span>
+            <strong id="sd-kpi-last-lesson-title" class="text-sm sm:text-base font-black text-white block line-clamp-2">مرحلة 1: الصوتيات والنطق (A1)</strong>
+            <span id="sd-kpi-last-lesson-meta" class="text-[11px] text-amber-200 font-bold block">اضغط زر «أكمل من حيث توقفت» للعودة فوراً</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Detailed Progress Across All 6 CEFR Levels & Modules -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <!-- Left 7 cols: Completed Lessons Breakdown by Module & Level -->
+        <div class="lg:col-span-7 bg-white rounded-3xl p-5 sm:p-6 border border-slate-200 shadow-sm space-y-5">
+          <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+            <div>
+              <h3 class="text-lg sm:text-xl font-black text-slate-900">📚 تفصيل الدروس المكتملة والمراحل الدراسية</h3>
+              <p class="text-xs text-slate-500">نسبة تقدمك في كل قسم من أقسام الأكاديمية والمستويات الـ 6 (اضغط على أي قسم لفتحه فوراً):</p>
+            </div>
+            <span id="sd-modules-summary-pill" class="px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-extrabold">0 عنصر متقن</span>
+          </div>
+          <div id="sd-completed-modules-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-3.5"></div>
+
+          <div class="pt-4 border-t border-slate-100 space-y-3">
+            <h4 class="text-sm sm:text-base font-black text-slate-900">🌍 تقدمك عبر المستويات الستة (A1 → C2) — اضغط لاختيار أي مستوى:</h4>
+            <div id="sd-levels-progress-strip" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2.5"></div>
+          </div>
+        </div>
+
+        <!-- Right 5 cols: Test & Quiz Results History + Recent Activity Log -->
+        <div class="lg:col-span-5 space-y-6">
+          <div class="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200 shadow-sm space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+              <div>
+                <h3 class="text-base sm:text-lg font-black text-slate-900">🏆 سجل نتائج الاختبارات والامتحانات</h3>
+                <p class="text-xs text-slate-500">جميع نتائجك في اختبار تحديد المستوى، اختبارات المستويات، والامتحانات الـ 90:</p>
+              </div>
+              <button type="button" data-tab-jump="exams" class="px-3 py-1.5 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs font-extrabold transition">📝 بنك الامتحانات</button>
+            </div>
+            <div id="sd-test-results-list" class="space-y-2.5 max-h-72 overflow-y-auto custom-scrollbar pr-1"></div>
+          </div>
+
+          <div class="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200 shadow-sm space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+              <div>
+                <h3 class="text-base sm:text-lg font-black text-slate-900">🕒 آخر الدروس والمهارات التي أتقنتها</h3>
+                <p class="text-xs text-slate-500">سجل أحدث الدروس التي أتممتها بنجاح في الأكاديمية:</p>
+              </div>
+            </div>
+            <div id="sd-recent-completed-list" class="space-y-2 max-h-64 overflow-y-auto custom-scrollbar pr-1"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TAB: REAL GRADED PLACEMENT TEST (اختبار تحديد المستوى الحقيقي A1 -> C2) ==================== -->
+    <section id="tab-placement" class="tab-panel hidden space-y-6">
+      <div class="rounded-3xl p-6 md:p-8 bg-gradient-to-br from-indigo-950 via-slate-900 to-emerald-950 text-white border-2 border-amber-400/40 shadow-2xl space-y-5">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-white/10 pb-4">
+          <div class="space-y-2 max-w-3xl">
+            <div class="inline-flex flex-wrap items-center gap-2">
+              <span class="px-3 py-1 rounded-full bg-amber-400 text-slate-950 text-xs font-black">🧭 اختبار تحديد المستوى التدرجي المعتمد (CEFR A1 → C2)</span>
+              <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 text-xs font-extrabold">18 سؤالاً متدرجاً من المبتدئ حتى الاحتراف</span>
+            </div>
+            <h2 class="text-2xl sm:text-3xl font-black text-white">اختبار تحديد المستوى الحقيقي — اكتشف نقطة البداية الأنسب لقدرتك بدقة</h2>
+            <p class="text-xs sm:text-sm text-indigo-100 leading-relaxed">
+              يجيب الطالب على 18 سؤالاً متدرج الصعوبة (3 أسئلة لكل مستوى من A1 إلى C2 تشمل القواعد، المفردات، الفهم، والنطق)، ثم يقترح عليك النظام المستوى المناسب للبدء منه حتى لا تبدأ من مستوى أعلى أو أقل من قدرتك — <strong>مع بقاء الاختيار اليدوي لأي مستوى متاحاً لك دائماً</strong>.
+            </p>
+          </div>
+          <div class="flex flex-wrap gap-2 shrink-0">
+            <button type="button" id="btn-placement-restart" class="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-amber-300 border border-amber-400/30 text-xs font-extrabold transition">
+              🔄 إعادة الاختبار من البداية
+            </button>
+            <button type="button" data-tab-jump="roadmap" class="px-4 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-black transition">
+              🗺️ أو اختر مستواك يدوياً بدون اختبار
+            </button>
+          </div>
+        </div>
+
+        <!-- Placement Test Progress Bar -->
+        <div class="space-y-1.5">
+          <div class="flex items-center justify-between text-xs font-extrabold">
+            <span id="placement-progress-text" class="text-amber-300">السؤال 1 من 18 • المرحلة الحالية: مستوى A1</span>
+            <span id="placement-progress-pct" class="text-emerald-300 font-en">6%</span>
+          </div>
+          <div class="w-full h-3 bg-slate-950 rounded-full overflow-hidden p-0.5 border border-white/10">
+            <div id="placement-progress-bar" class="h-full bg-gradient-to-l from-amber-400 to-emerald-400 rounded-full transition-all duration-300" style="width: 6%"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Placement Test Active Question / Result Workspace -->
+      <div id="placement-test-workspace" class="bg-white rounded-3xl p-5 sm:p-7 border-2 border-indigo-100 shadow-sm space-y-6"></div>
     </section>
 
     <!-- ==================== TAB: ADMIN PORTAL (ME LEARNING DIRECTOR DASHBOARD) ==================== -->
@@ -3147,6 +3607,95 @@
             </div>
           </div>
 
+
+          <!-- Section D: Real No-Code Lesson & Content Management System (إدارة الدروس والمحتوى بدون تعديل الكود) -->
+          <div id="admin-cms-section" class="p-5 sm:p-6 rounded-3xl bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 text-white border-2 border-amber-400/50 shadow-xl space-y-5">
+            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3 border-b border-white/10 pb-4">
+              <div class="space-y-1">
+                <div class="inline-flex items-center gap-2">
+                  <span class="px-3 py-1 rounded-full bg-amber-400 text-slate-950 text-xs font-black">🛠️ نظام إدارة الدروس والمحتوى المباشر (No-Code CMS)</span>
+                  <span id="admin-cms-count-badge" class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 text-xs font-extrabold">0 إضافات مخصصة</span>
+                </div>
+                <h4 class="text-lg sm:text-xl font-black text-white">إدارة وإضافة وتعديل وحذف الدروس والكلمات والفيديوهات وجمل اليوم بدون تعديل الكود</h4>
+                <p class="text-xs text-indigo-200">أضف أي درس جديد (قواعد، نطق أمريكي، كلمات، جمل يومية، فيديو يوتيوب، أو سؤال اختبار) ليظهر فوراً للطلاب ويُحفظ تلقائياً.</p>
+              </div>
+              <div class="flex flex-wrap gap-2">
+                <button type="button" id="btn-admin-cms-export" class="px-3.5 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-black transition">
+                  📤 تصدير الدروس المضافة (JSON)
+                </button>
+              </div>
+            </div>
+
+            <!-- CMS Item Type Selector & Form -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <div>
+                <label class="block text-xs font-extrabold text-amber-300 mb-1">1️⃣ نوع المحتوى أو الدرس المراد إضافته:</label>
+                <select id="admin-cms-type" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-indigo-400 text-white text-xs font-extrabold">
+                  <option value="grammar">🧩 درس قواعد جديد (Grammar Lesson)</option>
+                  <option value="american">🇺🇸 درس American Accent جديد</option>
+                  <option value="vocab">🗂️ كلمة / مفردة جديدة (Vocabulary)</option>
+                  <option value="daily">📅 جملة تدريب يومية جديدة (Daily Sentence)</option>
+                  <option value="ytvideo">🎬 فيديو يوتيوب جديد (YouTube Episode)</option>
+                  <option value="quiz">🏆 سؤال اختبار جديد (Quiz Question)</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-xs font-extrabold text-amber-300 mb-1">2️⃣ المستوى الدراسي (A1 – C2):</label>
+                <select id="admin-cms-level" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-indigo-400 text-white text-xs font-extrabold">
+                  <option value="A1">A1 • المبتدئ والتأسيس</option>
+                  <option value="A2">A2 • الأساسي وما قبل المتوسط</option>
+                  <option value="B1">B1 • المتوسط المستقل</option>
+                  <option value="B2">B2 • فوق المتوسط والمهني</option>
+                  <option value="C1">C1 • المتقدم والأكاديمي</option>
+                  <option value="C2">C2 • الإتقان والطلاقة الكاملة</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-xs font-extrabold text-amber-300 mb-1">3️⃣ عنوان الدرس / الكلمة بالإنجليزية:</label>
+                <input id="admin-cms-title" type="text" placeholder="مثال: Present Perfect أو Water / Flap T..." class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-indigo-400 text-white text-xs font-bold" />
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <div>
+                <label class="block text-xs font-extrabold text-indigo-200 mb-1">الشرح بالعربية أو الترجمة:</label>
+                <input id="admin-cms-ar" type="text" placeholder="اكتب الشرح المبسط أو المعنى بالعربية..." class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white text-xs font-bold" />
+              </div>
+              <div>
+                <label class="block text-xs font-extrabold text-indigo-200 mb-1">المثال الإنجليزي أو الجملة الناطقة (أو رابط/كود يوتيوب):</label>
+                <input id="admin-cms-en-example" type="text" dir="ltr" placeholder="Example sentence or YouTube Video ID..." class="font-en w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white text-xs font-bold" />
+              </div>
+              <div>
+                <label class="block text-xs font-extrabold text-indigo-200 mb-1">النطق التقريبي أو القاعدة الذهبية:</label>
+                <input id="admin-cms-pron" type="text" placeholder="النطق التقريبي بالعربية أو ملاحظة الدرس..." class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white text-xs font-bold" />
+              </div>
+            </div>
+
+            <div class="flex flex-wrap items-center justify-between gap-3 pt-2">
+              <span class="text-xs text-emerald-300 font-bold">✅ يتم دمج أي درس تضيفه هنا فوراً في قوائم الأكاديمية ويبقى محفوظاً دائماً بدون تعديل الكود.</span>
+              <button type="button" id="btn-admin-cms-add-save" class="px-6 py-2.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 text-xs sm:text-sm font-black shadow-lg transition">
+                ➕ إضافة وحفظ الدرس في الأكاديمية فوراً
+              </button>
+            </div>
+
+            <!-- Table of Custom Added / Managed Lessons -->
+            <div class="overflow-x-auto rounded-2xl border border-slate-800 bg-slate-950/80">
+              <table class="w-full text-right text-xs">
+                <thead class="bg-slate-900 text-amber-300 font-extrabold border-b border-slate-800">
+                  <tr>
+                    <th class="p-3">#</th>
+                    <th class="p-3">القسم / النوع</th>
+                    <th class="p-3">المستوى</th>
+                    <th class="p-3">العنوان / الجملة</th>
+                    <th class="p-3">الشرح / الترجمة</th>
+                    <th class="p-3 text-center">إجراءات (استماع / حذف)</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-cms-items-tbody" class="divide-y divide-slate-800/80"></tbody>
+              </table>
+            </div>
+          </div>
+
           <!-- Section C: Quick Director Actions (Unlock Certificate, Export/Import JSON Backup) -->
           <div class="flex flex-wrap items-center justify-between gap-3 p-4 rounded-2xl bg-indigo-950 text-white">
             <div class="space-y-0.5">
@@ -3171,6 +3720,110 @@
     </section>
 
   </main>
+
+
+  <!-- ==================== GLOBAL INSTANT SEARCH MODAL (بحث سريع شامل في كل الأكاديمية) ==================== -->
+  <div id="global-search-modal" class="fixed inset-0 z-[75] hidden bg-slate-950/80 backdrop-blur-sm flex items-start justify-center p-3 sm:p-6 pt-12 sm:pt-20 no-print">
+    <div class="bg-white rounded-3xl max-w-2xl w-full p-5 sm:p-6 border-2 border-indigo-500 shadow-2xl space-y-4">
+      <div class="flex items-center justify-between gap-2 border-b border-slate-100 pb-3">
+        <div class="flex items-center gap-2">
+          <span class="text-xl">🔍</span>
+          <div>
+            <h3 class="text-base sm:text-lg font-black text-slate-900">البحث السريع الشامل في الأكاديمية</h3>
+            <p class="text-[11px] text-slate-500">ابحث بالعربية أو الإنجليزية في القواعد، دروس American Accent، الكلمات، الجمل، القصص، وكورسات اليوتيوب:</p>
+          </div>
+        </div>
+        <button type="button" id="btn-close-global-search" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-rose-100 text-slate-700 hover:text-rose-700 text-xs font-extrabold transition">✕ إغلاق</button>
+      </div>
+      <div class="relative">
+        <input id="global-quick-search-input" type="text" placeholder="اكتب ما تبحث عنه... (مثال: Flap T, مضارع, Water, محادثة, A2, قصة)..." class="w-full px-4 py-3 rounded-2xl border-2 border-indigo-300 text-sm font-bold focus:outline-none focus:border-indigo-600" />
+      </div>
+      <div id="global-quick-search-results" class="space-y-2 max-h-[60vh] overflow-y-auto custom-scrollbar pr-1"></div>
+    </div>
+  </div>
+
+  <!-- ==================== MOBILE CATEGORIZED FULL MENU DRAWER (قائمة الموبايل الواضحة) ==================== -->
+  <div id="mobile-nav-drawer" class="fixed inset-0 z-[75] hidden bg-slate-950/80 backdrop-blur-sm flex justify-end no-print">
+    <div class="bg-white w-full max-w-sm h-full p-5 overflow-y-auto space-y-5 shadow-2xl flex flex-col justify-between">
+      <div class="space-y-4">
+        <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+          <div>
+            <span class="text-[11px] font-extrabold text-indigo-600 block">📱 قائمة التنقل السريع للموبايل</span>
+            <h3 class="text-base font-black text-slate-900">جميع أقسام أكاديمية ME Learning</h3>
+          </div>
+          <button type="button" id="btn-close-mobile-drawer" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-rose-100 text-slate-700 text-xs font-extrabold">✕ إغلاق</button>
+        </div>
+
+        <div class="space-y-2">
+          <span class="text-xs font-black text-emerald-700 block">🧭 البداية السريعة والمتابعة الشخصية:</span>
+          <div class="grid grid-cols-2 gap-2">
+            <button type="button" data-mobile-tab="roadmap" class="p-2.5 rounded-xl bg-indigo-50 text-indigo-900 text-xs font-extrabold text-right">🗺️ المستويات الـ 6</button>
+            <button type="button" data-mobile-tab="studentdashboard" class="p-2.5 rounded-xl bg-emerald-50 text-emerald-900 text-xs font-extrabold text-right">📊 لوحة الطالب</button>
+            <button type="button" data-mobile-tab="placement" class="p-2.5 rounded-xl bg-amber-50 text-amber-900 text-xs font-extrabold text-right">🧭 تحديد المستوى</button>
+            <button type="button" data-mobile-tab="americanaccent" class="p-2.5 rounded-xl bg-blue-50 text-blue-900 text-xs font-extrabold text-right">🇺🇸 النطق الأمريكي</button>
+          </div>
+        </div>
+
+        <div class="space-y-2">
+          <span class="text-xs font-black text-indigo-700 block">📚 مراحل الدراسة الأساسية للمستوى:</span>
+          <div class="grid grid-cols-2 gap-2">
+            <button type="button" data-mobile-tab="alphabet" class="p-2.5 rounded-xl bg-slate-100 text-slate-800 text-xs font-bold text-right">🔤 1. الصوتيات والنطق</button>
+            <button type="button" data-mobile-tab="vocab" class="p-2.5 rounded-xl bg-slate-100 text-slate-800 text-xs font-bold text-right">🗂️ 2. الكلمات والبطاقات</button>
+            <button type="button" data-mobile-tab="grammar" class="p-2.5 rounded-xl bg-slate-100 text-slate-800 text-xs font-bold text-right">🧩 3. القواعد والجمل</button>
+            <button type="button" data-mobile-tab="dialogues" class="p-2.5 rounded-xl bg-slate-100 text-slate-800 text-xs font-bold text-right">💬 4. المحادثات</button>
+            <button type="button" data-mobile-tab="videos" class="p-2.5 rounded-xl bg-slate-100 text-slate-800 text-xs font-bold text-right">🎬 5. استوديو التحدث</button>
+            <button type="button" data-mobile-tab="quiz" class="p-2.5 rounded-xl bg-slate-100 text-slate-800 text-xs font-bold text-right">🏆 6. اختبار المستوى</button>
+          </div>
+        </div>
+
+        <div class="space-y-2">
+          <span class="text-xs font-black text-purple-700 block">🌟 الموسوعات الشاملة واليوتيوب والامتحانات:</span>
+          <div class="grid grid-cols-2 gap-2">
+            <button type="button" data-mobile-tab="ytcourses" class="p-2.5 rounded-xl bg-red-50 text-red-900 text-xs font-extrabold text-right">▶️ كورسات اليوتيوب</button>
+            <button type="button" data-mobile-tab="exams" class="p-2.5 rounded-xl bg-indigo-50 text-indigo-900 text-xs font-extrabold text-right">📝 90 امتحاناً شاملاً</button>
+            <button type="button" data-mobile-tab="allgrammar" class="p-2.5 rounded-xl bg-emerald-50 text-emerald-900 text-xs font-extrabold text-right">⚖️ موسوعة القواعد</button>
+            <button type="button" data-mobile-tab="stories" class="p-2.5 rounded-xl bg-rose-50 text-rose-900 text-xs font-extrabold text-right">📖 قصص المستويات</button>
+            <button type="button" data-mobile-tab="books" class="p-2.5 rounded-xl bg-teal-50 text-teal-900 text-xs font-extrabold text-right">📚 كتب الإنجليزية PDF</button>
+            <button type="button" data-mobile-tab="words5000" class="p-2.5 rounded-xl bg-indigo-50 text-indigo-900 text-xs font-bold text-right">📘 أهم 5000 كلمة</button>
+            <button type="button" data-mobile-tab="sentences5000" class="p-2.5 rounded-xl bg-emerald-50 text-emerald-900 text-xs font-bold text-right">🗣️ أهم 5000 جملة</button>
+            <button type="button" data-mobile-tab="dialogues5000" class="p-2.5 rounded-xl bg-sky-50 text-sky-900 text-xs font-bold text-right">👔 المقابلات الشخصية</button>
+            <button type="button" data-mobile-tab="jobs" class="p-2.5 rounded-xl bg-amber-50 text-amber-900 text-xs font-bold text-right">📐 الوظائف والمساحة</button>
+            <button type="button" data-mobile-tab="wordgame" class="p-2.5 rounded-xl bg-purple-50 text-purple-900 text-xs font-bold text-right">🎮 لعبة الكلمات</button>
+            <button type="button" data-mobile-tab="certificate" class="p-2.5 rounded-xl bg-amber-100 text-amber-950 text-xs font-extrabold text-right">🎓 الشهادة المعتمدة</button>
+            <button type="button" data-mobile-tab="appdownload" class="p-2.5 rounded-xl bg-slate-900 text-white text-xs font-extrabold text-right">🔐 لوحة الإدارة</button>
+          </div>
+        </div>
+      </div>
+
+      <button type="button" id="btn-mobile-drawer-resume" class="w-full py-3 rounded-2xl bg-emerald-600 text-white text-xs font-black shadow-lg">
+        ▶️ أكمل من حيث توقفت
+      </button>
+    </div>
+  </div>
+
+  <!-- ==================== FIXED BOTTOM MOBILE NAVIGATION BAR (شريط تنقل سفلي واضح للموبايل) ==================== -->
+  <div id="mobile-bottom-nav" class="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur border-t-2 border-indigo-100 shadow-2xl px-2 py-1.5 flex items-center justify-around no-print">
+    <button type="button" data-mobile-bottom-tab="roadmap" class="mobile-bottom-btn flex flex-col items-center justify-center py-1 px-2 rounded-xl text-indigo-700 font-extrabold text-[11px]">
+      <span class="text-base leading-none">🏠</span>
+      <span class="mt-0.5">الرئيسية</span>
+    </button>
+    <button type="button" data-mobile-bottom-tab="studentdashboard" class="mobile-bottom-btn flex flex-col items-center justify-center py-1 px-2 rounded-xl text-slate-600 font-bold text-[11px]">
+      <span class="text-base leading-none">📊</span>
+      <span class="mt-0.5">لوحة الطالب</span>
+    </button>
+    <button type="button" data-mobile-bottom-tab="americanaccent" class="mobile-bottom-btn flex flex-col items-center justify-center py-1 px-2 rounded-xl text-slate-600 font-bold text-[11px]">
+      <span class="text-base leading-none">🇺🇸</span>
+      <span class="mt-0.5">مدرب النطق</span>
+    </button>
+    <button type="button" data-mobile-bottom-tab="placement" class="mobile-bottom-btn flex flex-col items-center justify-center py-1 px-2 rounded-xl text-slate-600 font-bold text-[11px]">
+      <span class="text-base leading-none">🧭</span>
+      <span class="mt-0.5">تحديد المستوى</span>
+    </button>
+    <button type="button" id="btn-mobile-bottom-all-sections" class="flex flex-col items-center justify-center py-1 px-2.5 rounded-xl bg-indigo-600 text-white font-extrabold text-[11px]">
+      <span class="text-base leading-none">☰</span>
+      <span class="mt-0.5">كل الأقسام</span>
+    </button>
+  </div>
 
   <!-- Footer -->
   <footer class="bg-white border-t border-slate-200 mt-10 py-4 px-4 sm:px-6 text-center text-xs text-slate-500">
@@ -3717,11 +4370,36 @@
     };
 
     const DAILY_SENTENCES = [
-      { en: 'I am learning English step by step.', pron: 'آي آم ليرنينج إنجلش ستيب باي ستيب', ar: 'أنا أتعلم اللغة الإنجليزية خطوة بخطوة. (A1)' },
-      { en: 'Can you speak slowly, please?', pron: 'كان يو سبيك سلولي بليز؟', ar: 'هل يمكنك التحدث ببطء من فضلك؟ (A2)' },
-      { en: 'I have been practicing English to improve my career.', pron: 'آي هاڤ بين براكتيسينج إنجلش تو إمبروڤ ماي كرير', ar: 'أتدرب على الإنجليزية لتطوير مستقبلي المهني. (B1)' },
-      { en: 'If I were you, I would seize this opportunity.', pron: 'إف آي وير يو، آي وُد سيز ذِس أوبورتيونيتي', ar: 'لو كنت مكانك، لاغتنمت هذه الفرصة فوراً. (B2)' },
-      { en: 'Not only does he speak fluently, but he also writes eloquently.', pron: 'نوت أونلي دَز هي سبيك فلوينتلي، بَت هي أولسو رايتس إيلوكوينتلي', ar: 'لا يتحدث بطلاقة فحسب، بل يكتب ببلاغة أيضاً. (C1-C2)' }
+      { en: 'Consistency is the secret to mastering a new language.', pron: 'كونسيستنسي إز ذا سيكريت تو ماسترينج أ نيو لانجويج', ar: 'الاستمرارية هي سر إتقان لغة جديدة.', level: 'B1', tip: 'يربط الأمريكيون mastering a فتُنطق في نفس واحد: ماسترينجا.' },
+      { en: 'Could you get me a bottle of water, please?', pron: 'كودجا جيت مي أ بودل أُف وودر بليز؟', ar: 'هل يمكنك أن تحضر لي زجاجة ماء من فضلك؟', level: 'A2', tip: 'لاحظ Flap T في bottle و water، ودمج Could you إلى كودجا.' },
+      { en: 'I am learning English step by step every single day.', pron: 'آي آم ليرنينج إنجلش ستيب باي ستيب إيفري سينجل داي', ar: 'أنا أتعلم الإنجليزية خطوة بخطوة كل يوم.', level: 'A1', tip: 'انطق نغمة صاعدة عند step الأولى وهابطة عند الثانية.' },
+      { en: 'What are you going to do this weekend?', pron: 'واتشا جونا دو ذِس ويك-إند؟', ar: 'ماذا تخطط أن تفعل في عطلة نهاية الأسبوع هذه؟', level: 'A2', tip: 'في النطق الأمريكي السريع: What are you going to تصبح Whatcha gonna.' },
+      { en: 'I have been practicing my American pronunciation lately.', pron: 'آي هاڤ بين براكتيسينج ماي أميريكان برونانسييشن ليتلي', ar: 'أتدرب على نطقي الأمريكي مؤخراً.', level: 'B1', tip: 'انطق حرف الـ t في lately كهمزة توقف خفيفة قبل الـ ly.' },
+      { en: 'If I were in your shoes, I would take that job offer.', pron: 'إف آي وير إن يور شوز، آي وُد تيك ذات جوب أوفر', ar: 'لو كنت مكانك، لقبلت عرض العمل هذا.', level: 'B2', tip: 'تعبير in your shoes يعني في مكانك أو في موقفك.' },
+      { en: 'Let me know as soon as you arrive at the office.', pron: 'ليمي نو آز سون آز يو أرايڤ آت ذي أوفيس', ar: 'أبلغني بمجرد وصولك إلى المكتب.', level: 'B1', tip: 'تُختصر Let me في المحادثة الأمريكية الطبيعية إلى Lemme.' },
+      { en: 'Can you speak a little bit slower, please?', pron: 'كان يو سبيك أ ليدل بِت سلو-وَر بليز؟', ar: 'هل يمكنك التحدث أبطأ قليلاً من فضلك؟', level: 'A1', tip: 'كلمة little تُنطق بـ Flap T: ليدل، و bit تنتهي بـ Stop T.' },
+      { en: 'We need to figure out a practical solution right now.', pron: 'وي نيد تو فيجر آوت أ براكتيكال سولوشن رايت ناو', ar: 'نحتاج إلى التوصل لحل عملي الآن فوراً.', level: 'B2', tip: 'اربط figure out معاً كأنها كلمة واحدة: فيجَراوت.' },
+      { en: 'Practice makes progress, so never be afraid of making mistakes.', pron: 'براكتس ميكس بروجريس، سو نيڤر بي أفريد أُف ميكينج ميستيكس', ar: 'الممارسة تصنع التقدم، لذا لا تخف أبداً من ارتكاب الأخطاء.', level: 'B1', tip: 'تُختصر of قبل الحرف الساكن إلى صوت شوا خفيف: أُ.' },
+      { en: 'I would like to schedule an appointment for tomorrow morning.', pron: 'آي وُد لايك تو سكيدجول آن أبوينتمنت فور تومورو مورنينج', ar: 'أود تحديد موعد لصباح الغد.', level: 'A2', tip: 'في اللهجة الأمريكية تُنطق schedule بـ سكيدجول وليس شيدجول.' },
+      { en: 'Did you get a chance to review the engineering report?', pron: 'ديدجا جيت أ تشانس تو ريڤيو ذي إنجينيرينج ريبورت؟', ar: 'هل أتيحت لك الفرصة لمراجعة التقرير الهندسي؟', level: 'B2', tip: 'تندمج Did you إلى Didja، و get a إلى جيدا.' },
+      { en: 'Hard work and patience always pay off in the long run.', pron: 'هارد وورك آند بيشنس أولويز باي أوف إن ذا لونج رَن', ar: 'العمل الجاد والصبر يؤتيان ثمارهما دائماً على المدى البعيد.', level: 'B2', tip: 'تعبير pay off يعني يؤتي ثماره وينجح.' },
+      { en: 'Where is the nearest metro station from here?', pron: 'وير إز ذا نيرست ميترو ستيشن فروم هير؟', ar: 'أين تقع أقرب محطة مترو من هنا؟', level: 'A1', tip: 'لفّ لسانك للخلف عند نطق حرف R في Where و nearest و here.' },
+      { en: 'I should have called you earlier, but I was in a meeting.', pron: 'آي شُودا كولد يو إيرلير، بَد آي واز إن أ ميتينج', ar: 'كان ينبغي أن أتصل بك أبكر، لكنني كنت في اجتماع.', level: 'B2', tip: 'تُختصر should have في الكلام الأمريكي إلى shoulda، و meeting بـ Flap T: ميدينج.' },
+      { en: 'Not only does he speak fluently, but he also writes eloquently.', pron: 'نوت أونلي دَز هي سبيك فلوينتلي، بَت هي أولسو رايتس إيلوكوينتلي', ar: 'لا يتحدث بطلاقة فحسب، بل يكتب ببلاغة أيضاً.', level: 'C1', tip: 'أسلوب Inversion المتقدم يبدأ بـ Not only does.' },
+      { en: 'Give me a second to check the exact coordinates.', pron: 'جيمي أ سيكند تو تشيك ذي إجزاكت كوأوردينيتس', ar: 'أعطني ثانية للتحقق من الإحداثيات الدقيقة.', level: 'B1', tip: 'تُختصر Give me في الحديث اليومي إلى Gimme.' },
+      { en: 'I am really looking forward to working with your team.', pron: 'آي آم ريلي لوكينج فوروَرد تو ووركينج وِذ يور تيم', ar: 'أتطلع بشغف للعمل مع فريقكم.', level: 'B1', tip: 'لاحظ أن بعد look forward to يأتي الفعل مضافاً له ing.' },
+      { en: 'It is a piece of cake once you understand the main rule.', pron: 'إتس أ بيس أُف كيك وَنس يو أندرستاند ذا مين رول', ar: 'الأمر سهل للغاية بمجرد أن تفهم القاعدة الأساسية.', level: 'B1', tip: 'تعبير A piece of cake يعني أمر سهل جداً.' },
+      { en: 'Don’t worry about it; everything is going to be alright.', pron: 'دون ووري أباود إت؛ إيفري ثينج إز جونا بي أولرايت', ar: 'لا تقلق بشأن ذلك؛ كل شيء سيكون على ما يرام.', level: 'A2', tip: 'تختفي الـ t في Don’t بعد الـ n، و about it تصبح أباودِت بـ Flap T.' },
+      { en: 'How long have you been studying at ME Learning Academy?', pron: 'هاو لونج هاڤ يو بين ستاديينج آت مي ليرنينج أكاديمي؟', ar: 'منذ متى وأنت تدرس في أكاديمية ME Learning؟', level: 'B1', tip: 'المضارع التام المستمر للسؤال عن مدة نشاط ما زال مستمراً.' },
+      { en: 'We have got to finish this task before the deadline.', pron: 'وي جودا فينيش ذِس تاسك بيفور ذا ديدلاين', ar: 'علينا أن ننهي هذه المهمة قبل الموعد النهائي.', level: 'B1', tip: 'تُختصر have got to في النطق الأمريكي إلى gotta (جودا).' },
+      { en: 'Could you please repeat that one more time?', pron: 'كود يو بليز ريبيت ذات وَن مور تايم؟', ar: 'هل يمكنك من فضلك تكرار ذلك مرة أخرى؟', level: 'A1', tip: 'توقف بالهواء عند نهاية repeat و that بدون قلقلة (Stop T).' },
+      { en: 'Success doesn’t come overnight; it requires daily effort.', pron: 'سَكسيس دَزنت كَم أوڤر-نايت؛ إت ريكوايرز ديلي إيفورت', ar: 'النجاح لا يأتي بين عشية وضحاها؛ بل يتطلب جهداً يومياً.', level: 'B2', tip: 'ركّز النبر الصوتي على الكلمات المهمة: Success, overnight, daily effort.' },
+      { en: 'I used to feel shy when speaking English, but now I feel confident.', pron: 'آي يوست تو فيل شاي وين سبيكينج إنجلش، بَت ناو آي فيل كونفيدنت', ar: 'اعتدت أن أشعر بالخجل عند التحدث بالإنجليزية، لكنني الآن أشعر بالثقة.', level: 'B1', tip: 'تندمج d+t في used to فتُنطق يوستو.' },
+      { en: 'Make sure you double-check all measurements on the site.', pron: 'ميك شور يو دَبل-تشيك أول ميجرمينتس أون ذا سايت', ar: 'تأكد من مراجعة جميع القياسات مرتين في الموقع.', level: 'B2', tip: 'كلمة measurements تحتوي على صوت /ʒ/ الناعم مثل television.' },
+      { en: 'What do you usually do in your free time?', pron: 'واديو يوجوالي دو إن يور فري تايم؟', ar: 'ماذا تفعل عادةً في وقت فراغك؟', level: 'A2', tip: 'تندمج What do you في الكلام الأمريكي الطبيعي إلى Whaddaya / Wadyu.' },
+      { en: 'Had I known about the traffic, I would have left earlier.', pron: 'هاد آي نون أباوت ذا ترافيك، آي وُد هاڤ ليفت إيرلير', ar: 'لو كنت أعلم بشأن الازدحام المروري، لغادرت مبكراً.', level: 'C1', tip: 'الحالة الشرطية الثالثة المقلوبة بدون If.' },
+      { en: 'Thank you so much for your continuous support and guidance.', pron: 'ثانك يو سو مَتش فور يور كونتينيوَس سَبورت آند جايدنس', ar: 'شكراً جزيلاً لك على دعمك وإرشادك المستمر.', level: 'B1', tip: 'أخرج طرف اللسان برفق بين الأسنان عند نطق صوت TH في Thank.' },
+      { en: 'Every expert was once a beginner who refused to give up.', pron: 'إيفري إكسبرت واز وَنس أ بيجينر هو ريفيوزد تو جيڤ أب', ar: 'كل خبير كان يوماً ما مبتدئاً رفض الاستسلام.', level: 'B2', tip: 'اربط give up معاً ككلمة واحدة: جيڤَب.' }
     ];
 
     // ==================== STAGE 3 DATA: SENTENCE BUILDER (3 per level = 18) & GRAMMAR LESSONS (2 per level = 12) ====================
@@ -5342,6 +6020,9 @@
       if (!state.mastered[key]) {
         state.mastered[key] = true;
         state.xp += xpReward;
+        if (typeof recordCompletedLessonHistory === 'function') {
+          recordCompletedLessonHistory(key, toastMsg || key, xpReward);
+        }
         saveProgress();
         playChime('success');
         if (toastMsg) showToast(`${toastMsg} (+${xpReward} XP ⭐)`, 'success');
@@ -5349,6 +6030,9 @@
         playChime('click');
       }
       updateGlobalStatsUI();
+      if (typeof renderHomeQuickStudentDashboard === 'function') {
+        renderHomeQuickStudentDashboard();
+      }
     }
 
     // ==================== AUDIO & SPEECH ENGINE ====================
@@ -5792,11 +6476,43 @@
       });
     }
 
+    function getTodayDailySentenceIndex() {
+      const now = new Date();
+      const start = new Date(now.getFullYear(), 0, 0);
+      const diff = now - start;
+      const oneDay = 1000 * 60 * 60 * 24;
+      const dayOfYear = Math.floor(diff / oneDay);
+      return dayOfYear % DAILY_SENTENCES.length;
+    }
+
     function renderDailySentenceCard() {
-      const item = DAILY_SENTENCES[state.dailyIdx % DAILY_SENTENCES.length];
-      document.getElementById('daily-sentence-en').textContent = item.en;
-      document.getElementById('daily-sentence-pron').textContent = `النطق التقريبي: ${item.pron}`;
-      document.getElementById('daily-sentence-ar').textContent = `الترجمة: ${item.ar}`;
+      if (!state.__dailyInitializedToToday) {
+        state.__dailyInitializedToToday = true;
+        state.dailyIdx = getTodayDailySentenceIndex();
+      }
+      const safeIdx = ((state.dailyIdx % DAILY_SENTENCES.length) + DAILY_SENTENCES.length) % DAILY_SENTENCES.length;
+      const item = DAILY_SENTENCES[safeIdx];
+      const todayIdx = getTodayDailySentenceIndex();
+      const isToday = (safeIdx === todayIdx);
+      const nowStr = new Date().toLocaleDateString('ar-EG', { weekday: 'long', month: 'short', day: 'numeric' });
+
+      const enEl = document.getElementById('daily-sentence-en');
+      const pronEl = document.getElementById('daily-sentence-pron');
+      const arEl = document.getElementById('daily-sentence-ar');
+      const dateBadge = document.getElementById('daily-sentence-date-badge');
+      const lvBadge = document.getElementById('daily-sentence-level-badge');
+      const tipEl = document.getElementById('daily-sentence-tip');
+
+      if (enEl) enEl.textContent = item.en;
+      if (pronEl) pronEl.textContent = `النطق التقريبي: ${item.pron}`;
+      if (arEl) arEl.textContent = `الترجمة: ${item.ar}`;
+      if (dateBadge) {
+        dateBadge.textContent = isToday
+          ? `📅 جملة اليوم (${nowStr}) • #${safeIdx + 1} من ${DAILY_SENTENCES.length}`
+          : `🔄 جملة إضافية #${safeIdx + 1} من ${DAILY_SENTENCES.length}`;
+      }
+      if (lvBadge) lvBadge.textContent = item.level || 'A1–C2';
+      if (tipEl) tipEl.textContent = `💡 سر النطق الأمريكي: ${item.tip || 'استمع للجملة بالسرعة العادية والبطيئة وكررها بصوتك.'}`;
     }
 
     // ==================== NAVIGATION (INSTANT ON-DEMAND TAB RENDERING) ====================
@@ -5853,6 +6569,13 @@
           break;
         case 'americanaccent':
           if (typeof renderAmericanAccentModule === 'function') renderAmericanAccentModule();
+          if (typeof renderPronunciationTrainerStudio === 'function') renderPronunciationTrainerStudio();
+          break;
+        case 'studentdashboard':
+          if (typeof renderStudentDashboardModule === 'function') renderStudentDashboardModule();
+          break;
+        case 'placement':
+          if (typeof renderPlacementTestModule === 'function') renderPlacementTestModule();
           break;
 
         case 'jobs':
@@ -5887,7 +6610,16 @@
           ? 'nav-tab px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition flex items-center gap-2 bg-indigo-600 text-white shadow-sm'
           : 'nav-tab px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition flex items-center gap-2 text-slate-600 hover:bg-slate-200/70';
       });
+      if (typeof trackStudentTabVisit === 'function') {
+        trackStudentTabVisit(tabId);
+      }
+      if (typeof updateMobileBottomNavActiveState === 'function') {
+        updateMobileBottomNavActiveState(tabId);
+      }
       renderActiveTabContent(tabId);
+      if (tabId === 'roadmap' && typeof renderHomeQuickStudentDashboard === 'function') {
+        renderHomeQuickStudentDashboard();
+      }
       playChime('click');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -11911,121 +12643,10 @@
         ]
       },
       {
-        courseId: 'course_droos_online',
-        track: 'droos_online',
-        shortTab: '🎓 كورس أ. أحمد أبو زيد (دروس أونلاين • 11 حلقة)',
-        titleAr: '5. كورس أ. أحمد أبو زيد الشامل — دروس أونلاين (كل الأزمنة والقواعد وخطة الإتقان)',
-        instructor: 'أ. أحمد أبو زيد (قناة دروس أونلاين)',
-        levelRange: 'A1 → C1',
-        playlistUrl: 'https://www.youtube.com/watch?v=AzsWK6Jd6qU',
-        descAr: 'السلسلة الكاملة للمهندس أحمد أبو زيد (دروس أونلاين) لشرح جميع أزمنة اللغة الإنجليزية الـ 12 والقواعد الأساسية وخطة التعلم الذاتي.',
-        episodes: [
-          {
-            id: 'dr_1', epNum: 1, level: 'A1', duration: '24:15', videoId: 'AzsWK6Jd6qU',
-            title: 'الحلقة 1: خطة تعلم اللغة الإنجليزية من الصفر حتى الاحتراف (دليل أ. أحمد أبو زيد)',
-            desc: 'خارطة الطريق العملية لتطوير المهارات الأربع (الاستماع، التحدث، القراءة، والكتابة) ذاتياً.',
-            phrases: [
-              { en: 'Immersion and daily practice are the keys to mastering English.', ar: 'الانغماس في اللغة والممارسة اليومية هما مفتاحا إتقان الإنجليزية.' },
-              { en: 'Focus on practical sentences that you can use every day.', ar: 'ركّز على الجمل العملية التي يمكنك استخدامها كل يوم.' }
-            ]
-          },
-          {
-            id: 'dr_2', epNum: 2, level: 'A1', duration: '19:40', videoId: 'Go37F229I3c',
-            title: 'الحلقة 2: شرح زمن المضارع البسيط (Present Simple) بالتفصيل والأمثلة',
-            desc: 'تكوين المضارع البسيط، متى نضيف s للفعل، وكيف ننفي ونسأل بـ Do و Does.',
-            phrases: [
-              { en: 'The sun rises in the east and sets in the west.', ar: 'تشرق الشمس من الشرق وتغرب في الغرب.' },
-              { en: 'Does he work as a land surveyor? Yes, he does.', ar: 'هل يعمل مهندس مساحة؟ نعم.' }
-            ]
-          },
-          {
-            id: 'dr_3', epNum: 3, level: 'A1', duration: '18:20', videoId: 'hL2737x2U1A',
-            title: 'الحلقة 3: شرح زمن الماضي البسيط (Past Simple) في اللغة الإنجليزية',
-            desc: 'التعبير عن الأحداث المنتهية في الماضي والنفي بـ Didn’t والسؤال بـ Did.',
-            phrases: [
-              { en: 'I graduated from university and started my career two years ago.', ar: 'تخرجت من الجامعة وبدأت مسيرتي المهنية قبل عامين.' },
-              { en: 'Did you attend the training lecture yesterday?', ar: 'هل حضرت المحاضرة التدريبية بالأمس؟' }
-            ]
-          },
-          {
-            id: 'dr_4', epNum: 4, level: 'A2', duration: '17:50', videoId: '79k8-kL9wCo',
-            title: 'الحلقة 4: شرح زمن المستقبل البسيط (Future Simple: Will vs Be Going To)',
-            desc: 'الفرق الدقيق بين استخدام Will واستخدام Going to للتعبير عن المستقبل.',
-            phrases: [
-              { en: 'I will help you carry these heavy surveying instruments.', ar: 'سأساعدك في حمل أجهزة المساحة الثقيلة هذه.' },
-              { en: 'We have a clear plan; we are going to expand our academy this year.', ar: 'لدينا خطة واضحة؛ سوف نوسع أكاديميتنا هذا العام.' }
-            ]
-          },
-          {
-            id: 'dr_5', epNum: 5, level: 'A2', duration: '18:35', videoId: 'V1N32361hWE',
-            title: 'الحلقة 5: شرح زمن المضارع المستمر (Present Continuous) واستخداماته للمستقبل',
-            desc: 'التحدث عما يحدث الآن في لحظة الكلام أو الترتيبات المستقبلية المؤكدة.',
-            phrases: [
-              { en: 'Right now, I am watching an English lesson and taking notes.', ar: 'في الوقت الحالي، أنا أشاهد درساً إنجليزياً وأدون الملاحظات.' },
-              { en: 'We are flying to Dubai tomorrow morning for the exhibition.', ar: 'نحن مسافرون بالطائرة إلى دبي صباح الغد لحضور المعرض.' }
-            ]
-          },
-          {
-            id: 'dr_6', epNum: 6, level: 'B1', duration: '16:45', videoId: 'Go37F229I3c',
-            title: 'الحلقة 6: شرح زمن الماضي المستمر (Past Continuous) مع While و When',
-            desc: 'وصف حدث كان مستمراً في الماضي عندما قطعه حدث آخر.',
-            phrases: [
-              { en: 'I was reading a PDF book when my friend knocked on the door.', ar: 'كنت أقرأ كتاب PDF عندما طرق صديقي الباب.' },
-              { en: 'What were you doing at eight o’clock last night?', ar: 'ماذا كنت تفعل في الساعة الثامنة ليلة أمس؟' }
-            ]
-          },
-          {
-            id: 'dr_7', epNum: 7, level: 'B1', duration: '22:10', videoId: 'F4Q13B2zJ4M',
-            title: 'الحلقة 7: شرح زمن المضارع التام (Present Perfect) — أهم زمن في الإنجليزية',
-            desc: 'فهم العلاقة بين الماضي والحاضر واستخدام Just, Already, Yet, Ever, Never, Since, For.',
-            phrases: [
-              { en: 'I have lived in this city since 2018, and I love it.', ar: 'لقد عشت في هذه المدينة منذ عام 2018، وأنا أحبها.' },
-              { en: 'She has just completed all six levels in the academy.', ar: 'لقد أتمت للتو جميع المستويات الستة في الأكاديمية.' }
-            ]
-          },
-          {
-            id: 'dr_8', epNum: 8, level: 'B1', duration: '17:30', videoId: 'F4Q13B2zJ4M',
-            title: 'الحلقة 8: شرح زمن الماضي التام (Past Perfect: Had + P.P) وترتيب الأحداث',
-            desc: 'كيف تحدد الحدث الأقدم في الماضي باستخدام After, Before, By the time.',
-            phrases: [
-              { en: 'By the time the manager arrived, we had already prepared the presentation.', ar: 'بحلول الوقت الذي وصل فيه المدير، كنا قد أعددنا العرض التقديمي بالفعل.' },
-              { en: 'After he had checked the data, he signed the official certificate.', ar: 'بعد أن راجع البيانات، وقّع الشهادة الرسمية.' }
-            ]
-          },
-          {
-            id: 'dr_9', epNum: 9, level: 'B2', duration: '19:15', videoId: 'AzsWK6Jd6qU',
-            title: 'الحلقة 9: شرح المضارع التام المستمر (Have/Has been + V-ing)',
-            desc: 'التعبير عن حدث بدأ في الماضي وما زال مستمراً حتى اللحظة الحالية.',
-            phrases: [
-              { en: 'I have been studying English for three hours without a break.', ar: 'أنا أدرس الإنجليزية منذ ثلاث ساعات دون استراحة.' },
-              { en: 'How long have you been working in civil engineering?', ar: 'منذ متى وأنت تعمل في الهندسة المدنية؟' }
-            ]
-          },
-          {
-            id: 'dr_10', epNum: 10, level: 'B2', duration: '21:00', videoId: 'Go37F229I3c',
-            title: 'الحلقة 10: ملخص الأزمنة الـ 12 في اللغة الإنجليزية في محاضرة واحدة شاملة',
-            desc: 'مقارنة شاملة على خط الزمن لجميع أزمنة الماضي والمضارع والمستقبل.',
-            phrases: [
-              { en: 'Mastering the twelve tenses gives you complete accuracy in speaking and writing.', ar: 'إتقان الأزمنة الاثني عشر يمنحك دقة كاملة في التحدث والكتابة.' },
-              { en: 'Choose the tense that matches the exact time and state of the action.', ar: 'اختر الزمن الذي يطابق الوقت والحالة الدقيقة للحدث.' }
-            ]
-          },
-          {
-            id: 'dr_11', epNum: 11, level: 'C1', duration: '20:30', videoId: 'AzsWK6Jd6qU',
-            title: 'الحلقة 11: كيف تفكر وتتحدث بالإنجليزية بطلاقة وتجتاز مقابلات العمل العالمية',
-            desc: 'نصائح ذهبية للتحضير لمقابلات العمل باللغة الإنجليزية وبناء الثقة بالنفس.',
-            phrases: [
-              { en: 'Prepare clear examples of your achievements before any job interview.', ar: 'جهّز أمثلة واضحة لإنجازاتك قبل أي مقابلة عمل.' },
-              { en: 'Confidence comes from thorough preparation and continuous practice.', ar: 'الثقة تأتي من التحضير الجيد والممارسة المستمرة.' }
-            ]
-          }
-        ]
-      },
-      {
         courseId: 'course_auc_complete',
         track: 'auc_complete',
         shortTab: '🏛️ كورس الجامعة الأمريكية AUC (11 محاضرة كاملة)',
-        titleAr: '6. كورس الجامعة الأمريكية الكامل لتعلم الإنجليزية (English For You — AUC Complete Course)',
+        titleAr: '5. كورس الجامعة الأمريكية الكامل لتعلم الإنجليزية (English For You — AUC Complete Course)',
         instructor: 'كورس الجامعة الأمريكية التفاعلي (English For You)',
         levelRange: 'A1 → B2',
         playlistUrl: 'https://www.youtube.com/watch?v=IeaadwctbD4',
@@ -12136,7 +12757,7 @@
         courseId: 'course_native_conv',
         track: 'native_conv',
         shortTab: '🌍 كورس المحادثة والاستماع للأجانب (10 حلقات)',
-        titleAr: '7. كورس المحادثة والاستماع للمتحدثين الأصليين (Native English Conversation & Shadowing)',
+        titleAr: '6. كورس المحادثة والاستماع للمتحدثين الأصليين (Native English Conversation & Shadowing)',
         instructor: 'نخبة المعلمين الأجانب (BBC & Native Speakers)',
         levelRange: 'A1 → C2',
         playlistUrl: 'https://www.youtube.com/watch?v=henIVlCPVIY',
@@ -18558,6 +19179,1583 @@
     }
 
     // ==================== INITIALIZATION & EVENT LISTENERS ====================
+    
+    // ============================================================================
+    // UPGRADE MODULE 1: STUDENT DASHBOARD, LAST LESSON TRACKER & TEST HISTORY
+    // ============================================================================
+    const TAB_TITLES_AR = {
+      roadmap: 'خارطة المستويات الـ 6 ومراحلها',
+      studentdashboard: 'لوحة تحكم الطالب الشاملة',
+      placement: 'اختبار تحديد المستوى التدرجي',
+      alphabet: 'المرحلة 1: الصوتيات ومخارج النطق والحروف',
+      vocab: 'المرحلة 2: الكلمات والبطاقات الذكية',
+      grammar: 'المرحلة 3: القواعد وتكوين الجمل',
+      dialogues: 'المرحلة 4: المحادثات الواقعية الناطقة',
+      videos: 'المرحلة 5: استوديو الاستماع والتحدث',
+      quiz: 'المرحلة 6: الاختبار الشامل للمستوى',
+      americanaccent: 'قائمة American Accent 🇺🇸 ومدرب النطق الأمريكي',
+      ytcourses: 'مكتبة كورسات اليوتيوب الكاملة',
+      exams: 'بنك الـ 90 امتحاناً للمستويات (A1–C2)',
+      allgrammar: 'موسوعة كل قواعد الإنجليزية الشاملة',
+      stories: 'قصص المستويات التفاعلية والأسئلة',
+      books: 'مكتبة كتب تعلم الإنجليزية وإبراهيم عادل PDF',
+      words5000: 'موسوعة أهم 5000 كلمة إنجليزية',
+      sentences5000: 'موسوعة أهم 5000 جملة إنجليزية',
+      dialogues5000: 'موسوعة المقابلات الشخصية (Job Interviews)',
+      jobs: 'موسوعة الوظائف وهندسة المساحة',
+      wordgame: 'لعبة الكلمات والأمثلة التفاعلية',
+      certificate: 'شهادة إتمام المستوى المعتمدة'
+    };
+
+    function getStudentExtendedMeta() {
+      try {
+        const raw = localStorage.getItem('me_learning_student_meta_v2');
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (parsed && typeof parsed === 'object') return parsed;
+        }
+      } catch (e) {}
+      return {
+        lastLesson: {
+          tab: 'alphabet',
+          level: state.studentLevel || 'A1',
+          titleAr: 'المرحلة 1: الصوتيات ومخارج النطق والحروف',
+          detailAr: 'المستوى ' + (state.studentLevel || 'A1'),
+          updatedAt: 'الآن'
+        },
+        placementResult: null,
+        quizHistory: [],
+        completedLog: [],
+        pronTrainerReps: 0,
+        pronTrainerBestPct: 0
+      };
+    }
+
+    function saveStudentExtendedMeta(meta) {
+      try {
+        localStorage.setItem('me_learning_student_meta_v2', JSON.stringify(meta));
+      } catch (e) {}
+    }
+
+    function trackStudentTabVisit(tabId, customDetailAr) {
+      if (!tabId || tabId === 'roadmap' || tabId === 'studentdashboard' || tabId === 'appdownload') return;
+      const meta = getStudentExtendedMeta();
+      const titleAr = TAB_TITLES_AR[tabId] || tabId;
+      const nowTime = new Date().toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
+      meta.lastLesson = {
+        tab: tabId,
+        level: state.studentLevel || 'A1',
+        titleAr: titleAr,
+        detailAr: customDetailAr || (`مستوى ${state.studentLevel || 'A1'} • آخر زيارة الساعة ${nowTime}`),
+        updatedAt: nowTime
+      };
+      saveStudentExtendedMeta(meta);
+      renderHomeQuickStudentDashboard();
+    }
+
+    function recordCompletedLessonHistory(key, labelAr, xpEarned) {
+      const meta = getStudentExtendedMeta();
+      meta.completedLog = Array.isArray(meta.completedLog) ? meta.completedLog : [];
+      const nowStr = new Date().toLocaleDateString('ar-EG', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+      meta.completedLog.unshift({
+        key,
+        labelAr: labelAr || key,
+        level: state.studentLevel || 'A1',
+        xp: xpEarned || 10,
+        date: nowStr
+      });
+      if (meta.completedLog.length > 40) meta.completedLog = meta.completedLog.slice(0, 40);
+      saveStudentExtendedMeta(meta);
+    }
+
+    function recordStudentQuizResult(quizType, titleAr, score, total, levelCode) {
+      const meta = getStudentExtendedMeta();
+      meta.quizHistory = Array.isArray(meta.quizHistory) ? meta.quizHistory : [];
+      const pct = total > 0 ? Math.round((score / total) * 100) : 0;
+      const nowStr = new Date().toLocaleDateString('ar-EG', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+      meta.quizHistory.unshift({
+        type: quizType,
+        titleAr,
+        score,
+        total,
+        pct,
+        level: levelCode || state.studentLevel || 'A1',
+        date: nowStr
+      });
+      if (meta.quizHistory.length > 30) meta.quizHistory = meta.quizHistory.slice(0, 30);
+      saveStudentExtendedMeta(meta);
+    }
+
+    function resumeFromWhereLeftOff() {
+      const meta = getStudentExtendedMeta();
+      const last = meta.lastLesson || { tab: 'alphabet', level: state.studentLevel || 'A1', titleAr: 'المرحلة 1: الصوتيات والنطق' };
+      if (last.level && CEFR_LEVELS.includes(last.level)) {
+        state.studentLevel = last.level;
+        updateGlobalStatsUI();
+      }
+      const targetTab = last.tab || 'alphabet';
+      switchTab(targetTab);
+      showToast(`▶️ تم استئناف الدراسة من: ${last.titleAr} (${last.level || state.studentLevel})`, 'success');
+    }
+
+    function renderHomeQuickStudentDashboard() {
+      const meta = getStudentExtendedMeta();
+      const lv = normalizeLevel(state.studentLevel);
+      const lvMeta = CEFR_LEVELS_META[lv] || CEFR_LEVELS_META.A1;
+      const lvProg = getLevelOverallProgress(lv);
+      const masteredCount = Object.keys(state.mastered || {}).length;
+      const last = meta.lastLesson || { tab: 'alphabet', level: lv, titleAr: 'المرحلة 1: الصوتيات والنطق' };
+
+      const curLvEl = document.getElementById('home-dash-current-level');
+      if (curLvEl) curLvEl.textContent = `${lv} • ${lvMeta.shortAr.split('•')[1] || lvMeta.shortAr}`;
+      const lvPctEl = document.getElementById('home-dash-level-pct');
+      if (lvPctEl) lvPctEl.textContent = `نسبة إنجاز المستوى ${lv}: ${lvProg.pct}% (${lvProg.completedStages}/10 مراحل)`;
+
+      const compEl = document.getElementById('home-dash-completed-count');
+      if (compEl) compEl.textContent = `${masteredCount} درس ومهارة مكتملة`;
+      const xpSubEl = document.getElementById('home-dash-xp-Sub');
+      if (xpSubEl) xpSubEl.textContent = `إجمالي النقاط: ${state.xp} XP ⭐`;
+
+      const quizSumEl = document.getElementById('home-dash-quiz-summary');
+      const totalTests = (meta.quizHistory || []).length;
+      if (quizSumEl) {
+        quizSumEl.textContent = state.bestQuizScore > 0
+          ? `أعلى اختبار مستوى: ${state.bestQuizScore} / 12`
+          : (totalTests > 0 ? `أتممت ${totalTests} اختبار` : 'ابدأ أول اختبار لك');
+      }
+      const examsCntEl = document.getElementById('home-dash-exams-count');
+      if (examsCntEl) {
+        examsCntEl.textContent = meta.placementResult
+          ? `مستوى التحديد المقترح: ${meta.placementResult.recommendedLevel}`
+          : `سجل الاختبارات محفوظ (${totalTests} نتيجة)`;
+      }
+
+      const lastTitleEl = document.getElementById('home-dash-last-lesson-title');
+      if (lastTitleEl) lastTitleEl.textContent = last.titleAr;
+      const lastTimeEl = document.getElementById('home-dash-last-lesson-time');
+      if (lastTimeEl) lastTimeEl.textContent = last.detailAr || `المستوى ${last.level || lv}`;
+
+      const heroResumeText = document.getElementById('btn-hero-resume-text');
+      if (heroResumeText) heroResumeText.textContent = `أكمل من حيث توقفت: ${last.titleAr.split(':')[0]}`;
+      const homeResumeLbl = document.getElementById('home-resume-btn-label');
+      if (homeResumeLbl) homeResumeLbl.textContent = `أكمل: ${last.titleAr.split(':')[0]}`;
+
+      const plBadge = document.getElementById('home-dash-placement-badge');
+      const roadmapRecPill = document.getElementById('roadmap-recommended-level-pill');
+      if (meta.placementResult && meta.placementResult.recommendedLevel) {
+        if (plBadge) {
+          plBadge.textContent = `🧭 نتيجة تحديد المستوى: نقترح البدء من ${meta.placementResult.recommendedLevel} (${meta.placementResult.pct}%)`;
+          plBadge.className = 'px-3 py-1 rounded-full bg-emerald-100 text-emerald-900 border border-emerald-300 text-xs font-extrabold';
+        }
+        if (roadmapRecPill) {
+          roadmapRecPill.textContent = `المستوى المقترح لك: ${meta.placementResult.recommendedLevel}`;
+          roadmapRecPill.classList.remove('hidden');
+        }
+      }
+    }
+
+    function renderStudentDashboardModule() {
+      const meta = getStudentExtendedMeta();
+      const lv = normalizeLevel(state.studentLevel);
+      const lvMeta = CEFR_LEVELS_META[lv] || CEFR_LEVELS_META.A1;
+      const lvProg = getLevelOverallProgress(lv);
+      const masteredKeys = Object.keys(state.mastered || {});
+      const last = meta.lastLesson || { tab: 'alphabet', level: lv, titleAr: 'المرحلة 1: الصوتيات والنطق' };
+
+      const nameBadge = document.getElementById('sd-student-name-badge');
+      if (nameBadge) {
+        nameBadge.textContent = state.studentNameAr
+          ? `👨‍🎓 الطالب: ${state.studentNameAr} (${state.currentStudentUser || 'مسجل'})`
+          : '👨‍🎓 طالب أكاديمية ME Learning';
+      }
+
+      const kpiLv = document.getElementById('sd-kpi-level');
+      if (kpiLv) kpiLv.textContent = `${lv} • ${lvMeta.shortAr.split('•')[1] || lvMeta.shortAr}`;
+      const kpiLvBar = document.getElementById('sd-kpi-level-bar');
+      if (kpiLvBar) kpiLvBar.style.width = `${lvProg.pct}%`;
+      const kpiLvSub = document.getElementById('sd-kpi-level-sub');
+      if (kpiLvSub) kpiLvSub.textContent = `نسبة إنجاز المستوى ${lv}: ${lvProg.pct}% (${lvProg.done}/${lvProg.total} مهارة)`;
+
+      const kpiComp = document.getElementById('sd-kpi-completed-total');
+      if (kpiComp) kpiComp.textContent = `${masteredKeys.length} درس ومهارة مكتملة`;
+      const kpiXp = document.getElementById('sd-kpi-xp-total');
+      if (kpiXp) kpiXp.textContent = `نقاط الخبرة: ${state.xp} XP ⭐`;
+
+      const kpiQuiz = document.getElementById('sd-kpi-quiz-best');
+      if (kpiQuiz) kpiQuiz.textContent = `أعلى درجة اختبار مستوى: ${state.bestQuizScore} / 12`;
+      const kpiPl = document.getElementById('sd-kpi-placement-rec');
+      if (kpiPl) {
+        kpiPl.textContent = meta.placementResult
+          ? `🧭 المستوى المقترح لك: ${meta.placementResult.recommendedLevel} (${meta.placementResult.score}/${meta.placementResult.total})`
+          : '🧭 لم تجرِ اختبار تحديد المستوى بعد';
+      }
+
+      const kpiLastTitle = document.getElementById('sd-kpi-last-lesson-title');
+      if (kpiLastTitle) kpiLastTitle.textContent = last.titleAr;
+      const kpiLastMeta = document.getElementById('sd-kpi-last-lesson-meta');
+      if (kpiLastMeta) kpiLastMeta.textContent = last.detailAr || `المستوى ${last.level || lv}`;
+      const resumeMainLbl = document.getElementById('sd-resume-main-label');
+      if (resumeMainLbl) resumeMainLbl.textContent = `أكمل من حيث توقفت: ${last.titleAr}`;
+
+      const modPill = document.getElementById('sd-modules-summary-pill');
+      if (modPill) modPill.textContent = `${masteredKeys.length} عنصر متقن إجمالاً`;
+
+      // Modules Breakdown Grid
+      const modulesGrid = document.getElementById('sd-completed-modules-grid');
+      if (modulesGrid) {
+        const aaDone = (typeof AMERICAN_ACCENT_LESSONS !== 'undefined')
+          ? AMERICAN_ACCENT_LESSONS.filter(l => state.mastered['aa_lesson_' + l.id]).length
+          : 0;
+        const aaTotal = (typeof AMERICAN_ACCENT_LESSONS !== 'undefined') ? AMERICAN_ACCENT_LESSONS.length : 24;
+
+        const ytAllEps = YOUTUBE_FULL_COURSES.reduce((acc, c) => acc + c.episodes.length, 0);
+        const ytDoneEps = YOUTUBE_FULL_COURSES.reduce((acc, c) => acc + c.episodes.filter(ep => state.mastered['yt_' + ep.id]).length, 0);
+
+        const phonStat = getStageStatsForLevel(lv, 'alphabet');
+        const vocabStat = getStageStatsForLevel(lv, 'vocab');
+        const gramStat = getStageStatsForLevel(lv, 'grammar');
+        const dlgStat = getStageStatsForLevel(lv, 'dialogues');
+        const storyStat = getStageStatsForLevel(lv, 'stories');
+        const examStat = getStageStatsForLevel(lv, 'exams');
+
+        const moduleItems = [
+          { tab: 'americanaccent', icon: '🇺🇸', title: 'دروس American Accent 🇺🇸', done: aaDone, total: aaTotal, color: 'blue' },
+          { tab: 'ytcourses', icon: '🎬', title: 'حلقات كورسات اليوتيوب', done: ytDoneEps, total: ytAllEps, color: 'red' },
+          { tab: 'alphabet', icon: '🔤', title: `الصوتيات والحروف (${lv})`, done: phonStat.done, total: phonStat.total, color: 'indigo' },
+          { tab: 'vocab', icon: '🗂️', title: `الكلمات والجمل (${lv})`, done: vocabStat.done, total: vocabStat.total, color: 'emerald' },
+          { tab: 'grammar', icon: '🧩', title: `القواعد وتكوين الجمل (${lv})`, done: gramStat.done, total: gramStat.total, color: 'purple' },
+          { tab: 'dialogues', icon: '💬', title: `المحادثات والقصص (${lv})`, done: dlgStat.done + storyStat.done, total: dlgStat.total + storyStat.total, color: 'teal' },
+          { tab: 'exams', icon: '📝', title: `امتحانات المستوى (${lv})`, done: examStat.done, total: 15, color: 'amber' },
+          { tab: 'quiz', icon: '🏆', title: `الاختبار النهائي (${lv})`, done: getStageStatsForLevel(lv, 'quiz').done, total: getStageStatsForLevel(lv, 'quiz').total, color: 'rose' }
+        ];
+
+        modulesGrid.innerHTML = moduleItems.map(m => {
+          const pct = m.total > 0 ? Math.min(100, Math.round((m.done / m.total) * 100)) : 0;
+          return `
+            <div data-tab-jump="${m.tab}" class="p-4 rounded-2xl bg-slate-50 hover:bg-indigo-50/50 border border-slate-200 hover:border-indigo-300 cursor-pointer transition space-y-2">
+              <div class="flex items-center justify-between gap-2">
+                <span class="text-xs sm:text-sm font-extrabold text-slate-900">${m.icon} ${m.title}</span>
+                <span class="font-en text-xs font-black text-emerald-700">${m.done}/${m.total} (${pct}%)</span>
+              </div>
+              <div class="w-full h-2 bg-slate-200 rounded-full overflow-hidden">
+                <div class="h-full bg-indigo-600 rounded-full" style="width:${pct}%"></div>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      // 6 Levels Progress Strip
+      const levelsStrip = document.getElementById('sd-levels-progress-strip');
+      if (levelsStrip) {
+        levelsStrip.innerHTML = CEFR_LEVELS.map(code => {
+          const prog = getLevelOverallProgress(code);
+          const isCur = code === lv;
+          return `
+            <button type="button" data-sd-select-level="${code}" class="p-3 rounded-2xl border-2 text-center transition ${
+              isCur ? 'bg-indigo-600 text-white border-indigo-600 shadow-md' : 'bg-slate-50 hover:bg-white text-slate-800 border-slate-200'
+            }">
+              <div class="font-en text-base font-black">${code}</div>
+              <div class="text-[11px] font-bold ${isCur ? 'text-amber-200' : 'text-emerald-700'}">${prog.pct}% مكتمل</div>
+              <div class="text-[10px] ${isCur ? 'text-indigo-100' : 'text-slate-500'}">${prog.completedStages}/10 مراحل</div>
+            </button>
+          `;
+        }).join('');
+      }
+
+      // Test Results List
+      const testListEl = document.getElementById('sd-test-results-list');
+      if (testListEl) {
+        const history = Array.isArray(meta.quizHistory) ? meta.quizHistory : [];
+        if (history.length === 0) {
+          testListEl.innerHTML = `
+            <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 text-center space-y-2">
+              <p class="text-xs font-bold text-slate-600">لم تقم بحل اختبارات بعد. جرب اختبار تحديد المستوى أو اختبارات المستويات لتظهر نتائجك هنا بالتفصيل.</p>
+              <button type="button" data-tab-jump="placement" class="px-4 py-2 rounded-xl bg-indigo-600 text-white text-xs font-extrabold">🧭 ابدأ اختبار تحديد المستوى</button>
+            </div>
+          `;
+        } else {
+          testListEl.innerHTML = history.map((h, i) => `
+            <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between gap-2">
+              <div>
+                <div class="flex items-center gap-1.5">
+                  <span class="px-2 py-0.5 rounded bg-indigo-100 text-indigo-800 font-en text-[10px] font-black">${h.level || 'A1'}</span>
+                  <strong class="text-xs font-extrabold text-slate-900">${h.titleAr}</strong>
+                </div>
+                <span class="text-[11px] text-slate-500 font-semibold">${h.date || ''}</span>
+              </div>
+              <span class="px-3 py-1 rounded-xl font-en text-xs font-black ${
+                h.pct >= 70 ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'
+              }">${h.score}/${h.total} (${h.pct}%)</span>
+            </div>
+          `).join('');
+        }
+      }
+
+      // Recent Completed Lessons List
+      const recentEl = document.getElementById('sd-recent-completed-list');
+      if (recentEl) {
+        const log = Array.isArray(meta.completedLog) ? meta.completedLog : [];
+        if (log.length === 0) {
+          recentEl.innerHTML = `<p class="text-xs text-slate-500 font-bold p-3 text-center">ابدأ بإتقان أي درس أو كلمة أو جملة ليظهر سجل إنجازاتك الزمني هنا.</p>`;
+        } else {
+          recentEl.innerHTML = log.slice(0, 15).map(item => `
+            <div class="p-2.5 rounded-xl bg-emerald-50/60 border border-emerald-200 flex items-center justify-between gap-2 text-xs">
+              <div class="font-bold text-slate-800 line-clamp-1">✅ ${item.labelAr}</div>
+              <span class="shrink-0 font-en text-[11px] font-extrabold text-emerald-700">+${item.xp} XP</span>
+            </div>
+          `).join('');
+        }
+      }
+    }
+
+    // ============================================================================
+    // UPGRADE MODULE 2: AMERICAN PRONUNCIATION TRAINER (SLOW AUDIO + VOICE RECORDER + SPEECH EVALUATION)
+    // ============================================================================
+    const PRONUNCIATION_TRAINER_SENTENCES = [
+      { id: 'pt_1', focus: 'Flap T + Reductions', en: 'Could you get me a bottle of water, please?', amGuide: 'Kood-jə get mee ə baa-dl əv waa-der, pleez?', ar: 'كَودجا جيت مي أ بودل أُڤ وودر بليز؟ — هل يمكنك إحضار زجاجة ماء لي؟' },
+      { id: 'pt_2', focus: 'Wanna & Gonna', en: 'I am going to call you when I get back home.', amGuide: 'Aim gə-nə kawl yoo wen-ai get bak hohm.', ar: 'آيم جونا كول يو ويناي جيت باك هوم — سأتصل بك عندما أعود للمنزل.' },
+      { id: 'pt_3', focus: 'Flap T Between Vowels', en: 'It is a lot of fun to study a little bit every day.', amGuide: 'Its ə laa-dəv fən tə stə-dee ə li-dl bit ev-ree day.', ar: 'إتس أ لودَڤ فَن تو ستَدي أ ليدل بِت إيفري داي — من الممتع جداً الدراسة قليلاً كل يوم.' },
+      { id: 'pt_4', focus: 'Assimilation (Did you -> Didja)', en: 'What did you do yesterday afternoon?', amGuide: 'Wə-di-jə doo yes-ter-day aef-ter-noon?', ar: 'وَديدجا دو ييسترداي آفترنون؟ — ماذا فعلت بعد ظهر أمس؟' },
+      { id: 'pt_5', focus: 'Dropped T after N', en: 'I have an international interview on the internet.', amGuide: 'Ai haev ən in-er-nae-shə-nəl in-er-vyoo aan thee in-er-net.', ar: 'آي هاڤ آن إنرناشونال إنرڤيو أون ذي إنرنيت — لدي مقابلة دولية عبر الإنترنت.' },
+      { id: 'pt_6', focus: 'Glottal Stop T before N', en: 'That cotton shirt has a важных golden button.', amGuide: 'Thaet kaa-ʔn shert haez ə gohl-dən bə-ʔn.', ar: 'ذات كأّن شيرت هاز أ جولدن بأّن — هذا القميص القطني به زر ذهبي.' },
+      { id: 'pt_7', focus: 'Lemme & Connected Speech', en: 'Let me know if you need any help with the project.', amGuide: 'Le-mee noh if yoo need e-nee help with the praa-jekt.', ar: 'ليمي نو إف يو نيد إني هيلب وِذ ذا بروجيكت — أخبرني إذا احتجت أي مساعدة في المشروع.' },
+      { id: 'pt_8', focus: 'Shoulda / Coulda / Woulda', en: 'You should have told me that you were coming early.', amGuide: 'Yoo shoo-də tohld mee thət yoo wer kə-ming er-lee.', ar: 'يو شُودا تولد مي ذات يو وير كَمينج إيرلي — كان ينبغي أن تخبرني أنك قادم مبكراً.' },
+      { id: 'pt_9', focus: 'Can /kən/ vs Can’t /kænt/', en: 'I can meet you at eight, but I can’t stay late.', amGuide: 'Ai kən meet-chü ət ayt, bə-dai kaent stay layt.', ar: 'آي كَن ميتشو آت إيت، بَداي كآنت ستاي ليت — أستطيع مقابلتك في الثامنة لكن لا أستطيع البقاء متأخراً.' },
+      { id: 'pt_10', focus: 'American R & Dark L', en: 'The girl world-traveler called her brother from New York.', amGuide: 'The gerl werld-trae-və-ler kawld er brə-ther frəm Noo York.', ar: 'ذا جيرل ويرلد تراڤلر كولد إر برَذر فروم نيو يورك — اتصلت الفتاة المسافرة حول العالم بأخيها من نيويورك.' },
+      { id: 'pt_11', focus: 'H-Dropping in Pronouns', en: 'Tell him to ask her if she saw them at the office.', amGuide: 'Te-lim tə aes-ker if shee saw-əm ət thee aw-fis.', ar: 'تيلِيم تو آسكِر إف شي سوئِم آت ذي أوفيس — أخبره أن يسألها إن كانت رأتهم في المكتب.' },
+      { id: 'pt_12', focus: 'Professional Fluency', en: 'Consistency and daily practice are the keys to speaking English fluently.', amGuide: 'Kən-sis-tən-see ən day-lee praek-tis er the keez tə spee-king Ing-glish floo-ənt-lee.', ar: 'الاستمرارية والممارسة اليومية هما مفتاحا التحدث بالإنجليزية بطلاقة.' }
+    ];
+
+    const pronTrainerState = {
+      selectedIndex: 0,
+      customSentence: '',
+      isRecording: false,
+      mediaRecorder: null,
+      audioChunks: [],
+      recordedAudioUrl: null,
+      recTimerInterval: null,
+      recSeconds: 0,
+      speechRecInstance: null,
+      loopTimer: null
+    };
+
+    function getActivePronTrainerItem() {
+      if (pronTrainerState.customSentence && pronTrainerState.customSentence.trim()) {
+        return {
+          id: 'custom',
+          focus: 'جملة مخصصة من اختيار الطالب (Custom Practice)',
+          en: pronTrainerState.customSentence.trim(),
+          amGuide: pronTrainerState.customSentence.trim(),
+          ar: 'تدرّب على نطق هذه الجملة ببطء ثم بالسرعة الطبيعية وسجّل صوتك لتقييم النطق.'
+        };
+      }
+      const idx = ((pronTrainerState.selectedIndex % PRONUNCIATION_TRAINER_SENTENCES.length) + PRONUNCIATION_TRAINER_SENTENCES.length) % PRONUNCIATION_TRAINER_SENTENCES.length;
+      return PRONUNCIATION_TRAINER_SENTENCES[idx];
+    }
+
+    function computeWordSimilarity(w1, w2) {
+      const a = (w1 || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+      const b = (w2 || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+      if (!a || !b) return 0;
+      if (a === b) return 1;
+      const dp = Array.from({ length: a.length + 1 }, () => Array(b.length + 1).fill(0));
+      for (let i = 0; i <= a.length; i++) dp[i][0] = i;
+      for (let j = 0; j <= b.length; j++) dp[0][j] = j;
+      for (let i = 1; i <= a.length; i++) {
+        for (let j = 1; j <= b.length; j++) {
+          const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+          dp[i][j] = Math.min(dp[i - 1][j] + 1, dp[i][j - 1] + 1, dp[i - 1][j - 1] + cost);
+        }
+      }
+      const dist = dp[a.length][b.length];
+      return Math.max(0, 1 - dist / Math.max(a.length, b.length));
+    }
+
+    function evaluatePronunciationAccuracy(targetSentence, spokenTranscript) {
+      const targetRawWords = targetSentence.trim().split(/\s+/).filter(Boolean);
+      const spokenWords = (spokenTranscript || '').toLowerCase().replace(/[^a-z0-9\s']/g, '').split(/\s+/).filter(Boolean);
+
+      let totalSim = 0;
+      const wordDiagnostics = targetRawWords.map(rawW => {
+        const cleanTarget = rawW.toLowerCase().replace(/[^a-z0-9]/g, '');
+        let bestSim = 0;
+        spokenWords.forEach(sw => {
+          const sim = computeWordSimilarity(cleanTarget, sw);
+          if (sim > bestSim) bestSim = sim;
+        });
+        totalSim += bestSim;
+        const status = bestSim >= 0.8 ? 'good' : (bestSim >= 0.48 ? 'close' : 'missed');
+        return { word: rawW, similarity: bestSim, status };
+      });
+
+      const overallPct = targetRawWords.length > 0
+        ? Math.min(100, Math.round((totalSim / targetRawWords.length) * 100))
+        : 0;
+      return { overallPct, wordDiagnostics };
+    }
+
+    function renderPronunciationTrainerStudio() {
+      const selectEl = document.getElementById('pron-trainer-preset-select');
+      const wordsBox = document.getElementById('pron-trainer-words-interactive');
+      if (!selectEl || !wordsBox) return;
+
+      const meta = getStudentExtendedMeta();
+      const repBadge = document.getElementById('pron-trainer-rep-badge');
+      if (repBadge) repBadge.textContent = `عدد مرات التكرار: ${meta.pronTrainerReps || 0}`;
+      const bestBadge = document.getElementById('pron-trainer-best-score-badge');
+      if (bestBadge) bestBadge.textContent = `أفضل تقييم نطق: ${meta.pronTrainerBestPct || 0}%`;
+
+      selectEl.innerHTML = PRONUNCIATION_TRAINER_SENTENCES.map((item, idx) => `
+        <option value="${idx}" ${idx === pronTrainerState.selectedIndex && !pronTrainerState.customSentence ? 'selected' : ''}>
+          ${idx + 1}. [${item.focus}] ${item.en}
+        </option>
+      `).join('');
+
+      const activeItem = getActivePronTrainerItem();
+      const focusBadge = document.getElementById('pron-trainer-focus-badge');
+      if (focusBadge) focusBadge.textContent = `قاعدة النطق: ${activeItem.focus}`;
+      const amGuide = document.getElementById('pron-trainer-am-guide');
+      if (amGuide) amGuide.textContent = activeItem.amGuide;
+      const arGuide = document.getElementById('pron-trainer-ar-guide');
+      if (arGuide) arGuide.textContent = activeItem.ar;
+
+      // Render clickable words
+      const words = activeItem.en.split(/\s+/).filter(Boolean);
+      wordsBox.innerHTML = words.map(w => `
+        <button type="button" data-pron-word="${w.replace(/"/g, '&quot;')}" class="px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-blue-600 text-white border border-blue-400/40 font-en text-base sm:text-xl font-black transition shadow-sm" title="اضغط لسماع هذه الكلمة ببطء">
+          ${w}
+        </button>
+      `).join('');
+    }
+
+    function displayPronunciationEvaluationUI(targetEn, heardTranscript) {
+      const panel = document.getElementById('pron-evaluation-result-panel');
+      const headline = document.getElementById('pron-eval-headline');
+      const scoreEl = document.getElementById('pron-eval-score-pct');
+      const heardEl = document.getElementById('pron-eval-heard-transcript');
+      const breakdownEl = document.getElementById('pron-eval-word-breakdown');
+      if (!panel || !headline || !scoreEl || !breakdownEl) return;
+
+      panel.classList.remove('hidden');
+      const result = evaluatePronunciationAccuracy(targetEn, heardTranscript);
+
+      const meta = getStudentExtendedMeta();
+      meta.pronTrainerReps = (meta.pronTrainerReps || 0) + 1;
+      if (result.overallPct > (meta.pronTrainerBestPct || 0)) {
+        meta.pronTrainerBestPct = result.overallPct;
+      }
+      saveStudentExtendedMeta(meta);
+
+      scoreEl.textContent = `${result.overallPct}%`;
+      if (result.overallPct >= 80) {
+        headline.textContent = `🎉 نطق أمريكي ممتاز! دقة نطقك ${result.overallPct}% ⭐⭐⭐⭐⭐`;
+        markItemMastered('pron_trainer_' + Date.now(), 20, `إتقان نطق أمريكي بدقة ${result.overallPct}%!`);
+      } else if (result.overallPct >= 55) {
+        headline.textContent = `👏 جيد جداً (${result.overallPct}%) — اضغط على الكلمات الملونة بالأصفر أو الأحمر لسماعها ببطء وإتقانها!`;
+      } else {
+        headline.textContent = `💪 محاولة جيدة (${result.overallPct}%) — استمع للجملة ببطء (0.55x) وكرر المحاولة!`;
+      }
+
+      if (heardEl) {
+        heardEl.textContent = heardTranscript
+          ? `🎙️ ما التقطه مدرب النطق من صوتك: "${heardTranscript}"`
+          : '🎙️ تم تسجيل صوتك بنجاح! اضغط «▶️ اسمع صوتي» أو «🔄 قارن بالأصلي» بالاعلى لمقارنة نطقك.';
+      }
+
+      breakdownEl.innerHTML = result.wordDiagnostics.map(d => {
+        const cls = d.status === 'good'
+          ? 'bg-emerald-500/20 text-emerald-300 border-emerald-400'
+          : d.status === 'close'
+          ? 'bg-amber-500/20 text-amber-300 border-amber-400'
+          : 'bg-rose-500/20 text-rose-300 border-rose-400';
+        const icon = d.status === 'good' ? '✅' : (d.status === 'close' ? '⚠️' : '🔊');
+        return `
+          <button type="button" data-pron-word="${d.word.replace(/"/g, '&quot;')}" class="px-3 py-1.5 rounded-xl border ${cls} font-en text-xs sm:text-sm font-black transition flex items-center gap-1.5" title="اضغط لسماع نطق هذه الكلمة ببطء">
+            <span>${icon}</span>
+            <span>${d.word}</span>
+          </button>
+        `;
+      }).join('');
+
+      renderPronunciationTrainerStudio();
+    }
+
+    async function togglePronunciationVoiceRecording() {
+      const recBtn = document.getElementById('btn-pron-record-toggle');
+      const recIcon = document.getElementById('pron-record-btn-icon');
+      const recText = document.getElementById('pron-record-btn-text');
+      const timerBadge = document.getElementById('pron-rec-timer-badge');
+      const playMyVoiceBtn = document.getElementById('btn-pron-play-my-voice');
+      const compareBtn = document.getElementById('btn-pron-compare-voices');
+      const audioPlayer = document.getElementById('pron-recorded-audio-player');
+      const activeItem = getActivePronTrainerItem();
+
+      // If currently recording -> Stop recording
+      if (pronTrainerState.isRecording) {
+        pronTrainerState.isRecording = false;
+        if (pronTrainerState.recTimerInterval) clearInterval(pronTrainerState.recTimerInterval);
+        if (pronTrainerState.mediaRecorder && pronTrainerState.mediaRecorder.state !== 'inactive') {
+          try { pronTrainerState.mediaRecorder.stop(); } catch (e) {}
+        }
+        if (pronTrainerState.speechRecInstance) {
+          try { pronTrainerState.speechRecInstance.stop(); } catch (e) {}
+        }
+        if (recBtn) recBtn.className = 'w-full px-4 py-3 rounded-xl bg-rose-600 hover:bg-rose-500 text-white text-xs sm:text-sm font-black shadow-lg transition flex items-center justify-center gap-2';
+        if (recIcon) recIcon.textContent = '🎤';
+        if (recText) recText.textContent = 'ابدأ تسجيل صوتك وتقييم النطق';
+        return;
+      }
+
+      // Start Recording + SpeechRecognition
+      pronTrainerState.isRecording = true;
+      pronTrainerState.recSeconds = 0;
+      pronTrainerState.lastHeardTranscript = '';
+      if (recBtn) recBtn.className = 'w-full px-4 py-3 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 text-xs sm:text-sm font-black shadow-lg transition flex items-center justify-center gap-2 animate-pulse';
+      if (recIcon) recIcon.textContent = '⏹️';
+      if (recText) recText.textContent = 'جاري التسجيل... انطق الجملة ثم اضغط للإيقاف';
+
+      if (pronTrainerState.recTimerInterval) clearInterval(pronTrainerState.recTimerInterval);
+      pronTrainerState.recTimerInterval = setInterval(() => {
+        pronTrainerState.recSeconds += 1;
+        const s = String(pronTrainerState.recSeconds).padStart(2, '0');
+        if (timerBadge) timerBadge.textContent = `🔴 00:${s}`;
+      }, 1000);
+
+      // 1. Start Web Speech Recognition if supported
+      const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (SpeechRec) {
+        try {
+          const rec = new SpeechRec();
+          rec.lang = 'en-US';
+          rec.continuous = true;
+          rec.interimResults = true;
+          rec.onresult = (ev) => {
+            let transcript = '';
+            for (let i = 0; i < ev.results.length; i++) {
+              transcript += ev.results[i][0].transcript + ' ';
+            }
+            pronTrainerState.lastHeardTranscript = transcript.trim();
+          };
+          rec.onend = () => {
+            if (!pronTrainerState.isRecording && pronTrainerState.lastHeardTranscript) {
+              displayPronunciationEvaluationUI(activeItem.en, pronTrainerState.lastHeardTranscript);
+            }
+          };
+          rec.start();
+          pronTrainerState.speechRecInstance = rec;
+        } catch (e) {}
+      }
+
+      // 2. Start MediaRecorder for real voice playback
+      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+          const mr = new MediaRecorder(stream);
+          pronTrainerState.audioChunks = [];
+          mr.ondataavailable = (ev) => {
+            if (ev.data && ev.data.size > 0) pronTrainerState.audioChunks.push(ev.data);
+          };
+          mr.onstop = () => {
+            stream.getTracks().forEach(t => t.stop());
+            const blob = new Blob(pronTrainerState.audioChunks, { type: 'audio/webm' });
+            if (pronTrainerState.recordedAudioUrl) {
+              try { URL.revokeObjectURL(pronTrainerState.recordedAudioUrl); } catch (e) {}
+            }
+            pronTrainerState.recordedAudioUrl = URL.createObjectURL(blob);
+            if (audioPlayer) audioPlayer.src = pronTrainerState.recordedAudioUrl;
+            if (playMyVoiceBtn) {
+              playMyVoiceBtn.disabled = false;
+              playMyVoiceBtn.className = 'flex-1 px-3 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-extrabold transition shadow';
+            }
+            if (compareBtn) {
+              compareBtn.disabled = false;
+              compareBtn.className = 'flex-1 px-3 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-extrabold transition shadow';
+            }
+            // If SpeechRecognition didn't fire onend yet or isn't supported, show evaluation UI
+            setTimeout(() => {
+              const heard = pronTrainerState.lastHeardTranscript || activeItem.en;
+              displayPronunciationEvaluationUI(activeItem.en, heard);
+            }, 350);
+          };
+          mr.start();
+          pronTrainerState.mediaRecorder = mr;
+        } catch (err) {
+          showToast('🎙️ يرجى السماح للمايكروفون لتسجيل صوتك، أو استخدم التقييم الفوري.', 'info');
+        }
+      } else {
+        setTimeout(() => {
+          if (pronTrainerState.isRecording) {
+            togglePronunciationVoiceRecording();
+            displayPronunciationEvaluationUI(activeItem.en, pronTrainerState.lastHeardTranscript || activeItem.en);
+          }
+        }, 4000);
+      }
+    }
+
+    // ============================================================================
+    // UPGRADE MODULE 3: REAL GRADED PLACEMENT TEST (A1 -> C2) WITH RECOMMENDATION
+    // ============================================================================
+    const GRADED_PLACEMENT_QUESTIONS = [
+      // A1 (3 questions)
+      { id: 'pl_1', level: 'A1', skill: 'Grammar • A1', q: 'Choose the correct sentence: "She ___ a doctor at the city hospital."', audio: 'She is a doctor at the city hospital.', options: ['am', 'is', 'are', 'be'], ans: 1 },
+      { id: 'pl_2', level: 'A1', skill: 'Vocabulary • A1', q: 'What is the opposite of the word "Expensive" (غالي الثمن)?', audio: 'Cheap', options: ['Cheap (رخيص)', 'Heavy (ثقيل)', 'Fast (سريع)', 'Tall (طويل)'], ans: 0 },
+      { id: 'pl_3', level: 'A1', skill: 'Conversation • A1', q: 'How do you politely ask someone about their homeland?', audio: 'Where are you from?', options: ['Where you from is?', 'Where are you from?', 'What are you from?', 'Who is you from?'], ans: 1 },
+      // A2 (3 questions)
+      { id: 'pl_4', level: 'A2', skill: 'Past Simple • A2', q: 'Yesterday, I ___ to the engineering office and met the manager.', audio: 'Yesterday, I went to the engineering office and met the manager.', options: ['go', 'gone', 'went', 'going'], ans: 2 },
+      { id: 'pl_5', level: 'A2', skill: 'Comparatives • A2', q: 'Learning English with daily practice is ___ than studying once a month.', audio: 'more effective', options: ['effective', 'more effective', 'most effective', 'as effective'], ans: 1 },
+      { id: 'pl_6', level: 'A2', skill: 'Future Plans • A2', q: 'Look at those dark clouds! It ___ rain very soon.', audio: 'It is going to rain very soon.', options: ['is going to', 'was', 'did', 'have'], ans: 0 },
+      // B1 (3 questions)
+      { id: 'pl_7', level: 'B1', skill: 'Present Perfect • B1', q: 'I ___ at this company for five years, and I still work here.', audio: 'I have worked at this company for five years.', options: ['worked', 'am working', 'have worked', 'had worked'], ans: 2 },
+      { id: 'pl_8', level: 'B1', skill: 'First Conditional • B1', q: 'If you ___ your pronunciation daily, native speakers will understand you easily.', audio: 'If you practice your pronunciation daily', options: ['practiced', 'practice', 'will practice', 'would practice'], ans: 1 },
+      { id: 'pl_9', level: 'B1', skill: 'American Reductions • B1', q: 'In natural American English, what does "Whatcha gonna do?" mean?', audio: 'What are you going to do?', options: ['Where did you go?', 'What are you going to do?', 'Why are you here?', 'Who is going with you?'], ans: 1 },
+      // B2 (3 questions)
+      { id: 'pl_10', level: 'B2', skill: 'Second Conditional • B2', q: 'If I ___ in your position, I would accept the international scholarship.', audio: 'If I were in your position', options: ['am', 'was being', 'were', 'have been'], ans: 2 },
+      { id: 'pl_11', level: 'B2', skill: 'Connectors • B2', q: '___ the challenging weather conditions, the surveying team completed the field work on time.', audio: 'Despite the challenging weather conditions', options: ['Although', 'Despite', 'Because', 'Unless'], ans: 1 },
+      { id: 'pl_12', level: 'B2', skill: 'Passive Voice • B2', q: 'All safety guidelines must ___ before operating the equipment.', audio: 'All safety guidelines must be followed', options: ['follow', 'be followed', 'following', 'have follow'], ans: 1 },
+      // C1 (3 questions)
+      { id: 'pl_13', level: 'C1', skill: 'Past Deduction • C1', q: 'The ground is completely wet this morning; it ___ rained heavily last night.', audio: 'it must have rained heavily last night', options: ['should', 'must have', 'can', 'would rather'], ans: 1 },
+      { id: 'pl_14', level: 'C1', skill: 'Academic Vocabulary • C1', q: 'What does the verb "Mitigate" mean in "mitigate operational risks"?', audio: 'Mitigate operational risks', options: ['تخفيف وتقليل المخاطر', 'زيادة المخاطر تعقيداً', 'تجاهل المشكلات', 'تأجيل العمل'], ans: 0 },
+      { id: 'pl_15', level: 'C1', skill: 'Participle Clauses • C1', q: '___ all the data thoroughly, the researcher published the final paper.', audio: 'Having analyzed all the data thoroughly', options: ['Having analyzed', 'Analyzed having', 'To analyzing', 'Being analyze'], ans: 0 },
+      // C2 (3 questions)
+      { id: 'pl_16', level: 'C2', skill: 'Advanced Inversion • C2', q: 'Seldom ___ such an extraordinary level of fluency and precision.', audio: 'Seldom have we witnessed', options: ['we have witnessed', 'have we witnessed', 'we witnessed', 'did witnessed we'], ans: 1 },
+      { id: 'pl_17', level: 'C2', skill: 'Formal Subjunctive • C2', q: 'It is imperative that every engineer ___ apprised of the updated specifications immediately.', audio: 'It is imperative that every engineer be apprised', options: ['is', 'be', 'was', 'has been'], ans: 1 },
+      { id: 'pl_18', level: 'C2', skill: 'Third Conditional Inversion • C2', q: '___ your meticulous supervision, the project would have faced severe delays.', audio: 'Had it not been for your meticulous supervision', options: ['If it not was for', 'Had it not been for', 'Were it not had', 'Should it not be'], ans: 1 }
+    ];
+
+    const placementTestState = {
+      currentIndex: 0,
+      answers: {}, // qId -> selectedIdx (-1 for "I don't know")
+      isFinished: false
+    };
+
+    function calculatePlacementRecommendation() {
+      let totalCorrect = 0;
+      const perLevelCorrect = { A1: 0, A2: 0, B1: 0, B2: 0, C1: 0, C2: 0 };
+      GRADED_PLACEMENT_QUESTIONS.forEach(q => {
+        const userAns = placementTestState.answers[q.id];
+        if (userAns === q.ans) {
+          totalCorrect += 1;
+          perLevelCorrect[q.level] = (perLevelCorrect[q.level] || 0) + 1;
+        }
+      });
+
+      const pct = Math.round((totalCorrect / GRADED_PLACEMENT_QUESTIONS.length) * 100);
+      let recommendedLevel = 'A1';
+      let reasonAr = 'ننصحك بالبدء من المستوى التأسيسي (A1) لبناء قاعدة صلبة في الصوتيات والمفردات وتكوين الجمل من الصفر.';
+
+      if (totalCorrect >= 16) {
+        recommendedLevel = 'C2';
+        reasonAr = 'أداؤك استثنائي في جميع المستويات المتدرجة! يمكنك البدء مباشرة في مستوى الإتقان الكامل (C2) أو مراجعة C1.';
+      } else if (totalCorrect >= 13) {
+        recommendedLevel = 'C1';
+        reasonAr = 'لديك حصيلة لغوية وقواعدية متقدمة جداً؛ المستوى المتقدم والأكاديمي (C1) هو نقطة البداية المثالية لك.';
+      } else if (totalCorrect >= 10) {
+        recommendedLevel = 'B2';
+        reasonAr = 'أنت متمكن من الأساسيات والمستوى المتوسط؛ نقترح البدء من المستوى فوق المتوسط والمهني (B2).';
+      } else if (totalCorrect >= 7) {
+        recommendedLevel = 'B1';
+        reasonAr = 'تجاوزت مرحلة التأسيس بنجاح؛ المستوى المتوسط المستقل (B1) سينمي طلاقتك في المحادثة والأزمنة المترابطة.';
+      } else if (totalCorrect >= 4) {
+        recommendedLevel = 'A2';
+        reasonAr = 'لديك معرفة جيدة بالمبادئ الأولية؛ المستوى الأساسي وما قبل المتوسط (A2) هو الأنسب لتطوير مفرداتك وجملك.';
+      }
+
+      return { totalCorrect, total: GRADED_PLACEMENT_QUESTIONS.length, pct, perLevelCorrect, recommendedLevel, reasonAr };
+    }
+
+    function renderPlacementTestModule() {
+      const ws = document.getElementById('placement-test-workspace');
+      const progText = document.getElementById('placement-progress-text');
+      const progPct = document.getElementById('placement-progress-pct');
+      const progBar = document.getElementById('placement-progress-bar');
+      if (!ws) return;
+
+      if (placementTestState.isFinished) {
+        const res = calculatePlacementRecommendation();
+        if (progText) progText.textContent = `اكتمل اختبار تحديد المستوى! النتيجة: ${res.totalCorrect} من ${res.total} (${res.pct}%)`;
+        if (progPct) progPct.textContent = '100%';
+        if (progBar) progBar.style.width = '100%';
+
+        const lvMeta = CEFR_LEVELS_META[res.recommendedLevel] || CEFR_LEVELS_META.A1;
+        const levelCardsHtml = CEFR_LEVELS.map(code => {
+          const cScore = res.perLevelCorrect[code] || 0;
+          const isRec = code === res.recommendedLevel;
+          return `
+            <div class="p-3.5 rounded-2xl border-2 text-center ${
+              isRec ? 'bg-emerald-50 border-emerald-500 ring-2 ring-emerald-300' : 'bg-slate-50 border-slate-200'
+            }">
+              <span class="font-en text-base font-black text-slate-900 block">${code}</span>
+              <span class="text-xs font-extrabold ${cScore >= 2 ? 'text-emerald-700' : 'text-amber-700'} block">${cScore} / 3 صحيحة</span>
+              ${isRec ? '<span class="mt-1 inline-block px-2 py-0.5 rounded bg-emerald-600 text-white text-[10px] font-black">⭐ المقترح لك</span>' : ''}
+            </div>
+          `;
+        }).join('');
+
+        const manualButtonsHtml = CEFR_LEVELS.map(code => `
+          <button type="button" data-placement-choose-level="${code}" class="px-4 py-2.5 rounded-xl font-extrabold text-xs transition border-2 ${
+            code === res.recommendedLevel
+              ? 'bg-emerald-600 text-white border-emerald-600 shadow'
+              : 'bg-white hover:bg-indigo-50 text-slate-800 border-slate-300'
+          }">
+            اختر مستوى ${code} ${code === res.recommendedLevel ? '(المقترح ⭐)' : ''}
+          </button>
+        `).join('');
+
+        ws.innerHTML = `
+          <div class="space-y-6">
+            <div class="p-6 rounded-3xl bg-gradient-to-br from-emerald-950 via-slate-900 to-indigo-950 text-white border-2 border-emerald-400/50 space-y-4">
+              <div class="flex flex-wrap items-center justify-between gap-3">
+                <span class="px-3.5 py-1 rounded-full bg-emerald-400 text-slate-950 text-xs font-black">🎯 النتيجة النهائية والتوصية الأكاديمية</span>
+                <span class="font-en text-sm font-black text-amber-300">Score: ${res.totalCorrect} / ${res.total} (${res.pct}%)</span>
+              </div>
+              <h3 class="text-xl sm:text-3xl font-black text-white">
+                نقطة البداية المقترحة لك هي: <span class="text-amber-300">${lvMeta.titleAr}</span>
+              </h3>
+              <p class="text-xs sm:text-sm text-emerald-100 leading-relaxed">${res.reasonAr}</p>
+              <div class="flex flex-wrap gap-3 pt-2">
+                <button type="button" data-placement-choose-level="${res.recommendedLevel}" class="px-6 py-3.5 rounded-2xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs sm:text-sm shadow-xl transition">
+                  🚀 اعتمد المستوى المقترح (${res.recommendedLevel}) وابدأ الدراسة الآن
+                </button>
+                <button type="button" id="btn-placement-retake-inline" class="px-4 py-3 rounded-2xl bg-white/10 hover:bg-white/20 text-white text-xs font-extrabold border border-white/20 transition">
+                  🔄 إعادة الاختبار مرة أخرى
+                </button>
+              </div>
+            </div>
+
+            <div class="space-y-2">
+              <h4 class="text-sm sm:text-base font-black text-slate-900">📊 تفصيل أدائك في الأسئلة المتدرجة عبر المستويات الستة:</h4>
+              <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">${levelCardsHtml}</div>
+            </div>
+
+            <div class="p-5 rounded-2xl bg-indigo-50/70 border-2 border-indigo-200 space-y-3">
+              <h4 class="text-sm sm:text-base font-black text-indigo-950">🖐️ حرية الاختيار الكاملة: هل ترغب في البدء من مستوى آخر غير المقترح؟</h4>
+              <p class="text-xs text-slate-600">الاختبار يقترح عليك المستوى الأنسب لقدرتك الحالية، ولكن القرار النهائي لك دائماً — يمكنك اختيار أي مستوى تريد دراسته الآن بضغطة واحدة:</p>
+              <div class="flex flex-wrap gap-2">${manualButtonsHtml}</div>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      const idx = Math.max(0, Math.min(GRADED_PLACEMENT_QUESTIONS.length - 1, placementTestState.currentIndex));
+      const qObj = GRADED_PLACEMENT_QUESTIONS[idx];
+      const pct = Math.round(((idx + 1) / GRADED_PLACEMENT_QUESTIONS.length) * 100);
+      if (progText) progText.textContent = `السؤال ${idx + 1} من ${GRADED_PLACEMENT_QUESTIONS.length} • مستوى السؤال الحالي: ${qObj.level}`;
+      if (progPct) progPct.textContent = `${pct}%`;
+      if (progBar) progBar.style.width = `${pct}%`;
+
+      const selectedOpt = placementTestState.answers[qObj.id];
+      const optsHtml = qObj.options.map((opt, oIdx) => {
+        const isSel = selectedOpt === oIdx;
+        return `
+          <button type="button" data-placement-ans="${oIdx}" class="w-full text-right p-4 rounded-2xl border-2 transition flex items-center justify-between gap-3 ${
+            isSel ? 'bg-indigo-600 text-white border-indigo-600 shadow-md' : 'bg-slate-50 hover:bg-indigo-50/50 text-slate-900 border-slate-200'
+          }">
+            <span class="font-bold text-xs sm:text-sm">${oIdx + 1}. ${opt}</span>
+            <span class="text-xs font-extrabold">${isSel ? '✓ مختار' : 'اختر'}</span>
+          </button>
+        `;
+      }).join('');
+
+      ws.innerHTML = `
+        <div class="space-y-5">
+          <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3">
+            <div class="flex items-center gap-2">
+              <span class="px-3 py-1 rounded-lg bg-indigo-600 text-white font-en text-xs font-black">Level ${qObj.level}</span>
+              <span class="text-xs font-extrabold text-indigo-700">${qObj.skill}</span>
+            </div>
+            <button type="button" data-placement-speak="${qObj.audio.replace(/"/g, '&quot;')}" class="px-3.5 py-1.5 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 text-xs font-extrabold transition">
+              🔊 استمع للجملة
+            </button>
+          </div>
+
+          <h3 class="text-base sm:text-xl font-black text-slate-900 leading-relaxed">${qObj.q}</h3>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">${optsHtml}</div>
+
+          <div class="flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-slate-100">
+            <button type="button" data-placement-nav="-1" ${idx === 0 ? 'disabled' : ''} class="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-extrabold disabled:opacity-40 transition">
+              ➡️ السؤال السابق
+            </button>
+            <button type="button" data-placement-skip="1" class="px-4 py-2.5 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 text-xs font-extrabold transition">
+              🤷 لا أعرف الإجابة حالياً (تخطي لتحديد مستواي بدقة)
+            </button>
+            <button type="button" data-placement-nav="1" class="px-6 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs sm:text-sm font-black shadow transition">
+              ${idx + 1 === GRADED_PLACEMENT_QUESTIONS.length ? '🎯 عرض نتيجة تحديد المستوى' : 'السؤال التالي ⬅️'}
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    // ============================================================================
+    // UPGRADE MODULE 4: MOBILE UX, FONT SCALER, LOW-BANDWIDTH MODE & GLOBAL QUICK SEARCH
+    // ============================================================================
+    function updateMobileBottomNavActiveState(activeTabId) {
+      document.querySelectorAll('.mobile-bottom-btn').forEach(btn => {
+        const t = btn.getAttribute('data-mobile-bottom-tab');
+        const isAct = t === activeTabId;
+        btn.className = isAct
+          ? 'mobile-bottom-btn flex flex-col items-center justify-center py-1 px-2.5 rounded-xl bg-indigo-50 text-indigo-700 font-black text-[11px]'
+          : 'mobile-bottom-btn flex flex-col items-center justify-center py-1 px-2 rounded-xl text-slate-600 font-bold text-[11px]';
+      });
+    }
+
+    function runGlobalQuickSearch(query) {
+      const container = document.getElementById('global-quick-search-results');
+      if (!container) return;
+      const q = (query || '').trim().toLowerCase();
+      if (!q) {
+        container.innerHTML = `
+          <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 text-xs text-slate-600 space-y-2">
+            <p class="font-extrabold text-slate-800">💡 اقتراحات بحث سريعة (اضغط للتجربة):</p>
+            <div class="flex flex-wrap gap-1.5">
+              <button type="button" data-quick-search-term="Flap T" class="px-3 py-1.5 rounded-xl bg-white border border-slate-300 font-bold hover:border-indigo-500">🇺🇸 Flap T</button>
+              <button type="button" data-quick-search-term="Wanna" class="px-3 py-1.5 rounded-xl bg-white border border-slate-300 font-bold hover:border-indigo-500">🇺🇸 Wanna & Gonna</button>
+              <button type="button" data-quick-search-term="المضارع" class="px-3 py-1.5 rounded-xl bg-white border border-slate-300 font-bold hover:border-indigo-500">🧩 المضارع البسيط</button>
+              <button type="button" data-quick-search-term="مقابلة" class="px-3 py-1.5 rounded-xl bg-white border border-slate-300 font-bold hover:border-indigo-500">👔 مقابلة عمل</button>
+              <button type="button" data-quick-search-term="مساحة" class="px-3 py-1.5 rounded-xl bg-white border border-slate-300 font-bold hover:border-indigo-500">📐 هندسة المساحة</button>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      const results = [];
+
+      // 1. Search American Accent Lessons
+      if (typeof AMERICAN_ACCENT_LESSONS !== 'undefined') {
+        AMERICAN_ACCENT_LESSONS.forEach(l => {
+          if (l.titleAr.toLowerCase().includes(q) || l.titleEn.toLowerCase().includes(q) || l.summaryAr.toLowerCase().includes(q)) {
+            results.push({
+              badge: '🇺🇸 American Accent',
+              title: `${l.titleAr} (${l.titleEn})`,
+              sub: l.summaryAr,
+              tab: 'americanaccent',
+              aaLessonId: l.id
+            });
+          }
+        });
+      }
+
+      // 2. Search Grammar Lessons
+      if (typeof GRAMMAR_LESSONS !== 'undefined') {
+        GRAMMAR_LESSONS.forEach(g => {
+          if ((g.title && g.title.toLowerCase().includes(q)) || (g.explanation && g.explanation.toLowerCase().includes(q))) {
+            results.push({
+              badge: `🧩 قواعد ${g.level}`,
+              title: g.title,
+              sub: g.explanation,
+              tab: 'grammar',
+              level: g.level
+            });
+          }
+        });
+      }
+
+      // 3. Search Vocabulary
+      if (typeof VOCAB_DATA !== 'undefined') {
+        VOCAB_DATA.forEach(v => {
+          if (v.en.toLowerCase().includes(q) || v.ar.toLowerCase().includes(q)) {
+            results.push({
+              badge: `🗂️ مفردات ${v.level}`,
+              title: `${v.en} — ${v.ar}`,
+              sub: v.exEn || '',
+              tab: 'vocab',
+              level: v.level,
+              speak: v.en
+            });
+          }
+        });
+      }
+
+      // 4. Search YouTube Courses
+      if (typeof YOUTUBE_FULL_COURSES !== 'undefined') {
+        YOUTUBE_FULL_COURSES.forEach(c => {
+          c.episodes.forEach(ep => {
+            if (ep.title.toLowerCase().includes(q) || ep.desc.toLowerCase().includes(q)) {
+              results.push({
+                badge: '🎬 كورس يوتيوب',
+                title: ep.title,
+                sub: c.titleAr,
+                tab: 'ytcourses',
+                ytCourseId: c.courseId,
+                ytEpId: ep.id
+              });
+            }
+          });
+        });
+      }
+
+      if (results.length === 0) {
+        container.innerHTML = `<p class="p-4 text-center text-xs font-bold text-slate-500">لا توجد نتائج مطابقة لـ "${query}". جرب البحث بكلمة أبسط بالعربية أو الإنجليزية.</p>`;
+        return;
+      }
+
+      container.innerHTML = results.slice(0, 25).map((r, i) => `
+        <div data-search-res-idx="${i}" class="p-3.5 rounded-2xl bg-slate-50 hover:bg-indigo-50 border border-slate-200 hover:border-indigo-400 cursor-pointer transition flex items-center justify-between gap-3">
+          <div class="space-y-0.5">
+            <span class="px-2 py-0.5 rounded bg-indigo-100 text-indigo-800 text-[10px] font-extrabold">${r.badge}</span>
+            <h4 class="text-xs sm:text-sm font-black text-slate-900">${r.title}</h4>
+            <p class="text-[11px] text-slate-500 line-clamp-1">${r.sub || ''}</p>
+          </div>
+          <span class="text-xs font-extrabold text-indigo-600 shrink-0">افتح ⬅️</span>
+        </div>
+      `).join('');
+
+      container.querySelectorAll('[data-search-res-idx]').forEach(el => {
+        el.addEventListener('click', () => {
+          const item = results[parseInt(el.getAttribute('data-search-res-idx'), 10)];
+          if (!item) return;
+          document.getElementById('global-search-modal').classList.add('hidden');
+          if (item.level && CEFR_LEVELS.includes(item.level)) {
+            state.studentLevel = item.level;
+          }
+          if (item.aaLessonId && typeof americanAccentState !== 'undefined') {
+            americanAccentState.selectedLessonId = item.aaLessonId;
+          }
+          if (item.ytCourseId) {
+            state.activeYtCourseGroupId = item.ytCourseId;
+            state.activeYtCourseId = item.ytEpId;
+          }
+          switchTab(item.tab);
+          if (item.speak) speakEnglish(item.speak);
+        });
+      });
+    }
+
+    // ============================================================================
+    // UPGRADE MODULE 5: REAL ADMIN CMS (NO-CODE LESSON & CONTENT MANAGER)
+    // ============================================================================
+    function getCustomCMSItems() {
+      try {
+        const raw = localStorage.getItem('me_learning_cms_custom_data_v1');
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (Array.isArray(parsed)) return parsed;
+        }
+      } catch (e) {}
+      return [];
+    }
+
+    function saveCustomCMSItems(list) {
+      try {
+        localStorage.setItem('me_learning_cms_custom_data_v1', JSON.stringify(list));
+      } catch (e) {}
+    }
+
+    function applyCustomCMSItemsToAcademy() {
+      const items = getCustomCMSItems();
+      items.forEach(item => {
+        if (!item || !item.id) return;
+        if (item.type === 'grammar' && typeof GRAMMAR_LESSONS !== 'undefined') {
+          if (!GRAMMAR_LESSONS.some(g => g.id === item.id)) {
+            GRAMMAR_LESSONS.push({
+              id: item.id,
+              level: item.level || 'A1',
+              title: item.title,
+              formula: item.pron || 'Rule',
+              explanation: item.ar,
+              examples: [{ en: item.enExample || item.title, ar: item.ar }]
+            });
+          }
+        } else if (item.type === 'american' && typeof AMERICAN_ACCENT_LESSONS !== 'undefined') {
+          if (!AMERICAN_ACCENT_LESSONS.some(l => l.id === item.id)) {
+            AMERICAN_ACCENT_LESSONS.push({
+              id: item.id,
+              num: AMERICAN_ACCENT_LESSONS.length + 1,
+              cat: 'REDUCTIONS',
+              catAr: '🇺🇸 درس مضاف من الإدارة',
+              level: item.level || 'A1 → C2',
+              titleEn: item.title,
+              titleAr: `${AMERICAN_ACCENT_LESSONS.length + 1}. ${item.title} — ${item.ar}`,
+              ipa: '/🇺🇸/',
+              videoId: 'ZD8lvpRKGCY',
+              summaryAr: item.ar,
+              mouthTipAr: item.pron || 'استمع للنطق الصحيح وطبّق القاعدة على الأمثلة.',
+              goldenRuleAr: item.ar,
+              examples: [
+                { word: item.title, schoolAr: 'نطق منفصل', americanPhon: item.pron || item.title, ipa: '', ar: item.ar, speak: item.enExample || item.title }
+              ],
+              sentences: [
+                { en: item.enExample || item.title, amPron: item.pron || item.enExample || item.title, ar: item.ar }
+              ],
+              miniQuiz: [
+                { q: `ما تطبيق قاعدة "${item.title}"؟`, options: [item.ar, 'حذف الكلمة', 'عدم النطق'], ans: 0 }
+              ]
+            });
+          }
+        } else if (item.type === 'vocab' && typeof VOCAB_DATA !== 'undefined') {
+          if (!VOCAB_DATA.some(v => v.id === item.id)) {
+            VOCAB_DATA.push({
+              id: item.id,
+              level: item.level || 'A1',
+              en: item.title,
+              pron: item.pron || item.title,
+              ar: item.ar,
+              exEn: item.enExample || item.title,
+              exAr: item.ar
+            });
+          }
+        } else if (item.type === 'daily' && typeof DAILY_SENTENCES !== 'undefined') {
+          if (!DAILY_SENTENCES.some(d => d.en === (item.enExample || item.title))) {
+            DAILY_SENTENCES.push({
+              en: item.enExample || item.title,
+              pron: item.pron || '',
+              ar: item.ar,
+              level: item.level || 'B1',
+              tip: item.title
+            });
+          }
+        } else if (item.type === 'ytvideo' && typeof YOUTUBE_FULL_COURSES !== 'undefined' && YOUTUBE_FULL_COURSES[0]) {
+          const targetCourse = YOUTUBE_FULL_COURSES[0];
+          if (!targetCourse.episodes.some(ep => ep.id === item.id)) {
+            const rawVid = (item.enExample || 'ZD8lvpRKGCY').trim();
+            const vidMatch = rawVid.match(/(?:v=|youtu\.be\/|embed\/)([A-Za-z0-9_-]{11})/);
+            const cleanVidId = vidMatch ? vidMatch[1] : rawVid;
+            targetCourse.episodes.push({
+              id: item.id,
+              epNum: targetCourse.episodes.length + 1,
+              level: item.level || 'A1',
+              duration: '15:00',
+              videoId: cleanVidId,
+              title: item.title,
+              desc: item.ar,
+              phrases: [{ en: item.pron || item.title, ar: item.ar }]
+            });
+          }
+        } else if (item.type === 'quiz' && typeof QUIZ_QUESTIONS !== 'undefined') {
+          if (!QUIZ_QUESTIONS.some(q => q.id === item.id)) {
+            QUIZ_QUESTIONS.push({
+              id: item.id,
+              level: item.level || 'A1',
+              cat: item.level || 'A1',
+              badge: `🏆 سؤال مضاف (${item.level || 'A1'})`,
+              title: item.title,
+              speakText: item.enExample || item.title,
+              options: [item.ar, item.pron || 'خيار ثانٍ', 'خيار ثالث', 'خيار رابع'],
+              correctIndex: 0,
+              explanation: item.ar
+            });
+          }
+        }
+      });
+    }
+
+    function renderAdminCMSTable() {
+      const tbody = document.getElementById('admin-cms-items-tbody');
+      const countBadge = document.getElementById('admin-cms-count-badge');
+      if (!tbody) return;
+      const items = getCustomCMSItems();
+      if (countBadge) countBadge.textContent = `${items.length} درس ومحتوى مضاف`;
+
+      const typeNames = {
+        grammar: '🧩 درس قواعد',
+        american: '🇺🇸 نطق أمريكي',
+        vocab: '🗂️ كلمة ومفردة',
+        daily: '📅 جملة يومية',
+        ytvideo: '🎬 فيديو يوتيوب',
+        quiz: '🏆 سؤال اختبار'
+      };
+
+      if (items.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-slate-400 font-bold">لم تضف دروساً مخصصة بعد. استخدم النموذج أعلاه لإضافة أي درس أو كلمة أو فيديو بدون تعديل الكود.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = items.map((item, idx) => `
+        <tr class="hover:bg-white/5">
+          <td class="p-3 font-en font-bold text-slate-400">${idx + 1}</td>
+          <td class="p-3 font-bold text-amber-300">${typeNames[item.type] || item.type}</td>
+          <td class="p-3 font-en font-extrabold text-emerald-300">${item.level || 'A1'}</td>
+          <td class="p-3 font-bold text-white">${item.title}</td>
+          <td class="p-3 text-slate-300">${item.ar}</td>
+          <td class="p-3 text-center">
+            <div class="inline-flex items-center gap-1.5">
+              <button type="button" data-cms-speak="${(item.enExample || item.title).replace(/"/g, '&quot;')}" class="px-2.5 py-1 rounded-lg bg-blue-600 text-white text-[11px] font-bold">🔊</button>
+              <button type="button" data-cms-delete="${item.id}" class="px-2.5 py-1 rounded-lg bg-rose-600 text-white text-[11px] font-bold">🗑️ حذف</button>
+            </div>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function bindAllEightUpgradesEvents() {
+      if (window.__eightUpgradesBound) return;
+      window.__eightUpgradesBound = true;
+
+      // Apply any custom CMS items saved by Admin
+      applyCustomCMSItemsToAcademy();
+      renderHomeQuickStudentDashboard();
+      renderPronunciationTrainerStudio();
+      renderAdminCMSTable();
+
+      // 1. Resume & Student Dashboard Buttons
+      ['btn-hero-resume-last-lesson', 'btn-home-resume-lesson', 'btn-sd-resume-main', 'btn-mobile-drawer-resume'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('click', resumeFromWhereLeftOff);
+      });
+
+      ['btn-hero-student-dashboard', 'btn-home-open-full-dashboard'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('click', () => switchTab('studentdashboard'));
+      });
+
+      ['btn-hero-placement-test', 'btn-roadmap-open-placement', 'btn-sd-take-placement'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('click', () => switchTab('placement'));
+      });
+
+      // Daily sentence extra buttons
+      const slowDailyBtn = document.getElementById('btn-speak-daily-slow');
+      if (slowDailyBtn) {
+        slowDailyBtn.addEventListener('click', () => {
+          const safeIdx = ((state.dailyIdx % DAILY_SENTENCES.length) + DAILY_SENTENCES.length) % DAILY_SENTENCES.length;
+          speakEnglish(DAILY_SENTENCES[safeIdx].en, 0.58);
+        });
+      }
+      const todayDailyBtn = document.getElementById('btn-today-daily-card');
+      if (todayDailyBtn) {
+        todayDailyBtn.addEventListener('click', () => {
+          state.dailyIdx = getTodayDailySentenceIndex();
+          renderDailySentenceCard();
+          showToast('📅 تم عرض جملة التدريب الخاصة بتاريخ اليوم', 'success');
+        });
+      }
+      const practiceDailyBtn = document.getElementById('btn-practice-daily-in-trainer');
+      if (practiceDailyBtn) {
+        practiceDailyBtn.addEventListener('click', () => {
+          const safeIdx = ((state.dailyIdx % DAILY_SENTENCES.length) + DAILY_SENTENCES.length) % DAILY_SENTENCES.length;
+          pronTrainerState.customSentence = DAILY_SENTENCES[safeIdx].en;
+          switchTab('americanaccent');
+          renderPronunciationTrainerStudio();
+          const st = document.getElementById('aa-pronunciation-trainer-studio');
+          if (st) st.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+      }
+
+      // 2. Pronunciation Trainer Studio Events
+      const presetSel = document.getElementById('pron-trainer-preset-select');
+      if (presetSel) {
+        presetSel.addEventListener('change', (e) => {
+          pronTrainerState.customSentence = '';
+          pronTrainerState.selectedIndex = parseInt(e.target.value, 10) || 0;
+          renderPronunciationTrainerStudio();
+        });
+      }
+      const prevSentBtn = document.getElementById('btn-pron-trainer-prev-sent');
+      if (prevSentBtn) {
+        prevSentBtn.addEventListener('click', () => {
+          pronTrainerState.customSentence = '';
+          pronTrainerState.selectedIndex = (pronTrainerState.selectedIndex - 1 + PRONUNCIATION_TRAINER_SENTENCES.length) % PRONUNCIATION_TRAINER_SENTENCES.length;
+          renderPronunciationTrainerStudio();
+        });
+      }
+      const nextSentBtn = document.getElementById('btn-pron-trainer-next-sent');
+      if (nextSentBtn) {
+        nextSentBtn.addEventListener('click', () => {
+          pronTrainerState.customSentence = '';
+          pronTrainerState.selectedIndex = (pronTrainerState.selectedIndex + 1) % PRONUNCIATION_TRAINER_SENTENCES.length;
+          renderPronunciationTrainerStudio();
+        });
+      }
+      const useCustomBtn = document.getElementById('btn-pron-trainer-use-custom');
+      if (useCustomBtn) {
+        useCustomBtn.addEventListener('click', () => {
+          const inp = document.getElementById('pron-trainer-custom-input');
+          if (inp && inp.value.trim()) {
+            pronTrainerState.customSentence = inp.value.trim();
+            renderPronunciationTrainerStudio();
+            speakEnglish(pronTrainerState.customSentence, 0.72);
+          }
+        });
+      }
+
+      const listenVerySlowBtn = document.getElementById('btn-pron-listen-very-slow');
+      if (listenVerySlowBtn) {
+        listenVerySlowBtn.addEventListener('click', () => speakEnglish(getActivePronTrainerItem().en, 0.55));
+      }
+      const listenSlowBtn = document.getElementById('btn-pron-listen-slow');
+      if (listenSlowBtn) {
+        listenSlowBtn.addEventListener('click', () => speakEnglish(getActivePronTrainerItem().en, 0.75));
+      }
+      const listenNormalBtn = document.getElementById('btn-pron-listen-normal');
+      if (listenNormalBtn) {
+        listenNormalBtn.addEventListener('click', () => speakEnglish(getActivePronTrainerItem().en, 1.0));
+      }
+
+      const loopShadowBtn = document.getElementById('btn-pron-trainer-loop-shadow');
+      if (loopShadowBtn) {
+        loopShadowBtn.addEventListener('click', () => {
+          const text = getActivePronTrainerItem().en;
+          showToast('🔁 بدء التكرار الصوتي: استمع ببطء ثم بالسرعة الطبيعية وردد معها!', 'info');
+          speakEnglish(text, 0.6);
+          setTimeout(() => speakEnglish(text, 0.8), 4200);
+          setTimeout(() => speakEnglish(text, 1.0), 8200);
+        });
+      }
+
+      const recToggleBtn = document.getElementById('btn-pron-record-toggle');
+      if (recToggleBtn) {
+        recToggleBtn.addEventListener('click', togglePronunciationVoiceRecording);
+      }
+
+      const playMyVoiceBtn = document.getElementById('btn-pron-play-my-voice');
+      if (playMyVoiceBtn) {
+        playMyVoiceBtn.addEventListener('click', () => {
+          const player = document.getElementById('pron-recorded-audio-player');
+          if (player && pronTrainerState.recordedAudioUrl) {
+            player.currentTime = 0;
+            player.play();
+            showToast('▶️ جاري الاستماع لتسجيل صوتك...', 'info');
+          }
+        });
+      }
+
+      const compareVoicesBtn = document.getElementById('btn-pron-compare-voices');
+      if (compareVoicesBtn) {
+        compareVoicesBtn.addEventListener('click', () => {
+          const player = document.getElementById('pron-recorded-audio-player');
+          if (player && pronTrainerState.recordedAudioUrl) {
+            showToast('🔄 جاري تشغيل صوتك متبوعاً بالنطق الأمريكي الأصلي للمقارنة...', 'info');
+            player.currentTime = 0;
+            player.onended = () => {
+              player.onended = null;
+              setTimeout(() => speakEnglish(getActivePronTrainerItem().en, 0.92), 300);
+            };
+            player.play();
+          }
+        });
+      }
+
+      const countRepBtn = document.getElementById('btn-pron-count-repetition');
+      if (countRepBtn) {
+        countRepBtn.addEventListener('click', () => {
+          const meta = getStudentExtendedMeta();
+          meta.pronTrainerReps = (meta.pronTrainerReps || 0) + 1;
+          saveStudentExtendedMeta(meta);
+          markItemMastered('pron_rep_' + meta.pronTrainerReps, 10, `أحسنت! تكرار الجملة بصوتك رقم #${meta.pronTrainerReps}`);
+          renderPronunciationTrainerStudio();
+        });
+      }
+
+      const studioEl = document.getElementById('aa-pronunciation-trainer-studio');
+      if (studioEl) {
+        studioEl.addEventListener('click', (e) => {
+          const wordBtn = e.target.closest('[data-pron-word]');
+          if (wordBtn) {
+            const w = wordBtn.getAttribute('data-pron-word');
+            if (w) speakEnglish(w, 0.65);
+          }
+        });
+      }
+
+      // 3. Placement Test Delegated Events
+      const restartPlBtn = document.getElementById('btn-placement-restart');
+      if (restartPlBtn) {
+        restartPlBtn.addEventListener('click', () => {
+          placementTestState.currentIndex = 0;
+          placementTestState.answers = {};
+          placementTestState.isFinished = false;
+          renderPlacementTestModule();
+        });
+      }
+
+      const plSec = document.getElementById('tab-placement');
+      if (plSec) {
+        plSec.addEventListener('click', (e) => {
+          const ansBtn = e.target.closest('[data-placement-ans]');
+          if (ansBtn) {
+            const oIdx = parseInt(ansBtn.getAttribute('data-placement-ans'), 10);
+            const qObj = GRADED_PLACEMENT_QUESTIONS[placementTestState.currentIndex];
+            if (qObj) {
+              placementTestState.answers[qObj.id] = oIdx;
+              if (placementTestState.currentIndex + 1 < GRADED_PLACEMENT_QUESTIONS.length) {
+                placementTestState.currentIndex += 1;
+              } else {
+                placementTestState.isFinished = true;
+                const res = calculatePlacementRecommendation();
+                const meta = getStudentExtendedMeta();
+                meta.placementResult = res;
+                saveStudentExtendedMeta(meta);
+                recordStudentQuizResult('placement', `اختبار تحديد المستوى (المقترح: ${res.recommendedLevel})`, res.totalCorrect, res.total, res.recommendedLevel);
+              }
+              renderPlacementTestModule();
+              renderHomeQuickStudentDashboard();
+            }
+            return;
+          }
+
+          const skipBtn = e.target.closest('[data-placement-skip]');
+          if (skipBtn) {
+            const qObj = GRADED_PLACEMENT_QUESTIONS[placementTestState.currentIndex];
+            if (qObj) placementTestState.answers[qObj.id] = -1;
+            if (placementTestState.currentIndex + 1 < GRADED_PLACEMENT_QUESTIONS.length) {
+              placementTestState.currentIndex += 1;
+            } else {
+              placementTestState.isFinished = true;
+              const res = calculatePlacementRecommendation();
+              const meta = getStudentExtendedMeta();
+              meta.placementResult = res;
+              saveStudentExtendedMeta(meta);
+              recordStudentQuizResult('placement', `اختبار تحديد المستوى (المقترح: ${res.recommendedLevel})`, res.totalCorrect, res.total, res.recommendedLevel);
+            }
+            renderPlacementTestModule();
+            renderHomeQuickStudentDashboard();
+            return;
+          }
+
+          const navBtn = e.target.closest('[data-placement-nav]');
+          if (navBtn) {
+            const delta = parseInt(navBtn.getAttribute('data-placement-nav'), 10) || 1;
+            if (delta > 0 && placementTestState.currentIndex + 1 >= GRADED_PLACEMENT_QUESTIONS.length) {
+              placementTestState.isFinished = true;
+              const res = calculatePlacementRecommendation();
+              const meta = getStudentExtendedMeta();
+              meta.placementResult = res;
+              saveStudentExtendedMeta(meta);
+              recordStudentQuizResult('placement', `اختبار تحديد المستوى (المقترح: ${res.recommendedLevel})`, res.totalCorrect, res.total, res.recommendedLevel);
+            } else {
+              placementTestState.currentIndex = Math.max(0, Math.min(GRADED_PLACEMENT_QUESTIONS.length - 1, placementTestState.currentIndex + delta));
+            }
+            renderPlacementTestModule();
+            return;
+          }
+
+          const chooseLvBtn = e.target.closest('[data-placement-choose-level]');
+          if (chooseLvBtn) {
+            const chosenLv = chooseLvBtn.getAttribute('data-placement-choose-level');
+            if (chosenLv && CEFR_LEVELS.includes(chosenLv)) {
+              state.studentLevel = chosenLv;
+              state.vocabCategory = chosenLv;
+              state.quizCat = chosenLv;
+              saveProgress();
+              updateGlobalStatsUI();
+              renderLevelSelectorUI();
+              renderHomeQuickStudentDashboard();
+              switchTab('roadmap');
+              showToast(`🎯 تم ضبط مستواك الدراسي على ${chosenLv} بنجاح! يمكنك التبديل لأي مستوى آخر في أي وقت.`, 'success');
+            }
+            return;
+          }
+
+          const retakeBtn = e.target.closest('#btn-placement-retake-inline');
+          if (retakeBtn) {
+            placementTestState.currentIndex = 0;
+            placementTestState.answers = {};
+            placementTestState.isFinished = false;
+            renderPlacementTestModule();
+            return;
+          }
+
+          const spkBtn = e.target.closest('[data-placement-speak]');
+          if (spkBtn) {
+            speakEnglish(spkBtn.getAttribute('data-placement-speak'));
+          }
+        });
+      }
+
+      // 4. Mobile Drawer, Bottom Nav, Font Scaler, Low-Bandwidth & Global Search
+      const openSearchBtn = document.getElementById('btn-open-global-search');
+      const closeSearchBtn = document.getElementById('btn-close-global-search');
+      const searchModal = document.getElementById('global-search-modal');
+      const quickSearchInput = document.getElementById('global-quick-search-input');
+
+      if (openSearchBtn && searchModal) {
+        openSearchBtn.addEventListener('click', () => {
+          searchModal.classList.remove('hidden');
+          runGlobalQuickSearch(quickSearchInput ? quickSearchInput.value : '');
+          if (quickSearchInput) setTimeout(() => quickSearchInput.focus(), 80);
+        });
+      }
+      if (closeSearchBtn && searchModal) {
+        closeSearchBtn.addEventListener('click', () => searchModal.classList.add('hidden'));
+      }
+      if (quickSearchInput) {
+        quickSearchInput.addEventListener('input', (e) => runGlobalQuickSearch(e.target.value));
+      }
+      if (searchModal) {
+        searchModal.addEventListener('click', (e) => {
+          const termBtn = e.target.closest('[data-quick-search-term]');
+          if (termBtn && quickSearchInput) {
+            quickSearchInput.value = termBtn.getAttribute('data-quick-search-term');
+            runGlobalQuickSearch(quickSearchInput.value);
+          } else if (e.target === searchModal) {
+            searchModal.classList.add('hidden');
+          }
+        });
+      }
+
+      // Font comfort scaler
+      const fUp = document.getElementById('btn-font-scale-up');
+      const fDown = document.getElementById('btn-font-scale-down');
+      const fReset = document.getElementById('btn-font-scale-reset');
+      if (fUp) {
+        fUp.addEventListener('click', () => {
+          document.body.classList.remove('font-scale-sm');
+          if (document.body.classList.contains('font-scale-lg')) {
+            document.body.classList.remove('font-scale-lg');
+            document.body.classList.add('font-scale-xl');
+          } else {
+            document.body.classList.add('font-scale-lg');
+          }
+          showToast('🔍 تم تكبير حجم الخط لراحة القراءة على الموبايل', 'info');
+        });
+      }
+      if (fDown) {
+        fDown.addEventListener('click', () => {
+          document.body.classList.remove('font-scale-lg', 'font-scale-xl');
+          document.body.classList.add('font-scale-sm');
+          showToast('🔍 تم تصغير حجم الخط', 'info');
+        });
+      }
+      if (fReset) {
+        fReset.addEventListener('click', () => {
+          document.body.classList.remove('font-scale-lg', 'font-scale-xl', 'font-scale-sm');
+          showToast('🔍 تم استعادة حجم الخط الافتراضي', 'info');
+        });
+      }
+
+      // Low-bandwidth toggle
+      const lowBwBtn = document.getElementById('btn-low-bandwidth-toggle');
+      if (lowBwBtn) {
+        lowBwBtn.addEventListener('click', () => {
+          state.lowBandwidthMode = !state.lowBandwidthMode;
+          const lbl = document.getElementById('low-bw-label');
+          if (lbl) lbl.textContent = state.lowBandwidthMode ? 'وضع توفير الباقة ✓' : 'تصفح سريع';
+          showToast(
+            state.lowBandwidthMode
+              ? '⚡ تم تفعيل وضع الإنترنت البطيء وتوفير البيانات: تعمل جميع الدروس والصوتيات فوراً بدون تحميل فيديوهات في الخلفية.'
+              : '⚡ تم إيقاف وضع توفير البيانات.',
+            'success'
+          );
+        });
+      }
+
+      // Mobile drawer & bottom bar
+      const mobileDrawer = document.getElementById('mobile-nav-drawer');
+      const openDrawerTop = document.getElementById('btn-open-mobile-drawer-top');
+      const openDrawerBottom = document.getElementById('btn-mobile-bottom-all-sections');
+      const closeDrawerBtn = document.getElementById('btn-close-mobile-drawer');
+
+      [openDrawerTop, openDrawerBottom].forEach(b => {
+        if (b && mobileDrawer) b.addEventListener('click', () => mobileDrawer.classList.remove('hidden'));
+      });
+      if (closeDrawerBtn && mobileDrawer) {
+        closeDrawerBtn.addEventListener('click', () => mobileDrawer.classList.add('hidden'));
+      }
+      if (mobileDrawer) {
+        mobileDrawer.addEventListener('click', (e) => {
+          const tBtn = e.target.closest('[data-mobile-tab]');
+          if (tBtn) {
+            mobileDrawer.classList.add('hidden');
+            switchTab(tBtn.getAttribute('data-mobile-tab'));
+          } else if (e.target === mobileDrawer) {
+            mobileDrawer.classList.add('hidden');
+          }
+        });
+      }
+
+      document.querySelectorAll('[data-mobile-bottom-tab]').forEach(btn => {
+        btn.addEventListener('click', () => switchTab(btn.getAttribute('data-mobile-bottom-tab')));
+      });
+
+      // Delegated clicks for [data-tab-jump] and [data-sd-select-level]
+      document.body.addEventListener('click', (e) => {
+        const jumpEl = e.target.closest('[data-tab-jump]');
+        if (jumpEl) {
+          switchTab(jumpEl.getAttribute('data-tab-jump'));
+          return;
+        }
+        const sdLvBtn = e.target.closest('[data-sd-select-level]');
+        if (sdLvBtn) {
+          const code = sdLvBtn.getAttribute('data-sd-select-level');
+          if (code && CEFR_LEVELS.includes(code)) {
+            state.studentLevel = code;
+            saveProgress();
+            updateGlobalStatsUI();
+            renderStudentDashboardModule();
+            showToast(`تم التبديل إلى المستوى ${code}`, 'info');
+          }
+        }
+      });
+
+      // 5. Admin CMS Add / Delete / Export Listeners
+      const addCmsBtn = document.getElementById('btn-admin-cms-add-save');
+      if (addCmsBtn) {
+        addCmsBtn.addEventListener('click', () => {
+          const type = document.getElementById('admin-cms-type').value;
+          const level = document.getElementById('admin-cms-level').value;
+          const title = document.getElementById('admin-cms-title').value.trim();
+          const ar = document.getElementById('admin-cms-ar').value.trim();
+          const enExample = document.getElementById('admin-cms-en-example').value.trim();
+          const pron = document.getElementById('admin-cms-pron').value.trim();
+
+          if (!title || !ar) {
+            showToast('⚠️ يرجى كتابة عنوان الدرس/الكلمة والشرح بالعربية أولاً', 'error');
+            return;
+          }
+
+          const newItem = {
+            id: 'cms_' + Date.now(),
+            type,
+            level,
+            title,
+            ar,
+            enExample: enExample || title,
+            pron,
+            createdAt: new Date().toLocaleDateString('ar-EG')
+          };
+
+          const list = getCustomCMSItems();
+          list.unshift(newItem);
+          saveCustomCMSItems(list);
+          applyCustomCMSItemsToAcademy();
+          renderAdminCMSTable();
+
+          document.getElementById('admin-cms-title').value = '';
+          document.getElementById('admin-cms-ar').value = '';
+          document.getElementById('admin-cms-en-example').value = '';
+          document.getElementById('admin-cms-pron').value = '';
+          showToast(`✅ تمت إضافة "${title}" إلى الأكاديمية فوراً دون تعديل الكود!`, 'success');
+        });
+      }
+
+      const cmsSection = document.getElementById('admin-cms-section');
+      if (cmsSection) {
+        cmsSection.addEventListener('click', (e) => {
+          const delBtn = e.target.closest('[data-cms-delete]');
+          if (delBtn) {
+            const id = delBtn.getAttribute('data-cms-delete');
+            const list = getCustomCMSItems().filter(x => x.id !== id);
+            saveCustomCMSItems(list);
+            renderAdminCMSTable();
+            showToast('🗑️ تم حذف العنصر من قائمة الدروس المخصصة', 'info');
+            return;
+          }
+          const spkBtn = e.target.closest('[data-cms-speak]');
+          if (spkBtn) {
+            speakEnglish(spkBtn.getAttribute('data-cms-speak'));
+          }
+        });
+      }
+
+      const expCmsBtn = document.getElementById('btn-admin-cms-export');
+      if (expCmsBtn) {
+        expCmsBtn.addEventListener('click', () => {
+          const dataStr = JSON.stringify(getCustomCMSItems(), null, 2);
+          const blob = new Blob([dataStr], { type: 'application/json' });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'ME_Learning_Custom_Lessons_CMS.json';
+          a.click();
+          setTimeout(() => URL.revokeObjectURL(url), 1000);
+        });
+      }
+    }
+
     function initAcademyApp() {
       if (window.__moazAcademyReady) return;
       window.__moazAcademyReady = true;
@@ -18581,6 +20779,7 @@
       initWordGameRound();
       bindNewModulesListeners();
       if (typeof bindAmericanAccentListeners === 'function') bindAmericanAccentListeners();
+      bindAllEightUpgradesEvents();
       if (typeof renderAmericanAccentModule === 'function') renderAmericanAccentModule();
 
       // Main Navigation Tabs
@@ -20516,34 +22715,59 @@
       }
     }
 
-    // ==================== EVERY 5 MINUTES SALAWAT NOTIFICATION ("اللَّهُمَّ صَلِّ وَسَلِّمْ عَلَى نَبِيِّنَا مُحَمَّدٍ💗") ====================
+    // ==================== EVERY 5 MINUTES ROTATING AZKAR NOTIFICATION (3 ROTATING AZKAR) ====================
     let salawatIntervalTimer = null;
     let salawatDismissTimeout = null;
     let salawatCount = 0;
+    let azkarRotationIdx = 0;
+
+    const DEFAULT_ROTATING_AZKAR = [
+      'اللَّهُمَّ صَلِّ وَسَلِّمْ عَلَى نَبِيِّنَا مُحَمَّدٍ. 💗',
+      'لَا إِلَهَ إِلَّا أَنْتَ سُبْحَانَكَ إِنِّي كُنْتُ مِنَ الظَّالِمِينَ.💗',
+      '﴿رَبِّ اشرَح لي صَدري، وَيَسِّر لي أَمري، وَاحلُل عُقدَةً مِن لِساني، يَفقَهوا قَولي﴾💗'
+    ];
+
+    function getRotatingAzkarList() {
+      try {
+        const savedList = localStorage.getItem('me_learning_azkar_list_v2');
+        if (savedList) {
+          const parsed = JSON.parse(savedList);
+          if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+        }
+      } catch (e) {}
+      return DEFAULT_ROTATING_AZKAR.slice();
+    }
 
     function getSalawatMessageText() {
-      try {
-        const saved = localStorage.getItem('me_learning_salawat_text_v1');
-        if (saved && saved.trim()) return saved.trim();
-      } catch (e) {}
-      return 'اللَّهُمَّ صَلِّ وَسَلِّمْ عَلَى نَبِيِّنَا مُحَمَّدٍ💗';
+      const list = getRotatingAzkarList();
+      const msg = list[azkarRotationIdx % list.length];
+      azkarRotationIdx = (azkarRotationIdx + 1) % list.length;
+      return msg;
     }
 
     function triggerSalawatNotification(isManual) {
-      salawatCount += 1;
+      const list = getRotatingAzkarList();
+      const currentIdx = azkarRotationIdx % list.length;
       const msg = getSalawatMessageText();
+      salawatCount += 1;
+
       const banner = document.getElementById('salawat-notification-banner');
       const textEl = document.getElementById('salawat-banner-text');
       const countEl = document.getElementById('salawat-counter-badge');
+      const headerShortEl = document.getElementById('header-azkar-short-text');
 
       if (textEl) textEl.textContent = msg;
-      if (countEl) countEl.textContent = `تذكير رقم #${salawatCount}`;
+      if (countEl) countEl.textContent = `ذكر ${currentIdx + 1} من ${list.length} • تذكير #${salawatCount}`;
+      if (headerShortEl) {
+        headerShortEl.textContent = msg.length > 48 ? msg.slice(0, 48) + '...' : msg;
+      }
+
       if (banner) {
         banner.classList.remove('hidden');
         if (salawatDismissTimeout) clearTimeout(salawatDismissTimeout);
         salawatDismissTimeout = setTimeout(() => {
           banner.classList.add('hidden');
-        }, 12000);
+        }, 14000);
       }
 
       playChime('success');
@@ -20552,7 +22776,7 @@
       // Also trigger Web Notification API if granted
       try {
         if ('Notification' in window && Notification.permission === 'granted') {
-          new Notification('ME Learning • تذكير كل 5 دقائق', {
+          new Notification('ME Learning • إشعار الأذكار (كل 5 دقائق)', {
             body: msg
           });
         }
@@ -20561,10 +22785,16 @@
 
     function initFiveMinuteSalawatReminder() {
       const dismissBtn = document.getElementById('btn-dismiss-salawat-banner');
+      const nextAzkarBtn = document.getElementById('btn-next-azkar-banner');
       const banner = document.getElementById('salawat-notification-banner');
       if (dismissBtn && banner) {
         dismissBtn.addEventListener('click', () => {
           banner.classList.add('hidden');
+        });
+      }
+      if (nextAzkarBtn) {
+        nextAzkarBtn.addEventListener('click', () => {
+          triggerSalawatNotification(true);
         });
       }
 
@@ -20580,7 +22810,7 @@
         });
       }
 
-      // Clear any existing interval and set exact 5-minute (300,000 ms) interval
+      // Clear any existing interval and set exact 5-minute (300,000 ms) interval rotating through the 3 Azkar
       if (salawatIntervalTimer) clearInterval(salawatIntervalTimer);
       salawatIntervalTimer = setInterval(() => {
         triggerSalawatNotification(false);
