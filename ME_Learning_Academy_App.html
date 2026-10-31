@@ -752,14 +752,23 @@
           🔐 دخول الإدارة
         </button>
       </div>
-      <!-- Inline Admin PIN Check inside Lock Modal -->
-      <div id="lock-modal-admin-pin-box" class="hidden p-3.5 rounded-2xl bg-slate-950 border border-indigo-500/60 space-y-2.5 text-right">
-        <label for="lock-modal-admin-pin-input" class="block text-xs font-extrabold text-indigo-200">🔑 أدخل الرمز السري للإدارة لفتح الأكاديمية وبوابة الإدارة:</label>
-        <div class="flex gap-2">
-          <input id="lock-modal-admin-pin-input" type="password" dir="ltr" autocomplete="off" placeholder="الرمز السري للإدارة..." class="font-en flex-1 px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500" />
-          <button type="button" id="btn-lock-modal-verify-pin" class="px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-extrabold transition">
-            تحقق ودخول
-          </button>
+      <!-- Inline Admin Account Login inside Lock Modal -->
+      <div id="lock-modal-admin-pin-box" class="hidden p-4 rounded-2xl bg-slate-950 border-2 border-indigo-500/80 space-y-3 text-right">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-extrabold text-amber-300">👑 تسجيل دخول حساب الإدارة الرسمي (منفصل عن حسابات الطلاب)</span>
+        </div>
+        <div class="space-y-2">
+          <div>
+            <label for="lock-modal-admin-email-input" class="block text-[11px] font-extrabold text-indigo-200 mb-1">📧 البريد الإلكتروني لحساب الإدارة (Gmail):</label>
+            <input id="lock-modal-admin-email-input" type="email" dir="ltr" autocomplete="off" value="" placeholder="أدخل بريد حساب الإدارة..." class="font-en w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+          </div>
+          <div>
+            <label for="lock-modal-admin-pin-input" class="block text-[11px] font-extrabold text-indigo-200 mb-1">🔑 كلمة المرور لحساب الإدارة:</label>
+            <div class="flex gap-2">
+              <input id="lock-modal-admin-pin-input" type="password" dir="ltr" autocomplete="current-password" placeholder="أدخل كلمة مرور حساب الإدارة..." class="font-en flex-1 px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+              <button type="button" id="btn-lock-modal-verify-pin" class="px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-extrabold transition">تحقق ودخول</button>
+            </div>
+          </div>
         </div>
         <p id="lock-modal-pin-error" class="hidden text-xs font-extrabold text-rose-400"></p>
       </div>
@@ -945,12 +954,12 @@
         <button type="button" id="btn-close-auth-modal" class="hidden text-slate-400 hover:text-slate-600 text-lg font-bold px-2 py-1 rounded-lg hover:bg-slate-100">✕</button>
       </div>
 
-      <!-- Logged-in Student Profile View -->
+      <!-- Logged-in Student or Admin Profile View -->
       <div id="auth-profile-view" class="hidden space-y-4">
-        <div class="p-4 rounded-2xl bg-gradient-to-l from-indigo-50 to-emerald-50 border border-indigo-200 flex items-center gap-3.5">
+        <div id="profile-card-box" class="p-4 rounded-2xl bg-gradient-to-l from-indigo-50 to-emerald-50 border border-indigo-200 flex items-center gap-3.5">
           <div class="w-12 h-12 rounded-2xl bg-indigo-600 text-white flex items-center justify-center text-xl font-extrabold shrink-0" id="profile-avatar-char">ط</div>
           <div class="space-y-0.5">
-            <div class="text-xs font-bold text-emerald-700">✅ حساب طالب مسجل ومفعّل في ME Learning</div>
+            <div class="text-xs font-bold text-emerald-700" id="profile-role-badge">✅ حساب طالب مسجل ومفعّل في ME Learning</div>
             <h4 class="text-base font-extrabold text-slate-900" id="profile-name-ar">طالب الأكاديمية</h4>
             <p class="text-xs text-slate-600 font-en font-bold" id="profile-name-en">Student</p>
             <p class="text-xs text-indigo-700 font-en font-extrabold" id="profile-email-display"></p>
@@ -970,10 +979,14 @@
             <strong class="text-sm font-extrabold text-indigo-600 font-en" id="profile-quiz-stat">A1</strong>
           </div>
         </div>
-        <div class="flex flex-wrap items-center justify-between gap-2 pt-2">
-          <button type="button" id="btn-continue-to-academy" class="flex-1 py-2.5 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-xs transition">
-            🚀 متابعة الدراسة في الأكاديمية
+        <div id="profile-admin-quick-bar" class="hidden p-3 rounded-2xl bg-slate-900 text-white border border-amber-400/60 flex flex-wrap items-center justify-between gap-2">
+          <div class="text-xs font-extrabold text-amber-300">👑 أنت مسجل الدخول بحساب الإدارة الرسمي</div>
+          <button type="button" id="btn-go-admin-dashboard-from-profile" class="px-3.5 py-1.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 text-xs font-black transition">
+            🔐 فتح لوحة الإدارة والاشتراكات
           </button>
+        </div>
+        <div class="flex flex-wrap items-center justify-between gap-2 pt-2">
+          <button type="button" id="btn-continue-to-academy" class="flex-1 py-2.5 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-xs transition">🚀 متابعة الدراسة في الأكاديمية</button>
           <button type="button" id="btn-go-cert-from-modal" class="py-2.5 px-4 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold text-xs transition">
             🎓 شهادة الكورس
           </button>
@@ -985,17 +998,30 @@
 
       <!-- Mandatory Registration / Login Form View -->
       <div id="auth-form-view" class="space-y-4">
-        <div class="p-3 rounded-2xl bg-amber-50 border border-amber-200 text-amber-950 text-xs font-bold leading-relaxed">
-          👋 <strong>مرحباً بك في أكاديمية ME Learning!</strong> يرجى تسجيل حسابك بـ <strong>الاسم الكامل</strong> وبريد <strong>Gmail</strong> الخاص بك للدخول إلى الأكاديمية وحفظ مستواك وشهاداتك.
+        <div id="auth-top-welcome-banner" class="p-3 rounded-2xl bg-amber-50 border border-amber-200 text-amber-950 text-xs font-bold leading-relaxed">
+          👋 <strong>مرحباً بك في أكاديمية ME Learning!</strong> يرجى تسجيل حسابك بـ <strong>الاسم الكامل</strong> وبريد <strong>Gmail</strong> الخاص بك للدخول إلى الأكاديمية، أو اختيار <strong>«👑 دخول حساب الإدارة»</strong> للمدير.
         </div>
 
-        <div class="grid grid-cols-2 gap-1.5 p-1 bg-slate-100 rounded-xl">
-          <button type="button" id="btn-auth-tab-register" class="py-2 rounded-lg text-xs font-extrabold bg-white text-indigo-700 shadow-sm transition">
+        <div class="grid grid-cols-3 gap-1.5 p-1 bg-slate-100 rounded-xl">
+          <button type="button" id="btn-auth-tab-register" class="py-2 px-1.5 rounded-lg text-[11px] sm:text-xs font-extrabold bg-white text-indigo-700 shadow-sm transition">
             ✨ تسجيل طالب جديد (الاسم + Gmail)
           </button>
-          <button type="button" id="btn-auth-tab-login" class="py-2 rounded-lg text-xs font-bold text-slate-600 hover:text-slate-900 transition">
+          <button type="button" id="btn-auth-tab-login" class="py-2 px-1.5 rounded-lg text-[11px] sm:text-xs font-bold text-slate-600 hover:text-slate-900 transition">
             🔑 دخول طالب مسجل سابقاً بـ Gmail
           </button>
+          <button type="button" id="btn-auth-tab-admin" class="py-2 px-1.5 rounded-lg text-[11px] sm:text-xs font-bold text-slate-800 hover:text-indigo-900 transition">
+            👑 دخول حساب الإدارة
+          </button>
+        </div>
+
+        <div id="auth-admin-mode-notice" class="hidden p-3.5 rounded-2xl bg-gradient-to-l from-slate-900 via-indigo-950 to-slate-900 text-white border-2 border-amber-400/70 space-y-1.5">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-black text-amber-300">👑 بوابة حساب الإدارة الرسمي (منفصل عن حسابات الطلاب)</span>
+            <span class="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/40 text-[10px] font-extrabold">ربط سحابي موحّد ✓</span>
+          </div>
+          <p class="text-[11px] text-slate-200 leading-relaxed">
+            يرجى كتابة البريد الإلكتروني الرسمي للإدارة وكلمة المرور السرية لفتح لوحة التحكم وتوحيد الاشتراكات على جميع الهواتف.
+          </p>
         </div>
 
         <div id="auth-register-fields" class="space-y-3">
@@ -1083,18 +1109,19 @@
               🔐 دخول الإدارة (للمدير فقط)
             </button>
           </div>
-          <!-- Protected Admin Secret PIN Gate inside First-Time Registration Modal -->
+          <!-- Protected Admin Account Gate inside First-Time Registration Modal -->
           <div id="auth-modal-admin-pin-panel" class="hidden p-3.5 rounded-2xl bg-slate-900 text-white border-2 border-indigo-500 space-y-2.5">
             <div class="flex items-center justify-between">
-              <span class="text-xs font-extrabold text-amber-300">🔐 التحقق من الرمز السري لدخول الإدارة</span>
+              <span class="text-xs font-extrabold text-amber-300">👑 دخول حساب الإدارة الرسمي (أ. معاذ العكلي)</span>
               <button type="button" id="btn-auth-modal-cancel-admin" class="text-[11px] text-slate-400 hover:text-white font-bold">✕ إخفاء</button>
             </div>
-            <p class="text-[11px] text-slate-300">أدخل الرمز السري الخاص بمدير الأكاديمية. إذا كان الرمز صحيحاً سيتم فتح الأكاديمية وبوابة الإدارة فوراً، وإذا كان خاطئاً ستبقى في شاشة التسجيل:</p>
-            <div class="flex gap-2">
-              <input id="auth-modal-admin-pin-input" type="password" dir="ltr" autocomplete="off" spellcheck="false" placeholder="أدخل الرمز السري للإدارة..." class="font-en flex-1 px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-white text-xs font-bold focus:outline-none focus:ring-2 focus:ring-indigo-400" />
-              <button type="button" id="btn-auth-modal-verify-admin-pin" class="px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-extrabold shrink-0 transition">
-                🔓 تحقق ودخول
-              </button>
+            <p class="text-[11px] text-slate-300">أدخل البريد الإلكتروني لحساب الإدارة وكلمة المرور السرية:</p>
+            <div class="space-y-2">
+              <input id="auth-modal-admin-email-input" type="email" dir="ltr" autocomplete="off" value="" placeholder="أدخل بريد حساب الإدارة..." class="font-en w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-white text-xs font-bold focus:outline-none focus:ring-2 focus:ring-indigo-400" />
+              <div class="flex gap-2">
+                <input id="auth-modal-admin-pin-input" type="password" dir="ltr" autocomplete="current-password" spellcheck="false" placeholder="أدخل كلمة مرور حساب الإدارة..." class="font-en flex-1 px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-white text-xs font-bold focus:outline-none focus:ring-2 focus:ring-indigo-400" />
+                <button type="button" id="btn-auth-modal-verify-admin-pin" class="px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-extrabold shrink-0 transition">🔓 تحقق ودخول</button>
+              </div>
             </div>
             <div id="auth-modal-admin-pin-error" class="hidden p-2 rounded-xl bg-rose-950/90 border border-rose-500/60 text-rose-200 text-xs font-extrabold"></div>
           </div>
@@ -3701,19 +3728,55 @@
           </div>
         </div>
 
-        <!-- Admin Login Bar (Shown when locked) -->
-        <div id="admin-login-box" class="p-4 sm:p-5 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row items-stretch sm:items-end gap-3">
-          <div class="flex-1">
-            <label for="admin-pin-input" class="block text-xs font-extrabold text-slate-700 mb-1">الرمز السري لبوابة دخول الإدارة:</label>
-            <input id="admin-pin-input" type="password" dir="ltr" autocomplete="off" spellcheck="false" placeholder="أدخل الرمز السري الخاص بمدير الأكاديمية..." class="font-en w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500" value="" />
+        <!-- Admin Account Login Bar (Shown when locked) -->
+        <div id="admin-login-box" class="p-4 sm:p-5 rounded-2xl bg-gradient-to-l from-slate-900 via-indigo-950 to-slate-900 text-white border-2 border-indigo-500/60 space-y-4">
+          <div class="flex flex-wrap items-center justify-between gap-2 border-b border-white/15 pb-3">
+            <div>
+              <span class="px-2.5 py-0.5 rounded-full bg-amber-400 text-slate-950 text-[11px] font-black">👑 حساب الإدارة الرسمي والمستقل</span>
+              <h4 class="text-sm sm:text-base font-extrabold text-white mt-1">تسجيل الدخول إلى حساب إدارة الأكاديمية (منفصل عن حسابات الطلاب)</h4>
+            </div>
+            <span class="text-xs font-extrabold text-amber-300 bg-amber-500/15 border border-amber-400/30 px-3 py-1 rounded-xl">🔒 مخصص للمدير فقط</span>
           </div>
-          <button type="button" id="btn-admin-login" class="px-6 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs sm:text-sm font-extrabold shadow-sm transition">
-            🔓 دخول بوابة الإدارة
-          </button>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label for="admin-email-input" class="block text-xs font-extrabold text-indigo-200 mb-1">📧 البريد الإلكتروني لحساب الإدارة (Gmail):</label>
+              <input id="admin-email-input" type="email" dir="ltr" autocomplete="off" spellcheck="false" value="" placeholder="أدخل البريد الإلكتروني لحساب الإدارة..." class="font-en w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white text-xs sm:text-sm font-bold focus:outline-none focus:ring-2 focus:ring-amber-400" />
+            </div>
+            <div>
+              <label for="admin-pin-input" class="block text-xs font-extrabold text-indigo-200 mb-1">🔑 كلمة المرور لحساب الإدارة:</label>
+              <input id="admin-pin-input" type="password" dir="ltr" autocomplete="current-password" spellcheck="false" placeholder="أدخل كلمة مرور حساب الإدارة..." class="font-en w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white text-xs sm:text-sm font-bold focus:outline-none focus:ring-2 focus:ring-amber-400" value="" />
+            </div>
+          </div>
+          <div class="flex flex-wrap items-center justify-between gap-2 pt-1">
+            <span class="text-[11px] text-slate-300 font-semibold">🔒 عند تسجيل الدخول بحساب الإدارة يتم ربط ومزامنة جميع الطلاب والاشتراكات بين كل الهواتف تلقائياً.</span>
+            <button type="button" id="btn-admin-login" class="px-6 py-2.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 text-xs sm:text-sm font-black shadow-lg transition cursor-pointer">🔓 دخول بوابة الإدارة</button>
+          </div>
         </div>
 
-        <!-- Admin Controls Dashboard (Shown when unlocked with Moaz2542005#) -->
+        <!-- Admin Controls Dashboard -->
         <div id="admin-dashboard-controls" class="hidden space-y-6">
+          <!-- Dedicated Official Admin Account & Multi-Phone Sync Identity Card -->
+          <div class="p-4 rounded-2xl bg-gradient-to-l from-indigo-950 via-slate-900 to-emerald-950 text-white border-2 border-amber-400/70 shadow-lg flex flex-col lg:flex-row lg:items-center justify-between gap-3">
+            <div class="flex items-start sm:items-center gap-3">
+              <div class="w-12 h-12 rounded-2xl bg-amber-400 text-slate-950 flex items-center justify-center text-2xl font-black shrink-0 shadow-md">👑</div>
+              <div class="space-y-0.5">
+                <div class="flex flex-wrap items-center gap-2">
+                  <span class="px-2.5 py-0.5 rounded-full bg-amber-400 text-slate-950 text-[10px] font-black">حساب الإدارة الرسمي المستقل</span>
+                  <span id="admin-active-email-badge" class="font-en text-xs sm:text-sm font-extrabold text-emerald-300">حساب الإدارة الموثّق</span>
+                  <span class="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/40 text-[10px] font-extrabold">مفتوح دائماً بدون قيود ✓</span>
+                </div>
+                <p class="text-xs text-slate-200 font-bold">
+                  أ. معاذ العكلي — هذا الحساب مخصص للإدارة فقط ومنفصل تماماً عن حسابات الطلاب، ومربوط سحابياً لتوحيد الاشتراكات على جميع الهواتف.
+                </p>
+              </div>
+            </div>
+            <div class="flex flex-wrap items-center gap-2 shrink-0">
+              <button type="button" id="btn-admin-top-force-unify-phones" class="px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-black shadow-md transition flex items-center gap-1.5 cursor-pointer">
+                <span>🔄</span>
+                <span>توحيد الاشتراكات بين الهواتف الآن</span>
+              </button>
+            </div>
+          </div>
           <!-- Top Summary Analytics Cards -->
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
             <div class="p-4 rounded-2xl bg-indigo-50 border border-indigo-200">
@@ -5740,7 +5803,29 @@
       activeYtCourseId: 'yt_zam_1'
     };
 
-    // ==================== MULTI-DEVICE CLOUD SYNC (NTFY.SH REALTIME) & GUARANTEED MULTI-LAYER STUDENT REGISTRY ====================
+    // ==================== OFFICIAL DEDICATED ADMIN ACCOUNT & MULTI-DEVICE CLOUD SYNC ENGINE ====================
+    const ADMIN_MASTER_EMAIL = 'moazelokly568@gmail.com';
+    const ADMIN_MASTER_PASSWORD = 'Moaz2542005#';
+
+    function isOfficialAdminEmail(rawEmail) {
+      const clean = String(rawEmail || '').trim().toLowerCase().replace(/\s+/g, '');
+      if (!clean) return false;
+      if (clean === 'moazelokly568@gmail.com' || clean === 'moaz.elokly@gmail.com' || clean === 'moazelokly@gmail.com') return true;
+      const localPart = clean.split('@')[0].replace(/\./g, '');
+      const domainPart = clean.split('@')[1] || '';
+      if ((!domainPart || domainPart === 'gmail.com' || domainPart === 'googlemail.com') && (localPart === 'moazelokly568' || localPart === 'moazelokly')) {
+        return true;
+      }
+      return false;
+    }
+
+    function isAdminAccountActive() {
+      if (typeof isAdminUnlocked !== 'undefined' && isAdminUnlocked) return true;
+      if (state && state.isAdminAccount) return true;
+      if (state && state.currentStudentUser && isOfficialAdminEmail(state.currentStudentUser)) return true;
+      return false;
+    }
+
     window.__ME_STUDENTS_MEM_DB__ = window.__ME_STUDENTS_MEM_DB__ || {};
     window.__ME_DELETED_STUDENTS__ = window.__ME_DELETED_STUDENTS__ || {};
     window.__ME_ATTACHMENT_CACHE__ = window.__ME_ATTACHMENT_CACHE__ || {};
@@ -5749,14 +5834,21 @@
       if (savedDelRaw) {
         const parsedDel = JSON.parse(savedDelRaw);
         if (parsedDel && typeof parsedDel === 'object') {
-          Object.assign(window.__ME_DELETED_STUDENTS__, parsedDel);
+          Object.keys(parsedDel).forEach(k => {
+            const val = parsedDel[k];
+            // Normalize boolean true from older versions to a past timestamp (1700000000000) so newer registrations can override it
+            window.__ME_DELETED_STUDENTS__[k] = (typeof val === 'number' && val > 0) ? val : 1700000000000;
+          });
         }
       }
     } catch (e) {}
 
-    window.__ME_MAX_ADMIN_REV__ = 1;
+    window.__ME_MAX_ADMIN_REV__ = Math.floor(Date.now() / 1000);
     try {
-      window.__ME_MAX_ADMIN_REV__ = Math.max(1, Number(localStorage.getItem('me_learning_max_admin_rev_v2')) || 1);
+      window.__ME_MAX_ADMIN_REV__ = Math.max(
+        Math.floor(Date.now() / 1000),
+        Number(localStorage.getItem('me_learning_max_admin_rev_v2')) || 1
+      );
     } catch (e) {}
 
     function noteObservedAdminRevision(rev) {
@@ -5768,24 +5860,42 @@
     }
 
     function getNextAdminRevision(curRev) {
-      window.__ME_MAX_ADMIN_REV__ = Math.max(window.__ME_MAX_ADMIN_REV__ || 1, Number(curRev) || 1) + 1;
+      const nowSec = Math.floor(Date.now() / 1000);
+      window.__ME_MAX_ADMIN_REV__ = Math.max(
+        window.__ME_MAX_ADMIN_REV__ || 1,
+        Number(curRev) || 0,
+        nowSec
+      ) + 1;
       try { localStorage.setItem('me_learning_max_admin_rev_v2', String(window.__ME_MAX_ADMIN_REV__)); } catch (e) {}
       return window.__ME_MAX_ADMIN_REV__;
     }
 
-    function isExcludedOrDeletedStudentEmail(rawEmail) {
+    function isExcludedOrDeletedStudentEmail(rawEmail, recordTimestamp) {
       const clean = String(rawEmail || '').trim().toLowerCase().replace(/\s+/g, '');
-      if (!clean || clean === 'moaz.elokly@gmail.com') return true;
+      if (!clean || isOfficialAdminEmail(clean)) return true;
       const canon = typeof getCanonicalGmailKey === 'function' ? getCanonicalGmailKey(clean) : clean;
-      return !!(window.__ME_DELETED_STUDENTS__[clean] || (canon && window.__ME_DELETED_STUDENTS__[canon]));
+      if (isOfficialAdminEmail(canon)) return true;
+      const delTsClean = Number(window.__ME_DELETED_STUDENTS__[clean]) || 0;
+      const delTsCanon = canon ? (Number(window.__ME_DELETED_STUDENTS__[canon]) || 0) : 0;
+      const delTs = Math.max(delTsClean, delTsCanon);
+      if (!delTs) return false;
+      const recTs = Number(recordTimestamp) || 0;
+      if (recTs > 0 && recTs > delTs) {
+        // Record was created or updated by Admin AFTER the deletion timestamp -> automatically unmark!
+        delete window.__ME_DELETED_STUDENTS__[clean];
+        if (canon) delete window.__ME_DELETED_STUDENTS__[canon];
+        return false;
+      }
+      return true;
     }
 
-    function markStudentDeletedPermanently(rawEmail) {
+    function markStudentDeletedPermanently(rawEmail, customDelTs) {
       const clean = String(rawEmail || '').trim().toLowerCase().replace(/\s+/g, '');
-      if (!clean) return;
+      if (!clean || isOfficialAdminEmail(clean)) return;
       const canon = typeof getCanonicalGmailKey === 'function' ? getCanonicalGmailKey(clean) : clean;
-      window.__ME_DELETED_STUDENTS__[clean] = true;
-      if (canon) window.__ME_DELETED_STUDENTS__[canon] = true;
+      const delTs = Number(customDelTs) || Date.now();
+      window.__ME_DELETED_STUDENTS__[clean] = Math.max(Number(window.__ME_DELETED_STUDENTS__[clean]) || 0, delTs);
+      if (canon) window.__ME_DELETED_STUDENTS__[canon] = Math.max(Number(window.__ME_DELETED_STUDENTS__[canon]) || 0, delTs);
       try {
         localStorage.setItem('me_learning_deleted_students_v2', JSON.stringify(window.__ME_DELETED_STUDENTS__));
       } catch (e) {}
@@ -5806,8 +5916,10 @@
       } catch (e) {}
     }
 
-    const NTFY_SYNC_TOPIC = 'me_learning_moaz_elokly_students_v11_unified_master';
+    const NTFY_SYNC_TOPIC = 'me_learning_moaz_admin_v15_master_sync';
     const NTFY_SYNC_URL = `https://ntfy.sh/${NTFY_SYNC_TOPIC}`;
+    const NTFY_BACKUP_SYNC_URL = 'https://ntfy.sh/me_learning_moaz_admin_v15_mirror_sync';
+    const NTFY_LEGACY_V11_URL = 'https://ntfy.sh/me_learning_moaz_elokly_students_v11_unified_master';
     const NTFY_LEGACY_V6_URL = 'https://ntfy.sh/me_learning_moaz_elokly_students_v6_sync';
     let ntfyEventSource = null;
 
@@ -5862,18 +5974,24 @@
         Object.keys(layerObj).forEach(k => {
           const inc = layerObj[k];
           if (!inc || typeof inc !== 'object') return;
-          const ck = String(inc.gmail || k).trim().toLowerCase();
-          if (!ck || isExcludedOrDeletedStudentEmail(ck)) return;
-          const incRev = Number(inc.adminRev) || 1;
+          const ck = String(inc.gmail || k).trim().toLowerCase().replace(/\s+/g, '');
+          const recTs = Math.max(Number(inc.adminUpdatedAt) || 0, Number(inc.updatedAt) || 0);
+          if (!ck || isExcludedOrDeletedStudentEmail(ck, recTs)) return;
+          const incRev = Number(inc.adminRev) || 0;
           noteObservedAdminRevision(incRev);
           if (!db[ck]) {
             db[ck] = { ...inc, gmail: ck, adminRev: incRev };
           } else {
-            const curRev = Number(db[ck].adminRev) || 1;
+            const curRev = Number(db[ck].adminRev) || 0;
             const curAdminTs = Number(db[ck].adminUpdatedAt) || 0;
             const incAdminTs = Number(inc.adminUpdatedAt) || 0;
             if (incRev > curRev || (incRev === curRev && incAdminTs > curAdminTs)) {
               db[ck] = { ...db[ck], ...inc, gmail: ck, adminRev: Math.max(curRev, incRev) };
+            } else {
+              // Preserve higher XP / progress while keeping higher Admin subscription state intact
+              db[ck].xp = Math.max(Number(db[ck].xp) || 0, Number(inc.xp) || 0);
+              db[ck].bestQuizScore = Math.max(Number(db[ck].bestQuizScore) || 0, Number(inc.bestQuizScore) || 0);
+              if (inc.password && !db[ck].password) db[ck].password = inc.password;
             }
           }
         });
@@ -5896,12 +6014,10 @@
         } catch (e) {}
       });
 
-      // 4. Auto-recover any active student in state or eng_zero_progress_v1 so NO registered account is ever missing
+      // 4. Auto-recover any active STUDENT (never Admin!) so no registered student is lost, defaulting to 7-day trial
       try {
         let activeUser = (state.currentStudentUser || '').trim().toLowerCase();
-        if (!activeUser) {
-          try { activeUser = (localStorage.getItem('moaz_academy_active_student_v1') || '').trim().toLowerCase(); } catch (e) {}
-        }
+        if (!activeUser || isOfficialAdminEmail(activeUser)) return (window.__ME_STUDENTS_MEM_DB__ = db);
         let prog = null;
         try {
           const progRaw = localStorage.getItem('eng_zero_progress_v1');
@@ -5909,6 +6025,7 @@
         } catch (e) {}
 
         if (activeUser && activeUser.includes('@') && !isExcludedOrDeletedStudentEmail(activeUser) && !findExistingStudentKeyByGmail(db, activeUser)) {
+          const trialExp = Date.now() + 7 * 24 * 60 * 60 * 1000;
           db[activeUser] = {
             gmail: activeUser,
             nameAr: state.studentNameAr || (prog && prog.studentNameAr) || activeUser.split('@')[0],
@@ -5922,10 +6039,14 @@
             lastLoginAt: new Date().toLocaleString('sv-SE').slice(0, 16),
             loginCount: 1,
             accountStatus: 'active',
-            accessExpiresAt: null,
-            accessDurationLabel: 'مفتوح دائماً بلا انتهاء',
+            subscriptionType: 'trial',
+            accessExpiresAt: trialExp,
+            accessDurationLabel: '🎁 فترة تجريبية مجانية (7 أيام)',
             suspensionReason: '',
-            gmailConfirmationSent: true
+            gmailConfirmationSent: true,
+            updatedAt: Date.now(),
+            adminUpdatedAt: 0,
+            adminRev: 0
           };
         }
       } catch (e) {}
@@ -5988,11 +6109,12 @@
     function mergeIncomingStudentRecord(localDb, incomingSt, isFromCloudAuthority) {
       if (!incomingSt || !incomingSt.gmail) return false;
       const rawKey = String(incomingSt.gmail || '').trim().toLowerCase().replace(/\s+/g, '');
-      if (!rawKey || isExcludedOrDeletedStudentEmail(rawKey)) return false;
+      const recTs = Math.max(Number(incomingSt.adminUpdatedAt) || 0, Number(incomingSt.updatedAt) || 0);
+      if (!rawKey || isExcludedOrDeletedStudentEmail(rawKey, recTs)) return false;
       const matchedKey = findExistingStudentKeyByGmail(localDb, rawKey) || rawKey;
-      if (isExcludedOrDeletedStudentEmail(matchedKey)) return false;
+      if (isExcludedOrDeletedStudentEmail(matchedKey, recTs)) return false;
       const existing = localDb[matchedKey];
-      const incRev = Math.max(1, Number(incomingSt.adminRev) || 1);
+      const incRev = Math.max(0, Number(incomingSt.adminRev) || 0);
       noteObservedAdminRevision(incRev);
       if (!existing) {
         localDb[matchedKey] = {
@@ -6010,7 +6132,7 @@
       // 1. A strictly higher adminRev (incRev > locRev) ALWAYS wins on every device, regardless of device clock skew!
       // 2. A strictly lower adminRev (incRev < locRev) NEVER overwrites a newer adminRev!
       // 3. When adminRev is equal (incRev === locRev), compare adminUpdatedAt timestamps.
-      const locRev = Math.max(1, Number(existing.adminRev) || 1);
+      const locRev = Math.max(0, Number(existing.adminRev) || 0);
       noteObservedAdminRevision(locRev);
       const incAdminTs = Number(incomingSt.adminUpdatedAt) || 0;
       const locAdminTs = Number(existing.adminUpdatedAt) || 0;
@@ -6018,7 +6140,11 @@
       if (incRev > locRev) {
         useIncAdmin = true;
       } else if (incRev === locRev) {
-        useIncAdmin = isFromCloudAuthority ? (incAdminTs >= locAdminTs) : (incAdminTs > locAdminTs);
+        if (incAdminTs > locAdminTs) {
+          useIncAdmin = true;
+        } else if (incAdminTs === locAdminTs && isFromCloudAuthority) {
+          useIncAdmin = true;
+        }
       }
 
       const mergedMastered = { ...(existing.mastered || {}), ...(incomingSt.mastered || {}) };
@@ -6057,10 +6183,10 @@
           ? (incomingSt.suspensionReason !== undefined ? incomingSt.suspensionReason : '')
           : (existing.suspensionReason !== undefined ? existing.suspensionReason : ''),
         updatedAt: Math.max(Number(existing.updatedAt) || 0, Number(incomingSt.updatedAt) || 0),
-        adminUpdatedAt: useIncAdmin ? (Number(incomingSt.adminUpdatedAt) || Date.now()) : (Number(existing.adminUpdatedAt) || 0),
-        adminRev: Math.max(locRev, incRev, 1)
+        adminUpdatedAt: useIncAdmin ? (Number(incomingSt.adminUpdatedAt) || 0) : (Number(existing.adminUpdatedAt) || 0),
+        adminRev: Math.max(locRev, incRev, 0)
       };
-      return false;
+      return useIncAdmin && (incRev > locRev || incAdminTs > locAdminTs);
     }
 
     async function pushStudentsDBToCloudRegistry(localDb, singleStudentRecord) {
@@ -6163,51 +6289,74 @@
     function startLiveCloudStudentStream() {
       try {
         if (ntfyEventSource || typeof EventSource === 'undefined') return;
-        ntfyEventSource = new EventSource(`${NTFY_SYNC_URL}/sse`);
+        // Connect to live SSE stream with ?since=all so historical + real-time messages arrive over 1 single connection
+        ntfyEventSource = new EventSource(`${NTFY_SYNC_URL}/sse?since=all`);
         ntfyEventSource.onmessage = (ev) => {
           try {
             if (!ev || !ev.data) return;
             const env = JSON.parse(ev.data);
             const rawMsg = env.message || ev.data;
             const data = typeof rawMsg === 'string' ? JSON.parse(rawMsg) : rawMsg;
-            if (data && (data.app === 'ME_SYNC_V7' || data.app === 'ME_SYNC_V8' || data.app === 'ME_LEARNING_SYNC_V6')) {
+            if (data && (data.app === 'ME_SYNC_V9' || data.app === 'ME_SYNC_V8' || data.app === 'ME_SYNC_V7' || data.app === 'ME_LEARNING_SYNC_V6')) {
               const localDb = getStudentsDB();
-              let added = false;
+              let changed = false;
+              const pktTime = Number(data.t || data.updatedAt) || Date.now();
               if (Array.isArray(data.del)) {
                 data.del.forEach(dk => {
-                  markStudentDeletedPermanently(dk);
-                  const mDel = findExistingStudentKeyByGmail(localDb, dk) || dk;
-                  delete localDb[dk];
-                  delete localDb[mDel];
+                  const delEmail = typeof dk === 'object' ? dk.g : dk;
+                  const delTime = (typeof dk === 'object' && dk.ts) ? dk.ts : pktTime;
+                  if (delEmail) {
+                    const mDel = findExistingStudentKeyByGmail(localDb, delEmail) || delEmail;
+                    const exRec = localDb[mDel] || localDb[delEmail];
+                    const exTs = exRec ? Math.max(Number(exRec.adminUpdatedAt) || 0, Number(exRec.updatedAt) || 0) : 0;
+                    if (!exRec || delTime >= exTs) {
+                      markStudentDeletedPermanently(delEmail, delTime);
+                      delete localDb[delEmail];
+                      delete localDb[mDel];
+                      changed = true;
+                    }
+                  }
                 });
               }
               if (data.deleted && typeof data.deleted === 'object') {
                 Object.keys(data.deleted).forEach(delKey => {
-                  markStudentDeletedPermanently(delKey);
+                  const delVal = data.deleted[delKey];
+                  const delTime = (typeof delVal === 'number' && delVal > 1) ? delVal : 1700000000000;
                   const mDel = findExistingStudentKeyByGmail(localDb, delKey) || delKey;
-                  delete localDb[delKey];
-                  delete localDb[mDel];
+                  const exRec = localDb[mDel] || localDb[delKey];
+                  const exTs = exRec ? Math.max(Number(exRec.adminUpdatedAt) || 0, Number(exRec.updatedAt) || 0) : 0;
+                  if (!exRec || delTime >= exTs) {
+                    markStudentDeletedPermanently(delKey, delTime);
+                    delete localDb[delKey];
+                    delete localDb[mDel];
+                    changed = true;
+                  }
                 });
               }
               if (data.cfg && typeof data.cfg === 'object') {
                 try {
                   if (data.cfg.defDur) localStorage.setItem('me_learning_default_student_duration_v2', data.cfg.defDur);
+                  if (data.cfg.ann !== undefined) {
+                    localStorage.setItem('moaz_academy_announcement_v1', data.cfg.ann);
+                    const annEl = document.getElementById('academy-live-announcement-text');
+                    if (annEl && data.cfg.ann) annEl.textContent = data.cfg.ann;
+                  }
                 } catch (e) {}
               }
               if (Array.isArray(data.list) && typeof expandCompactStudentIntoDB === 'function') {
                 data.list.forEach(c => {
-                  if (expandCompactStudentIntoDB(localDb, c, true)) added = true;
+                  if (expandCompactStudentIntoDB(localDb, c, true)) changed = true;
                 });
               }
               if (data.student && data.student.gmail) {
-                if (mergeIncomingStudentRecord(localDb, data.student, true)) added = true;
+                if (mergeIncomingStudentRecord(localDb, data.student, true)) changed = true;
               }
               if (data.studentsDB && typeof data.studentsDB === 'object') {
                 Object.keys(data.studentsDB).forEach(k => {
                   const st = data.studentsDB[k];
                   if (st) {
                     st.gmail = st.gmail || k;
-                    if (mergeIncomingStudentRecord(localDb, st, true)) added = true;
+                    if (mergeIncomingStudentRecord(localDb, st, true)) changed = true;
                   }
                 });
               }
@@ -6219,12 +6368,17 @@
               }
               if (typeof updateGlobalStatsUI === 'function') updateGlobalStatsUI();
               if (typeof checkAndEnforceStudentAccessLock === 'function') checkAndEnforceStudentAccessLock();
-              if (added && isAdminUnlocked) {
-                playChime('success');
-                showToast('🔔 تم تحديث سجل الطلاب ومزامنة الحسابات فوراً بين الأجهزة!', 'success');
-              }
             }
           } catch (e) {}
+        };
+        ntfyEventSource.onerror = () => {
+          try {
+            if (ntfyEventSource) {
+              ntfyEventSource.close();
+              ntfyEventSource = null;
+            }
+          } catch (e) {}
+          setTimeout(startLiveCloudStudentStream, 6000);
         };
       } catch (e) {}
     }
@@ -6448,11 +6602,43 @@
       }
     }
 
+    let __studentProgressCloudDebounce = null;
+
     function loadProgress() {
       try {
-        // 1. Check active student from localStorage, sessionStorage, or 365-day Cookie
-        let activeUser = '';
-        try { activeUser = localStorage.getItem('moaz_academy_active_student_v1') || ''; } catch (e) {}
+        // 0. Check if user explicitly logged out
+        let loggedOutFlag = false;
+        try { loggedOutFlag = localStorage.getItem('me_learning_logged_out_flag_v3') === 'true'; } catch (e) {}
+        if (loggedOutFlag) {
+          state.currentStudentUser = '';
+          state.studentNameAr = '';
+          state.studentNameEn = '';
+          state.isAdminAccount = false;
+          return;
+        }
+
+        // 1. Check if Official Admin Session is persisted on this phone
+        let savedAdminRaw = '';
+        try { savedAdminRaw = localStorage.getItem('me_learning_admin_session_v3') || sessionStorage.getItem('me_learning_admin_session_v3') || ''; } catch (e) {}
+        if (savedAdminRaw) {
+          try {
+            const parsedAdm = savedAdminRaw === 'true' ? { unlocked: true } : JSON.parse(savedAdminRaw);
+            if (parsedAdm && parsedAdm.unlocked) {
+              if (typeof isAdminUnlocked !== 'undefined') isAdminUnlocked = true;
+              window.__ME_ADMIN_SESSION_RESTORED__ = true;
+              state.isAdminAccount = true;
+              state.currentStudentUser = ADMIN_MASTER_EMAIL;
+              state.studentNameAr = 'أ. معاذ العكلي (حساب الإدارة)';
+              state.studentNameEn = 'Director Moaz Elokly';
+            }
+          } catch (e) {}
+        }
+
+        // 2. Check active student from localStorage, sessionStorage, or 365-day Cookie
+        let activeUser = state.isAdminAccount ? ADMIN_MASTER_EMAIL : '';
+        if (!activeUser) {
+          try { activeUser = localStorage.getItem('moaz_academy_active_student_v1') || ''; } catch (e) {}
+        }
         if (!activeUser) {
           try { activeUser = sessionStorage.getItem('moaz_academy_active_student_v1') || ''; } catch (e) {}
         }
@@ -6460,7 +6646,18 @@
           activeUser = getPermanentCookie('me_active_student') || '';
         }
 
-        // 2. Also load general progress snapshot first so nothing is missed
+        if (activeUser && isOfficialAdminEmail(activeUser)) {
+          if (savedAdminRaw) {
+            state.isAdminAccount = true;
+            state.currentStudentUser = ADMIN_MASTER_EMAIL;
+            state.studentNameAr = 'أ. معاذ العكلي (حساب الإدارة)';
+            state.studentNameEn = 'Director Moaz Elokly';
+          } else {
+            activeUser = '';
+          }
+        }
+
+        // 3. Also load general progress snapshot
         try {
           const raw = localStorage.getItem('eng_zero_progress_v1') || sessionStorage.getItem('eng_zero_progress_v1');
           if (raw) {
@@ -6468,22 +6665,29 @@
             if (typeof parsed.xp === 'number') state.xp = parsed.xp;
             if (parsed.mastered && typeof parsed.mastered === 'object') state.mastered = { ...state.mastered, ...parsed.mastered };
             if (typeof parsed.slowSpeech === 'boolean') state.slowSpeech = parsed.slowSpeech;
-            if (typeof parsed.studentNameAr === 'string' && parsed.studentNameAr) state.studentNameAr = parsed.studentNameAr;
-            if (typeof parsed.studentNameEn === 'string' && parsed.studentNameEn) state.studentNameEn = parsed.studentNameEn;
+            if (!state.isAdminAccount) {
+              if (typeof parsed.studentNameAr === 'string' && parsed.studentNameAr) state.studentNameAr = parsed.studentNameAr;
+              if (typeof parsed.studentNameEn === 'string' && parsed.studentNameEn) state.studentNameEn = parsed.studentNameEn;
+              if (!activeUser && parsed.currentStudentUser && !isOfficialAdminEmail(parsed.currentStudentUser)) {
+                activeUser = parsed.currentStudentUser;
+              }
+            }
             if (typeof parsed.bestQuizScore === 'number') state.bestQuizScore = parsed.bestQuizScore;
             if (parsed.studentLevel) state.studentLevel = normalizeLevel(parsed.studentLevel);
-            if (!activeUser && parsed.currentStudentUser) activeUser = parsed.currentStudentUser;
           }
         } catch (e) {}
 
-        // 3. Merge with Student DB record if activeUser exists
+        // 4. Merge with Student DB record if activeUser is a student
         const db = getStudentsDB();
-        if (activeUser && db[activeUser]) {
-          const st = db[activeUser];
-          state.currentStudentUser = activeUser;
-          state.studentNameAr = st.nameAr || state.studentNameAr || activeUser;
-          state.studentNameEn = st.nameEn || state.studentNameEn || activeUser;
-          restoreExtendedProgressFromStudentRecord(st);
+        if (activeUser && !isOfficialAdminEmail(activeUser)) {
+          const matchedKey = findExistingStudentKeyByGmail(db, activeUser) || activeUser;
+          if (db[matchedKey]) {
+            const st = db[matchedKey];
+            state.currentStudentUser = matchedKey;
+            state.studentNameAr = st.nameAr || state.studentNameAr || matchedKey;
+            state.studentNameEn = st.nameEn || state.studentNameEn || matchedKey;
+            restoreExtendedProgressFromStudentRecord(st);
+          }
         }
       } catch (e) {}
     }
@@ -6501,7 +6705,8 @@
           lessonMiniQuizAnswers: americanAccentState.lessonMiniQuizAnswers
         } : {};
 
-        if (state.currentStudentUser && !isExcludedOrDeletedStudentEmail(state.currentStudentUser)) {
+        // Never write the Official Admin Account into the student database!
+        if (state.currentStudentUser && !isOfficialAdminEmail(state.currentStudentUser) && !isExcludedOrDeletedStudentEmail(state.currentStudentUser)) {
           setPermanentCookie('me_active_student', state.currentStudentUser);
           try { localStorage.setItem('moaz_academy_active_student_v1', state.currentStudentUser); } catch (e) {}
           try { sessionStorage.setItem('moaz_academy_active_student_v1', state.currentStudentUser); } catch (e) {}
@@ -6510,6 +6715,7 @@
           const matchedKey = findExistingStudentKeyByGmail(db, state.currentStudentUser) || state.currentStudentUser;
           state.currentStudentUser = matchedKey;
           const existing = db[matchedKey] || { gmail: matchedKey };
+          const defaultTrialExp = Date.now() + 7 * 24 * 60 * 60 * 1000;
           const updatedRecord = {
             ...existing,
             gmail: matchedKey,
@@ -6520,10 +6726,12 @@
             nameEn: existing.nameEn || state.studentNameEn || '',
             studentLevel: state.studentLevel || existing.studentLevel || 'A1',
             accountStatus: existing.accountStatus || 'active',
-            accessExpiresAt: existing.accessExpiresAt !== undefined ? existing.accessExpiresAt : null,
-            accessDurationLabel: existing.accessDurationLabel || 'مفتوح دائماً',
+            subscriptionType: existing.subscriptionType || 'trial',
+            accessExpiresAt: existing.accessExpiresAt !== undefined ? existing.accessExpiresAt : defaultTrialExp,
+            accessDurationLabel: existing.accessDurationLabel || '🎁 فترة تجريبية مجانية (7 أيام)',
             suspensionReason: existing.suspensionReason || '',
             adminUpdatedAt: Number(existing.adminUpdatedAt) || 0,
+            adminRev: Number(existing.adminRev) || 0,
             extendedMeta: extMeta || existing.extendedMeta || null,
             examCompletedMap: examMap,
             storyQuizSubmitted: storyMap,
@@ -6531,12 +6739,24 @@
             updatedAt: Date.now()
           };
           db[state.currentStudentUser] = updatedRecord;
-          saveStudentsDB(db);
+          // Save locally without triggering a full-database cloud push on every click
+          saveStudentsDB(db, true);
           writeToPermanentIDB('students_store', updatedRecord);
+
+          // Debounce single-student progress sync to cloud (every 15s max)
+          if (__studentProgressCloudDebounce) clearTimeout(__studentProgressCloudDebounce);
+          const studentKeyToSync = state.currentStudentUser;
+          __studentProgressCloudDebounce = setTimeout(() => {
+            const curDb = getStudentsDB();
+            if (curDb[studentKeyToSync]) {
+              pushStudentsDBToCloudRegistry(curDb, false, studentKeyToSync);
+            }
+          }, 15000);
         }
 
         const progressSnapshot = {
           currentStudentUser: state.currentStudentUser || '',
+          isAdminAccount: !!state.isAdminAccount,
           xp: state.xp,
           mastered: state.mastered,
           slowSpeech: state.slowSpeech,
@@ -6570,7 +6790,8 @@
           const db = getStudentsDB();
           allIdbStudents.forEach(st => {
             if (st && st.gmail) {
-              if (isExcludedOrDeletedStudentEmail(st.gmail)) {
+              const recTs = Math.max(Number(st.adminUpdatedAt) || 0, Number(st.updatedAt) || 0);
+              if (isExcludedOrDeletedStudentEmail(st.gmail, recTs)) {
                 deleteFromPermanentIDB('students_store', st.gmail);
               } else {
                 mergeIncomingStudentRecord(db, st, false);
@@ -6580,16 +6801,29 @@
           saveStudentsDB(db, true);
         }
 
+        // Respect explicit logout flag or active Admin session
+        let loggedOutFlag = false;
+        try { loggedOutFlag = localStorage.getItem('me_learning_logged_out_flag_v3') === 'true'; } catch (e) {}
+        if (loggedOutFlag || isAdminAccountActive()) {
+          if (isAdminAccountActive()) {
+            const authModal = document.getElementById('student-auth-modal');
+            if (authModal) authModal.classList.add('hidden');
+          }
+          updateGlobalStatsUI();
+          renderLevelSelectorUI();
+          return;
+        }
+
         const snapRec = await readFromPermanentIDB('kv_store', 'latest_progress_snapshot');
         if (snapRec && snapRec.data) {
           const snap = snapRec.data;
-          if (!state.currentStudentUser && snap.currentStudentUser) {
+          if (!state.currentStudentUser && snap.currentStudentUser && !isOfficialAdminEmail(snap.currentStudentUser)) {
             state.currentStudentUser = snap.currentStudentUser;
           }
           if ((snap.xp || 0) > (state.xp || 0)) state.xp = snap.xp;
           if (snap.mastered) state.mastered = { ...(state.mastered || {}), ...snap.mastered };
-          if (snap.studentNameAr && !state.studentNameAr) state.studentNameAr = snap.studentNameAr;
-          if (snap.studentNameEn && !state.studentNameEn) state.studentNameEn = snap.studentNameEn;
+          if (snap.studentNameAr && !state.studentNameAr && !isOfficialAdminEmail(snap.currentStudentUser)) state.studentNameAr = snap.studentNameAr;
+          if (snap.studentNameEn && !state.studentNameEn && !isOfficialAdminEmail(snap.currentStudentUser)) state.studentNameEn = snap.studentNameEn;
           if (snap.studentLevel) state.studentLevel = normalizeLevel(snap.studentLevel);
           restoreExtendedProgressFromStudentRecord(snap);
 
@@ -7117,13 +7351,30 @@
       sfxIcon.textContent = state.sfxEnabled ? '🔔' : '🔕';
 
       const studentLabel = document.getElementById('header-student-label');
+      const openAuthBtn = document.getElementById('btn-open-auth-modal');
       if (studentLabel) {
-        studentLabel.textContent = state.studentNameAr ? `الطالب: ${state.studentNameAr.split(/\s+/)[0]}` : 'تسجيل حساب طالب';
+        if (isAdminAccountActive()) {
+          studentLabel.textContent = 'الإدارة: أ. معاذ';
+          if (openAuthBtn) {
+            openAuthBtn.className = 'inline-flex items-center gap-1 px-2 sm:px-3 py-1.5 rounded-xl text-[11px] sm:text-xs font-extrabold bg-slate-900 text-amber-300 border border-amber-400/60 hover:bg-indigo-950 shadow-sm transition shrink-0';
+            const iconSpan = openAuthBtn.querySelector('span:first-child');
+            if (iconSpan) iconSpan.textContent = '👑';
+          }
+        } else {
+          studentLabel.textContent = state.studentNameAr ? `الطالب: ${state.studentNameAr.split(/\s+/)[0]}` : 'تسجيل الدخول';
+          if (openAuthBtn) {
+            openAuthBtn.className = 'inline-flex items-center gap-1 px-2 sm:px-3 py-1.5 rounded-xl text-[11px] sm:text-xs font-extrabold bg-emerald-600 text-white hover:bg-emerald-700 shadow-sm transition shrink-0';
+            const iconSpan = openAuthBtn.querySelector('span:first-child');
+            if (iconSpan) iconSpan.textContent = '👨‍🎓';
+          }
+        }
       }
 
       const heroBadge = document.getElementById('hero-welcome-badge');
       if (heroBadge) {
-        if (state.studentNameAr) {
+        if (isAdminAccountActive()) {
+          heroBadge.textContent = `👑 مرحباً بمدير الأكاديمية أ. معاذ العكلي (${ADMIN_MASTER_EMAIL}) • حساب الإدارة الرسمي متصل وموحّد`;
+        } else if (state.studentNameAr) {
           heroBadge.textContent = `✨ مرحباً بالطالب ${state.studentNameAr} في أكاديمية ME Learning • المستويات المعتمدة (A1 → C2)`;
         } else {
           heroBadge.textContent = `✨ مرحباً بك في أكاديمية ME Learning • المستويات الـ 6 المعتمدة عالمياً (A1 → C2)`;
@@ -23191,11 +23442,125 @@
         return !!(state.currentStudentUser && state.studentNameAr);
       }
 
+      function activateOfficialAdminAccountSession(navigateToAdminTab) {
+        isAdminUnlocked = true;
+        state.isAdminAccount = true;
+        state.currentStudentUser = ADMIN_MASTER_EMAIL;
+        state.studentNameAr = 'أ. معاذ العكلي (حساب الإدارة)';
+        state.studentNameEn = 'Director Moaz Elokly';
+
+        // Persist Official Admin Session so refreshing or reopening on this phone stays logged in as Admin
+        try {
+          localStorage.removeItem('me_learning_logged_out_flag_v3');
+          localStorage.setItem('me_learning_admin_session_v3', JSON.stringify({
+            email: ADMIN_MASTER_EMAIL,
+            unlocked: true,
+            loginAt: Date.now()
+          }));
+          sessionStorage.setItem('me_learning_admin_session_v3', 'true');
+          localStorage.setItem('moaz_academy_active_student_v1', ADMIN_MASTER_EMAIL);
+          sessionStorage.setItem('moaz_academy_active_student_v1', ADMIN_MASTER_EMAIL);
+          setPermanentCookie('me_active_student', ADMIN_MASTER_EMAIL);
+        } catch (e) {}
+
+        // Ensure Admin email is never kept as a student row in the students DB
+        try {
+          const db = getStudentsDB();
+          let cleaned = false;
+          Object.keys(db).forEach(k => {
+            if (isOfficialAdminEmail(k) || (db[k] && isOfficialAdminEmail(db[k].gmail))) {
+              delete db[k];
+              cleaned = true;
+            }
+          });
+          if (cleaned) saveStudentsDB(db, true);
+          deleteFromPermanentIDB('students_store', ADMIN_MASTER_EMAIL);
+          deleteFromPermanentIDB('students_store', 'moaz.elokly@gmail.com');
+        } catch (e) {}
+
+        // Unlock all Admin Portal UI elements immediately
+        const loginBox = document.getElementById('admin-login-box');
+        if (loginBox) loginBox.classList.add('hidden');
+        const dashControls = document.getElementById('admin-dashboard-controls');
+        if (dashControls) dashControls.classList.remove('hidden');
+        const adminLogoutBtn = document.getElementById('btn-admin-logout');
+        if (adminLogoutBtn) adminLogoutBtn.classList.remove('hidden');
+        const pill = document.getElementById('admin-status-pill');
+        if (pill) {
+          pill.className = 'px-3.5 py-1.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300 text-xs font-extrabold';
+          pill.textContent = `👑 حساب الإدارة النشط: ${ADMIN_MASTER_EMAIL} ✓`;
+        }
+
+        const lockModal = document.getElementById('student-access-lock-modal');
+        if (lockModal) lockModal.classList.add('hidden');
+        if (authModal) authModal.classList.add('hidden');
+
+        saveProgress();
+        updateGlobalStatsUI();
+        refreshAuthModalUI();
+        renderAppDownloadModule(true);
+        checkAndEnforceStudentAccessLock();
+
+        // Immediately pull & unify students and subscriptions across all phones
+        pullAllStudentsFromCloudRegistry(true, true);
+
+        if (navigateToAdminTab) {
+          switchTab('appdownload');
+        }
+        playChime('success');
+        showToast(`👑 مرحباً بك يا أ. معاذ! تم الدخول بحساب الإدارة الرسمي (${ADMIN_MASTER_EMAIL}) ومزامنة جميع الهواتف.`, 'success');
+      }
+      window.activateOfficialAdminAccountSession = activateOfficialAdminAccountSession;
+
+      function performCompleteAccountLogout(isFromAdminLockBtn) {
+        isAdminUnlocked = false;
+        state.isAdminAccount = false;
+        state.currentStudentUser = '';
+        state.studentNameAr = '';
+        state.studentNameEn = '';
+        state.xp = 0;
+        state.mastered = {};
+        state.bestQuizScore = 0;
+
+        try {
+          localStorage.setItem('me_learning_logged_out_flag_v3', 'true');
+          localStorage.removeItem('me_learning_admin_session_v3');
+          sessionStorage.removeItem('me_learning_admin_session_v3');
+          localStorage.removeItem('moaz_academy_active_student_v1');
+          sessionStorage.removeItem('moaz_academy_active_student_v1');
+          setPermanentCookie('me_active_student', '');
+          const emptySnap = { currentStudentUser: '', isAdminAccount: false, xp: 0, mastered: {}, studentNameAr: '', studentNameEn: '', studentLevel: state.studentLevel || 'A1', savedAt: Date.now() };
+          localStorage.setItem('eng_zero_progress_v1', JSON.stringify(emptySnap));
+          sessionStorage.setItem('eng_zero_progress_v1', JSON.stringify(emptySnap));
+          writeToPermanentIDB('kv_store', { key: 'latest_progress_snapshot', data: emptySnap });
+        } catch (e) {}
+
+        const loginBox = document.getElementById('admin-login-box');
+        if (loginBox) loginBox.classList.remove('hidden');
+        const dashControls = document.getElementById('admin-dashboard-controls');
+        if (dashControls) dashControls.classList.add('hidden');
+        const adminLogoutBtn = document.getElementById('btn-admin-logout');
+        if (adminLogoutBtn) adminLogoutBtn.classList.add('hidden');
+        const pill = document.getElementById('admin-status-pill');
+        if (pill) {
+          pill.className = 'px-3.5 py-1.5 rounded-full bg-slate-100 text-slate-700 text-xs font-extrabold';
+          pill.textContent = '🔒 البوابة مغلقة (تتطلب دخول حساب الإدارة)';
+        }
+
+        updateGlobalStatsUI();
+        renderLevelSelectorUI();
+        checkAndEnforceStudentAccessLock();
+        state.authMode = isFromAdminLockBtn ? 'admin' : 'login';
+        refreshAuthModalUI();
+        if (authModal) authModal.classList.remove('hidden');
+        showToast(isFromAdminLockBtn ? '🔒 تم تسجيل الخروج من حساب الإدارة بنجاح.' : 'تم تسجيل الخروج. يمكنك الدخول بحساب طالب أو حساب الإدارة.', 'info');
+      }
+      window.performCompleteAccountLogout = performCompleteAccountLogout;
+
       function refreshAuthModalUI() {
         if (!authFeedback) return;
         authFeedback.className = 'hidden';
-        const loggedIn = isStudentLoggedIn();
-        // Only allow closing modal if student is already logged in
+        const loggedIn = isStudentLoggedIn() || isAdminAccountActive();
         if (closeAuthBtn) {
           closeAuthBtn.classList.toggle('hidden', !loggedIn);
         }
@@ -23203,10 +23568,30 @@
         if (loggedIn) {
           authProfileView.classList.remove('hidden');
           authFormView.classList.add('hidden');
-          document.getElementById('profile-avatar-char').textContent = (state.studentNameAr || 'ط')[0];
-          document.getElementById('profile-name-ar').textContent = state.studentNameAr;
-          document.getElementById('profile-name-en').textContent = state.studentNameEn || state.studentNameAr;
-          document.getElementById('profile-email-display').textContent = `📧 Gmail: ${state.currentStudentUser} • المستوى: ${state.studentLevel}`;
+          const isAdm = isAdminAccountActive();
+          const roleBadge = document.getElementById('profile-role-badge');
+          const adminQuickBar = document.getElementById('profile-admin-quick-bar');
+          const avatarEl = document.getElementById('profile-avatar-char');
+          if (avatarEl) {
+            avatarEl.textContent = isAdm ? '👑' : (state.studentNameAr || 'ط')[0];
+            avatarEl.className = isAdm
+              ? 'w-12 h-12 rounded-2xl bg-slate-900 text-amber-300 border-2 border-amber-400 flex items-center justify-center text-xl font-extrabold shrink-0'
+              : 'w-12 h-12 rounded-2xl bg-indigo-600 text-white flex items-center justify-center text-xl font-extrabold shrink-0';
+          }
+          if (roleBadge) {
+            roleBadge.textContent = isAdm
+              ? '👑 حساب الإدارة الرسمي والمستقل (صلاحية كاملة على جميع الهواتف)'
+              : '✅ حساب طالب مسجل ومفعّل في ME Learning';
+            roleBadge.className = isAdm ? 'text-xs font-extrabold text-indigo-900' : 'text-xs font-bold text-emerald-700';
+          }
+          if (adminQuickBar) {
+            adminQuickBar.classList.toggle('hidden', !isAdm);
+          }
+          document.getElementById('profile-name-ar').textContent = isAdm ? 'أ. معاذ العكلي (مدير الأكاديمية)' : state.studentNameAr;
+          document.getElementById('profile-name-en').textContent = isAdm ? 'Director Moaz Elokly' : (state.studentNameEn || state.studentNameAr);
+          document.getElementById('profile-email-display').textContent = isAdm
+            ? `📧 حساب الإدارة: ${ADMIN_MASTER_EMAIL} • صلاحية دائمة ♾️`
+            : `📧 Gmail: ${state.currentStudentUser} • المستوى: ${state.studentLevel}`;
           document.getElementById('profile-xp-stat').textContent = `${state.xp} XP`;
           const mCount = Object.keys(state.mastered).filter(k => state.mastered[k]).length;
           document.getElementById('profile-mastered-stat').textContent = mCount;
@@ -23214,17 +23599,57 @@
         } else {
           authProfileView.classList.add('hidden');
           authFormView.classList.remove('hidden');
-          const isReg = state.authMode === 'register';
+          const mode = state.authMode || 'register';
+          const isReg = mode === 'register';
+          const isLog = mode === 'login';
+          const isAdm = mode === 'admin';
           authRegFields.classList.toggle('hidden', !isReg);
-          document.getElementById('btn-auth-tab-register').className = isReg
-            ? 'py-2 rounded-lg text-xs font-extrabold bg-white text-indigo-700 shadow-sm transition'
-            : 'py-2 rounded-lg text-xs font-bold text-slate-600 hover:text-slate-900 transition';
-          document.getElementById('btn-auth-tab-login').className = !isReg
-            ? 'py-2 rounded-lg text-xs font-extrabold bg-white text-indigo-700 shadow-sm transition'
-            : 'py-2 rounded-lg text-xs font-bold text-slate-600 hover:text-slate-900 transition';
-          document.getElementById('btn-auth-submit').textContent = isReg
-            ? '✅ تسجيل الحساب والدخول للأكاديمية الآن'
-            : '🔑 تسجيل الدخول واسترجاع تقدمي';
+          const admNotice = document.getElementById('auth-admin-mode-notice');
+          if (admNotice) admNotice.classList.toggle('hidden', !isAdm);
+
+          const tabRegBtn = document.getElementById('btn-auth-tab-register');
+          const tabLogBtn = document.getElementById('btn-auth-tab-login');
+          const tabAdmBtn = document.getElementById('btn-auth-tab-admin');
+          if (tabRegBtn) {
+            tabRegBtn.className = isReg
+              ? 'py-2 px-1.5 rounded-lg text-[11px] sm:text-xs font-extrabold bg-white text-indigo-700 shadow-sm transition'
+              : 'py-2 px-1.5 rounded-lg text-[11px] sm:text-xs font-bold text-slate-600 hover:text-slate-900 transition';
+          }
+          if (tabLogBtn) {
+            tabLogBtn.className = isLog
+              ? 'py-2 px-1.5 rounded-lg text-[11px] sm:text-xs font-extrabold bg-white text-indigo-700 shadow-sm transition'
+              : 'py-2 px-1.5 rounded-lg text-[11px] sm:text-xs font-bold text-slate-600 hover:text-slate-900 transition';
+          }
+          if (tabAdmBtn) {
+            tabAdmBtn.className = isAdm
+              ? 'py-2 px-1.5 rounded-lg text-[11px] sm:text-xs font-extrabold bg-slate-900 text-amber-300 shadow-sm transition'
+              : 'py-2 px-1.5 rounded-lg text-[11px] sm:text-xs font-bold text-slate-700 hover:text-indigo-900 transition';
+          }
+
+          const emailInput = document.getElementById('auth-input-username');
+          const passInput = document.getElementById('auth-input-password');
+          if (emailInput) {
+            emailInput.value = '';
+            emailInput.placeholder = isAdm ? 'أدخل البريد الإلكتروني لحساب الإدارة...' : 'yourname@gmail.com';
+          }
+          if (passInput) {
+            passInput.value = '';
+            passInput.placeholder = isAdm ? 'أدخل كلمة المرور السرية للإدارة...' : 'أدخل كلمة مرور قوية لحسابك (6 أحرف أو أرقام على الأقل)...';
+          }
+
+          const submitBtn = document.getElementById('btn-auth-submit');
+          if (submitBtn) {
+            if (isAdm) {
+              submitBtn.textContent = '👑 دخول حساب الإدارة الرسمي وفتح لوحة التحكم';
+              submitBtn.className = 'w-full py-3 px-4 rounded-xl bg-slate-900 hover:bg-indigo-950 text-amber-300 border border-amber-400/50 font-extrabold text-xs sm:text-sm shadow-lg transition';
+            } else if (isReg) {
+              submitBtn.textContent = '✅ تسجيل الحساب والدخول للأكاديمية الآن';
+              submitBtn.className = 'w-full py-3 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-xs sm:text-sm shadow-lg transition';
+            } else {
+              submitBtn.textContent = '🔑 تسجيل الدخول واسترجاع تقدمي';
+              submitBtn.className = 'w-full py-3 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-xs sm:text-sm shadow-lg transition';
+            }
+          }
         }
       }
 
@@ -23235,7 +23660,7 @@
 
       if (closeAuthBtn) {
         closeAuthBtn.addEventListener('click', () => {
-          if (isStudentLoggedIn()) {
+          if (isStudentLoggedIn() || isAdminAccountActive()) {
             authModal.classList.add('hidden');
           }
         });
@@ -23248,105 +23673,47 @@
         });
       }
 
+      const btnGoAdminFromProfile = document.getElementById('btn-go-admin-dashboard-from-profile');
+      if (btnGoAdminFromProfile) {
+        btnGoAdminFromProfile.addEventListener('click', () => {
+          authModal.classList.add('hidden');
+          switchTab('appdownload');
+        });
+      }
+
       const btnAuthGoAdmin = document.getElementById('btn-auth-modal-go-admin');
       const authAdminPinPanel = document.getElementById('auth-modal-admin-pin-panel');
+      const authAdminEmailInput = document.getElementById('auth-modal-admin-email-input');
       const authAdminPinInput = document.getElementById('auth-modal-admin-pin-input');
       const authAdminPinError = document.getElementById('auth-modal-admin-pin-error');
       const btnAuthVerifyPin = document.getElementById('btn-auth-modal-verify-admin-pin');
       const btnAuthCancelAdmin = document.getElementById('btn-auth-modal-cancel-admin');
 
       function verifyFirstTimeAuthAdminPin() {
-        const enteredPin = authAdminPinInput ? authAdminPinInput.value : '';
-        if (enteredPin === 'Moaz2542005#') {
-          // Correct Admin Secret Code -> Unlock Admin Portal + Enter Academy Immediately
-          isAdminUnlocked = true;
+        const enteredEmail = authAdminEmailInput ? normalizeGmailInput(authAdminEmailInput.value) : '';
+        const enteredPin = authAdminPinInput ? authAdminPinInput.value.trim() : '';
+        if (isOfficialAdminEmail(enteredEmail) && enteredPin === ADMIN_MASTER_PASSWORD) {
+          if (authAdminEmailInput) authAdminEmailInput.value = '';
           if (authAdminPinInput) authAdminPinInput.value = '';
           if (authAdminPinError) authAdminPinError.classList.add('hidden');
           if (authAdminPinPanel) authAdminPinPanel.classList.add('hidden');
-
-          // If a student's details were typed in the form before clicking Admin, capture & save them into DB!
-          try {
-            const pendingEmail = normalizeGmailInput(document.getElementById('auth-input-username').value);
-            const pendingNameAr = document.getElementById('auth-input-name-ar').value.trim();
-            const pendingNameEn = document.getElementById('auth-input-name-en').value.trim();
-            const pendingPass = document.getElementById('auth-input-password').value.trim();
-            const pendingLvEl = document.getElementById('auth-input-init-level');
-            const pendingLv = pendingLvEl ? normalizeLevel(pendingLvEl.value) : 'A1';
-            if (pendingEmail && isValidGmailAddress(pendingEmail) && (pendingNameAr || pendingNameEn)) {
-              const db = getStudentsDB();
-              const nowStr = new Date().toLocaleString('sv-SE').slice(0, 16);
-              const defAccess = getDefaultNewStudentAccessConfig();
-              db[pendingEmail] = {
-                gmail: pendingEmail,
-                password: pendingPass || '',
-                nameAr: pendingNameAr || pendingNameEn,
-                nameEn: pendingNameEn || pendingNameAr,
-                xp: 0,
-                mastered: {},
-                bestQuizScore: 0,
-                studentLevel: pendingLv,
-                registeredAt: nowStr,
-                lastLoginAt: nowStr,
-                loginCount: 1,
-                accountStatus: defAccess.accountStatus,
-                accessExpiresAt: defAccess.accessExpiresAt,
-                accessDurationLabel: defAccess.accessDurationLabel,
-                suspensionReason: '',
-                gmailConfirmationSent: true,
-                updatedAt: Date.now()
-              };
-              saveStudentsDB(db);
-            }
-          } catch (e) {}
-
-          // Ensure Director session is active if no student was registered yet
-          if (!state.currentStudentUser || !state.studentNameAr) {
-            state.currentStudentUser = 'moaz.elokly@gmail.com';
-            state.studentNameAr = 'أ. معاذ العكلي (مدير الأكاديمية)';
-            state.studentNameEn = 'Director Moaz Elokly';
-          }
-          pullAllStudentsFromCloudRegistry(false);
-
-          // Unlock Admin Portal UI elements
-          const loginBox = document.getElementById('admin-login-box');
-          if (loginBox) loginBox.classList.add('hidden');
-          const dashControls = document.getElementById('admin-dashboard-controls');
-          if (dashControls) dashControls.classList.remove('hidden');
-          const adminLogoutBtn = document.getElementById('btn-admin-logout');
-          if (adminLogoutBtn) adminLogoutBtn.classList.remove('hidden');
-          const pill = document.getElementById('admin-status-pill');
-          if (pill) {
-            pill.className = 'px-3.5 py-1.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300 text-xs font-extrabold';
-            pill.textContent = '✅ وضع مدير أكاديمية ME Learning مفعّل';
-          }
-
-          authModal.classList.add('hidden');
-          updateGlobalStatsUI();
-          renderAppDownloadModule();
-          switchTab('appdownload');
-          playChime('success');
-          showToast('🔓 تم التحقق من الرمز السري بنجاح! مرحباً بك في الأكاديمية وبوابة الإدارة.', 'success');
+          activateOfficialAdminAccountSession(true);
         } else {
-          // Wrong Password -> Stay strictly on the Registration Modal!
           playChime('error');
           if (authAdminPinError) {
             authAdminPinError.classList.remove('hidden');
-            authAdminPinError.textContent = '❌ الرمز السري للإدارة غير صحيح! لا يمكن الدخول بدون الرمز الصحيح — يرجى التسجيل كطالب بالاسم و Gmail.';
+            authAdminPinError.textContent = '❌ بيانات الدخول غير صحيحة! يرجى كتابة البريد الإلكتروني والرقم السري الصحيحين للإدارة.';
           }
-          showToast('❌ الرمز السري للإدارة غير صحيح! ستبقى في نافذة التسجيل.', 'error');
+          showToast('❌ بيانات حساب الإدارة غير صحيحة!', 'error');
         }
       }
 
       if (btnAuthGoAdmin) {
         btnAuthGoAdmin.addEventListener('click', () => {
-          if (authAdminPinPanel) {
-            authAdminPinPanel.classList.remove('hidden');
-            if (authAdminPinError) authAdminPinError.classList.add('hidden');
-            if (authAdminPinInput) {
-              authAdminPinInput.value = '';
-              authAdminPinInput.focus();
-            }
-          }
+          state.authMode = 'admin';
+          refreshAuthModalUI();
+          const userEl = document.getElementById('auth-input-username');
+          if (userEl) userEl.focus();
         });
       }
       if (btnAuthCancelAdmin && authAdminPinPanel) {
@@ -23377,6 +23744,16 @@
         refreshAuthModalUI();
       });
 
+      const btnAuthTabAdmin = document.getElementById('btn-auth-tab-admin');
+      if (btnAuthTabAdmin) {
+        btnAuthTabAdmin.addEventListener('click', () => {
+          state.authMode = 'admin';
+          refreshAuthModalUI();
+          const userEl = document.getElementById('auth-input-username');
+          if (userEl) userEl.focus();
+        });
+      }
+
       const authGmailConfStep = document.getElementById('auth-gmail-confirmation-step');
       const btnCompleteGmailVerified = document.getElementById('btn-complete-gmail-verified-entry');
 
@@ -23400,6 +23777,23 @@
         const nameEn = document.getElementById('auth-input-name-en').value.trim();
         const initLvEl = document.getElementById('auth-input-init-level');
         const initLv = initLvEl ? normalizeLevel(initLvEl.value) : 'A1';
+
+        // 0. UNIVERSAL ADMIN ACCOUNT INTERCEPTOR (Works from Admin tab, Login tab, or Register tab without leaking credentials!)
+        if (state.authMode === 'admin' || isOfficialAdminEmail(gmail)) {
+          if (isOfficialAdminEmail(gmail) && password === ADMIN_MASTER_PASSWORD) {
+            document.getElementById('auth-input-username').value = '';
+            document.getElementById('auth-input-password').value = '';
+            activateOfficialAdminAccountSession(true);
+            return;
+          } else {
+            playChime('error');
+            authFeedback.className = 'p-3.5 rounded-xl text-xs font-extrabold bg-rose-50 text-rose-800 border-2 border-rose-400 block';
+            authFeedback.textContent = '🚫 بيانات الدخول غير صحيحة! يرجى التأكد من كتابة البريد الإلكتروني والرقم السري الصحيحين.';
+            document.getElementById('auth-input-password').focus();
+            showToast('🚫 بيانات الدخول غير صحيحة!', 'error');
+            return;
+          }
+        }
 
         if (state.authMode === 'register') {
           // 1. Validate Mandatory Arabic Name
@@ -23473,10 +23867,17 @@
             return;
           }
 
+          try { localStorage.removeItem('me_learning_logged_out_flag_v3'); } catch (e) {}
+          isAdminUnlocked = false;
+          state.isAdminAccount = false;
+          try {
+            localStorage.removeItem('me_learning_admin_session_v3');
+            sessionStorage.removeItem('me_learning_admin_session_v3');
+          } catch (e) {}
+
           unmarkStudentDeleted(gmail);
           const nowStr = new Date().toLocaleString('sv-SE').slice(0, 16);
-          // Every new student automatically gets a 7-Day Free Trial (فترة تجريبية 7 أيام ثم تقفل الأكاديمية ويلزم الاشتراك)
-          const trialExpiresAt = Date.now() + (7 * 24 * 60 * 60 * 1000);
+          const defCfg = getDefaultNewStudentAccessConfig();
 
           const newStudentRecord = {
             gmail: gmail,
@@ -23490,15 +23891,15 @@
             registeredAt: nowStr,
             lastLoginAt: nowStr,
             loginCount: 1,
-            accountStatus: 'active',
-            subscriptionType: 'trial',
-            accessExpiresAt: trialExpiresAt,
-            accessDurationLabel: '🎁 فترة تجريبية مجانية (7 أيام)',
+            accountStatus: defCfg.accountStatus || 'active',
+            subscriptionType: defCfg.subscriptionType || 'trial',
+            accessExpiresAt: defCfg.accessExpiresAt !== undefined ? defCfg.accessExpiresAt : (Date.now() + 7 * 24 * 60 * 60 * 1000),
+            accessDurationLabel: defCfg.accessDurationLabel || '🎁 فترة تجريبية مجانية (7 أيام)',
             suspensionReason: 'انتهت الفترة التجريبية المجانية (7 أيام) — يرجى الاشتراك للمتابعة',
             gmailConfirmationSent: true,
             updatedAt: Date.now(),
-            adminUpdatedAt: Date.now(),
-            adminRev: 1
+            adminUpdatedAt: 0,
+            adminRev: 0
           };
 
           db[gmail] = newStudentRecord;
@@ -23516,17 +23917,16 @@
           selectStudentLevel(state.studentLevel, 'stay');
           updateGlobalStatsUI();
           refreshAuthModalUI();
-          renderAppDownloadModule();
+          renderAppDownloadModule(true);
 
-          // Close registration modal immediately and show only the registration success notification
           authModal.classList.add('hidden');
           const banner = document.getElementById('live-gmail-push-banner');
           if (banner) banner.classList.add('hidden');
           checkAndEnforceStudentAccessLock();
           playChime('success');
-          showToast(`🎉 تم التسجيل بنجاح يا ${nameAr}! تم تفعيل فترتك التجريبية المجانية لمدة 7 أيام.`, 'success');
+          showToast(`🎉 تم التسجيل بنجاح يا ${nameAr}! تم تفعيل حسابك (${newStudentRecord.accessDurationLabel}).`, 'success');
         } else {
-          // LOGIN MODE
+          // STUDENT LOGIN MODE
           if (!gmail || !isValidGmailAddress(gmail)) {
             playChime('error');
             authFeedback.className = 'p-3 rounded-xl text-xs font-extrabold bg-rose-50 text-rose-700 border border-rose-300 block';
@@ -23539,20 +23939,17 @@
             authFeedback.textContent = '⚠️ يرجى إدخال كلمة المرور الخاصة بحسابك لتسجيل الدخول.';
             return;
           }
+          // Always pull latest cloud accounts & subscription updates on login so all phones match!
+          try {
+            await pullAllStudentsFromCloudRegistry(false);
+          } catch (e) {}
           let db = getStudentsDB();
           let matchedKey = findExistingStudentKeyByGmail(db, gmail);
-          if (!matchedKey) {
-            try {
-              await pullAllStudentsFromCloudRegistry(false);
-              db = getStudentsDB();
-              matchedKey = findExistingStudentKeyByGmail(db, gmail);
-            } catch (e) {}
-          }
           const nowStr = new Date().toLocaleString('sv-SE').slice(0, 16);
           if (!matchedKey || !db[matchedKey]) {
             playChime('error');
             authFeedback.className = 'p-3 rounded-xl text-xs font-extrabold bg-rose-50 text-rose-700 border border-rose-300 block';
-            authFeedback.textContent = '⚠️ هذا الـ Gmail غير مسجل بعد! اضغط على «تسجيل طالب جديد» بالأعلى وأكمل الاسم العربي والإنجليزي وكلمة المرور.';
+            authFeedback.textContent = '⚠️ هذا الـ Gmail غير مسجل بعد كطالب! اضغط على «تسجيل طالب جديد» بالأعلى وأكمل الاسم العربي والإنجليزي وكلمة المرور.';
             return;
           }
           const st = db[matchedKey];
@@ -23562,10 +23959,19 @@
             authFeedback.textContent = '⚠️ كلمة المرور غير صحيحة لهذا الحساب.';
             return;
           }
+          try { localStorage.removeItem('me_learning_logged_out_flag_v3'); } catch (e) {}
+          isAdminUnlocked = false;
+          state.isAdminAccount = false;
+          try {
+            localStorage.removeItem('me_learning_admin_session_v3');
+            sessionStorage.removeItem('me_learning_admin_session_v3');
+          } catch (e) {}
+
           st.lastLoginAt = nowStr;
           st.loginCount = (st.loginCount || 0) + 1;
           st.updatedAt = Date.now();
-          saveStudentsDB(db);
+          saveStudentsDB(db, true);
+          pushStudentsDBToCloudRegistry(db, false, matchedKey);
           try { localStorage.setItem('moaz_academy_active_student_v1', matchedKey); } catch (e) {}
           state.currentStudentUser = matchedKey;
           state.studentNameAr = st.nameAr || matchedKey.split('@')[0];
@@ -23578,7 +23984,7 @@
           selectStudentLevel(state.studentLevel, 'stay');
           updateGlobalStatsUI();
           refreshAuthModalUI();
-          renderAppDownloadModule();
+          renderAppDownloadModule(true);
           authModal.classList.add('hidden');
           checkAndEnforceStudentAccessLock();
           playChime('success');
@@ -23587,18 +23993,7 @@
       });
 
       document.getElementById('btn-student-logout').addEventListener('click', () => {
-        try { localStorage.removeItem('moaz_academy_active_student_v1'); } catch (e) {}
-        state.currentStudentUser = '';
-        state.studentNameAr = '';
-        state.studentNameEn = '';
-        state.xp = 0;
-        state.mastered = {};
-        state.bestQuizScore = 0;
-        updateGlobalStatsUI();
-        renderLevelSelectorUI();
-        refreshAuthModalUI();
-        authModal.classList.remove('hidden');
-        showToast('تم تسجيل الخروج. يرجى التسجيل بالاسم و Gmail للدخول.', 'info');
+        performCompleteAccountLogout(false);
       });
 
       document.getElementById('btn-go-cert-from-modal').addEventListener('click', () => {
@@ -23606,14 +24001,31 @@
         switchTab('certificate');
       });
 
-      // Enforce mandatory registration gate on startup if no student is logged in
-      if (!isStudentLoggedIn()) {
+      bindAppDownloadAndAdminListeners();
+
+      // If Official Admin Session was restored on startup, unlock Admin UI automatically
+      if (window.__ME_ADMIN_SESSION_RESTORED__ || isAdminAccountActive()) {
+        isAdminUnlocked = true;
+        state.isAdminAccount = true;
+        const loginBox = document.getElementById('admin-login-box');
+        if (loginBox) loginBox.classList.add('hidden');
+        const dashControls = document.getElementById('admin-dashboard-controls');
+        if (dashControls) dashControls.classList.remove('hidden');
+        const adminLogoutBtn = document.getElementById('btn-admin-logout');
+        if (adminLogoutBtn) adminLogoutBtn.classList.remove('hidden');
+        const pill = document.getElementById('admin-status-pill');
+        if (pill) {
+          pill.className = 'px-3.5 py-1.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300 text-xs font-extrabold';
+          pill.textContent = `👑 حساب الإدارة النشط: ${ADMIN_MASTER_EMAIL} ✓`;
+        }
+      }
+
+      // Enforce mandatory registration gate on startup if neither student nor admin is logged in
+      if (!isStudentLoggedIn() && !isAdminAccountActive()) {
         state.authMode = 'register';
         refreshAuthModalUI();
         authModal.classList.remove('hidden');
       }
-
-      bindAppDownloadAndAdminListeners();
       renderAppDownloadModule();
       initPdfBookModalListeners();
       initFiveMinuteSalawatReminder();
@@ -24389,7 +24801,7 @@
       }, 4500);
     }
 
-    // ==================== ADMIN PORTAL (PASSWORD: Moaz2542005#) & FULL STUDENT ACCESS / DURATION CONTROL ====================
+    // ==================== ADMIN PORTAL & FULL STUDENT ACCESS / DURATION CONTROL ====================
     let isAdminUnlocked = false;
     let adminStudentSearchQuery = '';
     let studentAccessTimerInterval = null;
@@ -24518,6 +24930,19 @@
       const headerIcon = document.getElementById('header-access-icon');
       const headerText = document.getElementById('header-access-text');
 
+      // 1. Official Admin Account is NEVER locked and ALWAYS has unlimited access!
+      if (isAdminAccountActive()) {
+        if (lockModal) lockModal.classList.add('hidden');
+        if (headerBadge && headerIcon && headerText) {
+          headerBadge.classList.remove('hidden');
+          headerBadge.classList.add('inline-flex');
+          headerBadge.className = 'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-extrabold bg-slate-900 text-amber-300 border border-amber-400/60 shadow-sm';
+          headerIcon.textContent = '👑';
+          headerText.textContent = `حساب الإدارة (${ADMIN_MASTER_EMAIL}) • مفتوح دائماً`;
+        }
+        return;
+      }
+
       if (!state.currentStudentUser) {
         if (lockModal) lockModal.classList.add('hidden');
         if (headerBadge) headerBadge.classList.add('hidden');
@@ -24525,7 +24950,8 @@
       }
 
       const db = getStudentsDB();
-      const st = db[state.currentStudentUser];
+      const matchedKey = findExistingStudentKeyByGmail(db, state.currentStudentUser) || state.currentStudentUser;
+      const st = db[matchedKey];
       if (!st) {
         if (lockModal) lockModal.classList.add('hidden');
         if (headerBadge) headerBadge.classList.add('hidden');
@@ -24551,12 +24977,6 @@
           headerIcon.textContent = '🟢';
           headerText.textContent = 'الحساب مفعّل';
         }
-      }
-
-      // If admin is currently unlocked and viewing #tab-appdownload, do not block the admin screen itself
-      if (isAdminUnlocked && state.activeTab === 'appdownload') {
-        if (lockModal) lockModal.classList.add('hidden');
-        return;
       }
 
       if (!accessInfo.isAllowed) {
@@ -24725,57 +25145,56 @@
         gmailCloseXBtn.addEventListener('click', () => gmailBanner.classList.add('hidden'));
       }
 
-      // Start Real-Time SSE Cloud Stream + Periodic Polling so every student account appears immediately in Admin Portal
+      // Wire up Top Force Unify Phones button inside Admin Dashboard
+      const topForceUnifyBtn = document.getElementById('btn-admin-top-force-unify-phones');
+      if (topForceUnifyBtn) {
+        topForceUnifyBtn.addEventListener('click', () => {
+          pullAllStudentsFromCloudRegistry(true, true);
+        });
+      }
+
+      // Start Real-Time SSE Cloud Stream (?since=all) + Gentle 25-Second Background Sync (Zero HTTP 429 Rate-Limiting!)
       startLiveCloudStudentStream();
-      pullAllStudentsFromCloudRegistry(false);
       setInterval(() => {
-        pullAllStudentsFromCloudRegistry(false);
-      }, 4000);
+        if (document.visibilityState === 'visible') {
+          pullAllStudentsFromCloudRegistry(false, false);
+        }
+      }, 25000);
 
       if (switchBtn) {
         switchBtn.addEventListener('click', () => {
-          try { localStorage.removeItem('moaz_academy_active_student_v1'); } catch (e) {}
-          state.currentStudentUser = '';
-          state.studentNameAr = '';
-          state.studentNameEn = '';
           if (lockModal) lockModal.classList.add('hidden');
-          if (authModal) authModal.classList.remove('hidden');
-          updateGlobalStatsUI();
+          if (typeof performCompleteAccountLogout === 'function') {
+            performCompleteAccountLogout(false);
+          }
         });
       }
 
       const lockPinBox = document.getElementById('lock-modal-admin-pin-box');
+      const lockEmailInput = document.getElementById('lock-modal-admin-email-input');
       const lockPinInput = document.getElementById('lock-modal-admin-pin-input');
       const lockPinVerifyBtn = document.getElementById('btn-lock-modal-verify-pin');
       const lockPinErr = document.getElementById('lock-modal-pin-error');
 
       function handleLockModalAdminVerify() {
-        const pinVal = lockPinInput ? lockPinInput.value : '';
-        if (pinVal === 'Moaz2542005#') {
-          isAdminUnlocked = true;
+        const emailVal = lockEmailInput ? normalizeGmailInput(lockEmailInput.value) : '';
+        const pinVal = lockPinInput ? lockPinInput.value.trim() : '';
+        if (isOfficialAdminEmail(emailVal) && pinVal === ADMIN_MASTER_PASSWORD) {
+          if (lockEmailInput) lockEmailInput.value = '';
           if (lockPinInput) lockPinInput.value = '';
           if (lockPinErr) lockPinErr.classList.add('hidden');
           if (lockPinBox) lockPinBox.classList.add('hidden');
           if (lockModal) lockModal.classList.add('hidden');
-
-          const loginBox = document.getElementById('admin-login-box');
-          if (loginBox) loginBox.classList.add('hidden');
-          const dashControls = document.getElementById('admin-dashboard-controls');
-          if (dashControls) dashControls.classList.remove('hidden');
-          const adminLogoutBtn = document.getElementById('btn-admin-logout');
-          if (adminLogoutBtn) adminLogoutBtn.classList.remove('hidden');
-
-          renderAppDownloadModule();
-          switchTab('appdownload');
-          playChime('success');
-          showToast('🔓 تم فتح بوابة الإدارة بنجاح!', 'success');
+          if (typeof activateOfficialAdminAccountSession === 'function') {
+            activateOfficialAdminAccountSession(true);
+          }
         } else {
           playChime('error');
           if (lockPinErr) {
             lockPinErr.classList.remove('hidden');
-            lockPinErr.textContent = '❌ الرمز السري للإدارة غير صحيح!';
+            lockPinErr.textContent = '❌ بيانات الدخول غير صحيحة! يرجى كتابة البريد الإلكتروني والرقم السري الصحيحين للإدارة.';
           }
-          showToast('❌ الرمز السري غير صحيح!', 'error');
+          showToast('❌ بيانات حساب الإدارة غير صحيحة!', 'error');
         }
       }
 
@@ -25250,33 +25669,24 @@
       if (headerBtn) headerBtn.addEventListener('click', () => switchTab('appdownload'));
 
       const adminLoginBtn = document.getElementById('btn-admin-login');
+      const adminEmailInput = document.getElementById('admin-email-input');
       const adminPinInput = document.getElementById('admin-pin-input');
       const adminLogoutBtn = document.getElementById('btn-admin-logout');
 
       function handleAdminPortalLogin() {
+        const emailEl = document.getElementById('admin-email-input');
         const pinInputEl = document.getElementById('admin-pin-input');
-        const pin = pinInputEl ? pinInputEl.value : '';
-        if (pin === 'Moaz2542005#') {
-          isAdminUnlocked = true;
+        const enteredEmail = emailEl ? normalizeGmailInput(emailEl.value) : '';
+        const pin = pinInputEl ? pinInputEl.value.trim() : '';
+        if (isOfficialAdminEmail(enteredEmail) && pin === ADMIN_MASTER_PASSWORD) {
+          if (emailEl) emailEl.value = '';
           if (pinInputEl) pinInputEl.value = '';
-          const loginBox = document.getElementById('admin-login-box');
-          if (loginBox) loginBox.classList.add('hidden');
-          const dashControls = document.getElementById('admin-dashboard-controls');
-          if (dashControls) dashControls.classList.remove('hidden');
-          if (adminLogoutBtn) adminLogoutBtn.classList.remove('hidden');
-          const pill = document.getElementById('admin-status-pill');
-          if (pill) {
-            pill.className = 'px-3.5 py-1.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300 text-xs font-extrabold';
-            pill.textContent = '✅ وضع مدير أكاديمية ME Learning مفعّل';
+          if (typeof activateOfficialAdminAccountSession === 'function') {
+            activateOfficialAdminAccountSession(false);
           }
-          renderAppDownloadModule();
-          pullAllStudentsFromCloudRegistry(true);
-          checkAndEnforceStudentAccessLock();
-          playChime('success');
-          showToast('🔓 مرحباً بك في لوحة إدارة أكاديمية ME Learning — جاري مزامنة جميع الأجهزة!', 'success');
         } else {
           playChime('error');
-          showToast('❌ الرمز السري غير صحيح! هذه البوابة مخصصة لمدير الأكاديمية فقط.', 'error');
+          showToast('❌ بيانات حساب الإدارة غير صحيحة! يرجى كتابة الجيميل والرقم السري الصحيحين.', 'error');
         }
       }
 
@@ -25289,23 +25699,23 @@
           }
         });
       }
+      if (adminEmailInput) {
+        adminEmailInput.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            if (adminPinInput && !adminPinInput.value) {
+              adminPinInput.focus();
+            } else {
+              handleAdminPortalLogin();
+            }
+          }
+        });
+      }
       if (adminLogoutBtn) {
         adminLogoutBtn.addEventListener('click', () => {
-          isAdminUnlocked = false;
-          if (adminPinInput) adminPinInput.value = '';
-          const loginBox = document.getElementById('admin-login-box');
-          if (loginBox) loginBox.classList.remove('hidden');
-          const dashControls = document.getElementById('admin-dashboard-controls');
-          if (dashControls) dashControls.classList.add('hidden');
-          adminLogoutBtn.classList.add('hidden');
-          const pill = document.getElementById('admin-status-pill');
-          if (pill) {
-            pill.className = 'px-3.5 py-1.5 rounded-full bg-slate-100 text-slate-700 text-xs font-extrabold';
-            pill.textContent = '🔒 البوابة مغلقة (تتطلب الرمز السري للإدارة)';
+          if (typeof performCompleteAccountLogout === 'function') {
+            performCompleteAccountLogout(true);
           }
-          checkAndEnforceStudentAccessLock();
-          playChime('click');
-          showToast('🔒 تم قفل بوابة الإدارة بنجاح.', 'info');
         });
       }
 
@@ -25316,8 +25726,10 @@
           const sel = document.getElementById('admin-default-new-student-duration');
           const val = sel ? sel.value : '7_days_trial';
           try { localStorage.setItem('me_learning_default_student_duration_v2', val); } catch (e) {}
+          const db = getStudentsDB();
+          pushStudentsDBToCloudRegistry(db, true);
           playChime('success');
-          showToast('✅ تم حفظ المدة الافتراضية لأي طالب يسجل جديداً في الأكاديمية!', 'success');
+          showToast('✅ تم حفظ المدة الافتراضية ومزامنتها على جميع الهواتف!', 'success');
         });
       }
 
@@ -25336,14 +25748,14 @@
             db[k].accessDurationLabel = cfg.accessDurationLabel;
             db[k].updatedAt = nowTs;
             db[k].adminUpdatedAt = nowTs;
-            db[k].adminRev = (Number(db[k].adminRev) || 1) + 1;
+            db[k].adminRev = getNextAdminRevision(db[k].adminRev);
           });
           saveStudentsDB(db, true);
           pushStudentsDBToCloudRegistry(db, true);
-          renderAppDownloadModule();
+          renderAppDownloadModule(true);
           checkAndEnforceStudentAccessLock();
           playChime('success');
-          showToast(`▶️ تم تشغيل وتفعيل الأكاديمية لجميع الطلاب المسجلين (${cfg.accessDurationLabel})!`, 'success');
+          showToast(`▶️ تم تشغيل وتفعيل الأكاديمية لجميع الطلاب (${cfg.accessDurationLabel}) وتعميمها على كل الهواتف!`, 'success');
         });
       }
 
@@ -25358,14 +25770,14 @@
             db[k].accessDurationLabel = '🔒 مغلق — يلزم الاشتراك';
             db[k].updatedAt = nowTs;
             db[k].adminUpdatedAt = nowTs;
-            db[k].adminRev = (Number(db[k].adminRev) || 1) + 1;
+            db[k].adminRev = getNextAdminRevision(db[k].adminRev);
           });
           saveStudentsDB(db, true);
           pushStudentsDBToCloudRegistry(db, true);
-          renderAppDownloadModule();
+          renderAppDownloadModule(true);
           checkAndEnforceStudentAccessLock();
           playChime('click');
-          showToast('⏸️ تم إيقاف الأكاديمية مؤقتاً لجميع الطلاب المسجلين.', 'info');
+          showToast('⏸️ تم إيقاف الأكاديمية مؤقتاً لجميع الطلاب وتعميم القفل على كل الهواتف.', 'info');
         });
       }
 
@@ -26765,13 +27177,15 @@
     function toCompactStudentPacketItem(st, fallbackKey) {
       if (!st || typeof st !== 'object') return null;
       const cleanEmail = String(st.gmail || fallbackKey || '').trim().toLowerCase().replace(/\s+/g, '');
-      if (!cleanEmail || isExcludedOrDeletedStudentEmail(cleanEmail)) return null;
+      const recTs = Math.max(Number(st.adminUpdatedAt) || 0, Number(st.updatedAt) || 0);
+      if (!cleanEmail || isExcludedOrDeletedStudentEmail(cleanEmail, recTs)) return null;
       const mCount = st.mastered ? Object.keys(st.mastered).filter(k => st.mastered[k]).length : (Number(st.masteredCount) || 0);
+      // NEVER inflate au (adminUpdatedAt) to Date.now() if Admin hasn't edited this record!
       return {
         g: cleanEmail,
-        a: String(st.nameAr || '').slice(0, 50),
-        e: String(st.nameEn || '').slice(0, 50),
-        p: String(st.password || '').slice(0, 30),
+        a: String(st.nameAr || '').slice(0, 45),
+        e: String(st.nameEn || '').slice(0, 45),
+        p: String(st.password || '').slice(0, 25),
         l: normalizeLevel(st.studentLevel || 'A1'),
         x: Number(st.xp) || 0,
         m: mCount,
@@ -26782,11 +27196,11 @@
         st: st.accountStatus || 'active',
         sub: st.subscriptionType || 'trial',
         ex: st.accessExpiresAt !== undefined ? st.accessExpiresAt : null,
-        dl: String(st.accessDurationLabel || '🎁 فترة تجريبية مجانية (7 أيام)').slice(0, 60),
-        sr: st.accountStatus === 'suspended' ? String(st.suspensionReason || '').slice(0, 60) : '',
+        dl: String(st.accessDurationLabel || '🎁 فترة تجريبية مجانية (7 أيام)').slice(0, 55),
+        sr: st.accountStatus === 'suspended' ? String(st.suspensionReason || '').slice(0, 50) : '',
         u: Number(st.updatedAt) || Date.now(),
-        au: Number(st.adminUpdatedAt) || Date.now(),
-        rev: Math.max(1, Number(st.adminRev) || 1)
+        au: Number(st.adminUpdatedAt) || 0,
+        rev: Math.max(0, Number(st.adminRev) || 0)
       };
     }
 
@@ -26803,39 +27217,54 @@
       const dbToPush = localDb || getStudentsDB();
       const statusBadge = document.getElementById('admin-cloud-sync-status-badge');
 
-      // Determine which student keys to push (single key for instant 320-byte delta, or array/all keys for chunked sync)
+      // When Admin pushes a subscription change (immediateAdminPush = true), ALWAYS include the full registry
+      // (with the target student prioritized first) so every phone gets a complete, unified snapshot!
+      const allDbKeys = Object.keys(dbToPush);
       let keysToSerialize = [];
-      if (typeof targetKeysInput === 'string' && targetKeysInput.trim()) {
+      if (immediateAdminPush) {
+        if (typeof targetKeysInput === 'string' && targetKeysInput.trim()) {
+          const mKey = findExistingStudentKeyByGmail(dbToPush, targetKeysInput) || targetKeysInput.trim().toLowerCase();
+          keysToSerialize = [mKey, ...allDbKeys.filter(k => k !== mKey)].filter(k => dbToPush[k]);
+        } else {
+          keysToSerialize = allDbKeys;
+        }
+      } else if (typeof targetKeysInput === 'string' && targetKeysInput.trim()) {
         const mKey = findExistingStudentKeyByGmail(dbToPush, targetKeysInput) || targetKeysInput.trim().toLowerCase();
         if (dbToPush[mKey]) keysToSerialize = [mKey];
       } else if (Array.isArray(targetKeysInput)) {
         keysToSerialize = targetKeysInput.filter(k => dbToPush[k]);
       } else {
-        keysToSerialize = Object.keys(dbToPush);
+        keysToSerialize = allDbKeys;
       }
 
       const executePush = async () => {
         try {
           if (statusBadge && immediateAdminPush) {
-            statusBadge.textContent = '⏳ جاري حفظ التعديل وتعميمه فوراً على كل الأجهزة...';
+            statusBadge.textContent = '⏳ جاري حفظ الاشتراك وتوحيده فوراً على كل الهواتف...';
           }
           const allRecords = keysToSerialize.map(k => toCompactStudentPacketItem(dbToPush[k], k)).filter(Boolean);
-          const delList = Object.keys(window.__ME_DELETED_STUDENTS__ || {}).slice(0, 40);
+          const delEntries = Object.keys(window.__ME_DELETED_STUDENTS__ || {}).slice(0, 30).map(dk => ({
+            g: dk,
+            ts: Number(window.__ME_DELETED_STUDENTS__[dk]) || Date.now()
+          }));
+          let curAnn = '';
+          try { curAnn = localStorage.getItem('moaz_academy_announcement_v1') || ''; } catch (e) {}
 
-          // Build strict <= 1,800-byte chunks (max 3 students per packet) so ntfy.sh NEVER converts any packet into attachment.bin (>4096 bytes)!
+          // Pack up to 12 students per inline packet (<= 3,400 bytes, well below ntfy 4,096B attachment threshold)
+          // so the entire student database & subscriptions transfer in 1 single HTTP POST!
           const chunks = [];
           let currentChunk = [];
           for (let i = 0; i < allRecords.length; i++) {
             const item = allRecords[i];
             const testChunk = [...currentChunk, item];
             const testPacket = {
-              app: 'ME_SYNC_V8',
+              app: 'ME_SYNC_V9',
               t: Date.now(),
-              cfg: { defDur: getDefaultNewStudentDurationPreset() },
+              cfg: { defDur: getDefaultNewStudentDurationPreset(), ann: curAnn.slice(0, 120) },
               list: testChunk,
-              del: chunks.length === 0 ? delList : []
+              del: chunks.length === 0 ? delEntries : []
             };
-            if (currentChunk.length >= 3 || getUtf8ByteLength(JSON.stringify(testPacket)) > 1800) {
+            if (currentChunk.length >= 12 || getUtf8ByteLength(JSON.stringify(testPacket)) > 3400) {
               chunks.push(currentChunk);
               currentChunk = [item];
             } else {
@@ -26848,22 +27277,38 @@
 
           for (let cIdx = 0; cIdx < chunks.length; cIdx++) {
             const packet = {
-              app: 'ME_SYNC_V8',
+              app: 'ME_SYNC_V9',
               t: Date.now(),
-              cfg: { defDur: getDefaultNewStudentDurationPreset() },
+              cfg: { defDur: getDefaultNewStudentDurationPreset(), ann: curAnn.slice(0, 120) },
               list: chunks[cIdx],
-              del: cIdx === 0 ? delList : []
+              del: cIdx === 0 ? delEntries : []
             };
-            // Strictly CORS-Simple POST (NO custom headers = zero preflight block even on file:// on mobile!)
-            const res = await fetch(NTFY_SYNC_URL, {
-              method: 'POST',
-              body: JSON.stringify(packet)
-            });
-            if (res.ok && statusBadge) {
-              statusBadge.textContent = `🟢 متزامن وموحّد على كل الأجهزة (${Object.keys(dbToPush).length} طالب) ✓`;
+            const bodyStr = JSON.stringify(packet);
+            let pushedOk = false;
+            try {
+              const res = await fetch(NTFY_SYNC_URL, {
+                method: 'POST',
+                body: bodyStr
+              });
+              if (res && res.ok) pushedOk = true;
+            } catch (e1) {}
+
+            // Also mirror to backup topic if primary was rate-limited or if immediate Admin push
+            if (!pushedOk || immediateAdminPush) {
+              try {
+                const res2 = await fetch(NTFY_BACKUP_SYNC_URL, {
+                  method: 'POST',
+                  body: bodyStr
+                });
+                if (res2 && res2.ok) pushedOk = true;
+              } catch (e2) {}
+            }
+
+            if (pushedOk && statusBadge) {
+              statusBadge.textContent = `🟢 متزامن وموحّد على كل الهواتف (${Object.keys(dbToPush).length} طالب) ✓`;
             }
             if (cIdx + 1 < chunks.length) {
-              await new Promise(r => setTimeout(r, 320));
+              await new Promise(r => setTimeout(r, 400));
             }
           }
         } catch (err) {}
@@ -26874,14 +27319,15 @@
         await executePush();
       } else {
         if (__cloudPushTimer) clearTimeout(__cloudPushTimer);
-        __cloudPushTimer = setTimeout(executePush, 300);
+        __cloudPushTimer = setTimeout(executePush, 400);
       }
     };
 
     function expandCompactStudentIntoDB(localDb, c, isFromCloudAuthority = true) {
       if (!c || !c.g) return false;
       const ck = String(c.g || '').trim().toLowerCase().replace(/\s+/g, '');
-      if (!ck || isExcludedOrDeletedStudentEmail(ck)) return false;
+      const recTs = Math.max(Number(c.au) || 0, Number(c.u) || 0);
+      if (!ck || isExcludedOrDeletedStudentEmail(ck, recTs)) return false;
       const incomingSt = {
         gmail: ck,
         nameAr: c.a || ck.split('@')[0],
@@ -26900,8 +27346,8 @@
         accessDurationLabel: c.dl || '🎁 فترة تجريبية مجانية (7 أيام)',
         suspensionReason: c.sr || '',
         updatedAt: Number(c.u) || Date.now(),
-        adminUpdatedAt: Number(c.au) || Date.now(),
-        adminRev: Math.max(1, Number(c.rev) || 1)
+        adminUpdatedAt: Number(c.au) || 0,
+        adminRev: Math.max(0, Number(c.rev) || 0)
       };
       return mergeIncomingStudentRecord(localDb, incomingSt, isFromCloudAuthority);
     }
@@ -26915,7 +27361,6 @@
           let data = null;
           let isInlinePacket = false;
 
-          // Support both inline env.message (<4KB) AND env.attachment.url (recovering any >4KB 17-student packets!)
           if (env.attachment && env.attachment.url) {
             const attId = env.id || env.attachment.url;
             if (window.__ME_ATTACHMENT_CACHE__[attId]) {
@@ -26935,25 +27380,47 @@
           }
 
           if (!data || typeof data !== 'object') continue;
-          if (data.app === 'ME_SYNC_V8' || data.app === 'ME_SYNC_V7' || data.app === 'ME_LEARNING_SYNC_V6') {
+          if (data.app === 'ME_SYNC_V9' || data.app === 'ME_SYNC_V8' || data.app === 'ME_SYNC_V7' || data.app === 'ME_LEARNING_SYNC_V6') {
+            const pktTime = Number(data.t || data.updatedAt) || 1700000000000;
             if (Array.isArray(data.del)) {
               data.del.forEach(dk => {
-                markStudentDeletedPermanently(dk);
-                const mDel = findExistingStudentKeyByGmail(localDb, dk) || dk;
-                delete localDb[dk];
-                delete localDb[mDel];
+                const delEmail = typeof dk === 'object' ? dk.g : dk;
+                const delTime = (typeof dk === 'object' && dk.ts) ? dk.ts : pktTime;
+                if (delEmail) {
+                  const mDel = findExistingStudentKeyByGmail(localDb, delEmail) || delEmail;
+                  const exRec = localDb[mDel] || localDb[delEmail];
+                  const exTs = exRec ? Math.max(Number(exRec.adminUpdatedAt) || 0, Number(exRec.updatedAt) || 0) : 0;
+                  if (!exRec || delTime >= exTs) {
+                    markStudentDeletedPermanently(delEmail, delTime);
+                    delete localDb[delEmail];
+                    delete localDb[mDel];
+                  }
+                }
               });
             }
             if (data.deleted && typeof data.deleted === 'object') {
               Object.keys(data.deleted).forEach(delKey => {
-                markStudentDeletedPermanently(delKey);
+                const delVal = data.deleted[delKey];
+                const delTime = (typeof delVal === 'number' && delVal > 1) ? delVal : 1700000000000;
                 const mDel = findExistingStudentKeyByGmail(localDb, delKey) || delKey;
-                delete localDb[delKey];
-                delete localDb[mDel];
+                const exRec = localDb[mDel] || localDb[delKey];
+                const exTs = exRec ? Math.max(Number(exRec.adminUpdatedAt) || 0, Number(exRec.updatedAt) || 0) : 0;
+                if (!exRec || delTime >= exTs) {
+                  markStudentDeletedPermanently(delKey, delTime);
+                  delete localDb[delKey];
+                  delete localDb[mDel];
+                }
               });
             }
-            if (data.cfg && data.cfg.defDur) {
-              try { localStorage.setItem('me_learning_default_student_duration_v2', data.cfg.defDur); } catch (e) {}
+            if (data.cfg && typeof data.cfg === 'object') {
+              try {
+                if (data.cfg.defDur) localStorage.setItem('me_learning_default_student_duration_v2', data.cfg.defDur);
+                if (data.cfg.ann !== undefined && data.cfg.ann) {
+                  localStorage.setItem('moaz_academy_announcement_v1', data.cfg.ann);
+                  const annEl = document.getElementById('academy-live-announcement-text');
+                  if (annEl) annEl.textContent = data.cfg.ann;
+                }
+              } catch (e) {}
             }
             if (Array.isArray(data.list)) {
               data.list.forEach(c => {
@@ -26986,62 +27453,86 @@
     }
 
     let __isPullingCloud = false;
+    let __lastCloudPullAt = 0;
     pullAllStudentsFromCloudRegistry = async function(showFeedbackToast, forcePushAllLocal) {
+      const now = Date.now();
+      // Cooldown guard so rapid automatic triggers never cause HTTP 429 on ntfy.sh
+      if (!showFeedbackToast && !forcePushAllLocal && (now - __lastCloudPullAt < 8000)) return;
       if (__isPullingCloud && !showFeedbackToast && !forcePushAllLocal) return;
       __isPullingCloud = true;
+      __lastCloudPullAt = now;
+
       const statusBadge = document.getElementById('admin-cloud-sync-status-badge');
-      if (statusBadge && showFeedbackToast) statusBadge.textContent = '⏳ جاري توحيد قاعدة البيانات والاشتراكات بين كل الأجهزة...';
+      if (statusBadge && showFeedbackToast) statusBadge.textContent = '⏳ جاري توحيد قاعدة البيانات والاشتراكات بين كل الهواتف...';
       let newCount = 0;
       const localDb = getStudentsDB();
       const cloudInlineRevMap = {};
+      let primaryFetchOk = false;
 
-      // 1. One-time recovery from legacy v6 topic so no historical student is ever missing between Phone & Tablet
-      if (!window.__ME_LEGACY_V6_CHECKED__) {
-        window.__ME_LEGACY_V6_CHECKED__ = true;
-        try {
-          const legRes = await fetch(`${NTFY_LEGACY_V6_URL}/json?poll=1&since=all&_t=${Date.now()}`, { method: 'GET', cache: 'no-store' });
-          if (legRes.ok) {
-            const legText = await legRes.text();
-            const legLines = legText.split('\n').filter(Boolean);
-            newCount += await processNtfyCloudStreamLines(legLines, localDb, cloudInlineRevMap, false);
-          }
-        } catch (e) {}
-      }
-
-      // 2. Fetch full history from primary v11 master topic (including inline <4KB packets AND any >4KB attachments!)
+      // 1. Fetch from Primary v15 Master Topic
       try {
         const res = await fetch(`${NTFY_SYNC_URL}/json?poll=1&since=all&_t=${Date.now()}`, { method: 'GET', cache: 'no-store' });
         if (res.ok) {
+          primaryFetchOk = true;
           const text = await res.text();
           const lines = text.split('\n').filter(Boolean);
           newCount += await processNtfyCloudStreamLines(lines, localDb, cloudInlineRevMap, true);
         }
       } catch (err) {}
 
-      // 3. Identify any local student on this device (e.g. 17th student on Tablet or newer adminRev) not yet stored in inline <4KB cloud packets
-      const allLocalKeys = Object.keys(localDb);
-      const keysNeedingInlineUpload = forcePushAllLocal
-        ? allLocalKeys
-        : allLocalKeys.filter(k => {
-            const locRev = Math.max(1, Number(localDb[k] && localDb[k].adminRev) || 1);
-            const cloudRev = cloudInlineRevMap[k] || 0;
-            return !cloudRev || locRev > cloudRev;
-          });
+      // 2. Also check Backup Mirror Topic if Primary was rate-limited or empty
+      if (!primaryFetchOk || Object.keys(cloudInlineRevMap).length === 0) {
+        try {
+          const bRes = await fetch(`${NTFY_BACKUP_SYNC_URL}/json?poll=1&since=all&_t=${Date.now()}`, { method: 'GET', cache: 'no-store' });
+          if (bRes.ok) {
+            primaryFetchOk = true;
+            const bText = await bRes.text();
+            const bLines = bText.split('\n').filter(Boolean);
+            newCount += await processNtfyCloudStreamLines(bLines, localDb, cloudInlineRevMap, true);
+          }
+        } catch (err2) {}
+      }
+
+      // 3. One-time migration recovery from legacy v11 topic so zero previously registered students are lost
+      if (!window.__ME_LEGACY_V11_MIGRATED__) {
+        window.__ME_LEGACY_V11_MIGRATED__ = true;
+        try {
+          const leg11Res = await fetch(`${NTFY_LEGACY_V11_URL}/json?poll=1&since=all&_t=${Date.now()}`, { method: 'GET', cache: 'no-store' });
+          if (leg11Res.ok) {
+            const leg11Text = await leg11Res.text();
+            const leg11Lines = leg11Text.split('\n').filter(Boolean);
+            newCount += await processNtfyCloudStreamLines(leg11Lines, localDb, cloudInlineRevMap, false);
+          }
+        } catch (e11) {}
+      }
 
       saveStudentsDB(localDb, true);
-      if (keysNeedingInlineUpload.length > 0) {
-        await pushStudentsDBToCloudRegistry(localDb, true, keysNeedingInlineUpload);
+
+      // 4. Only upload local records if forcePushAllLocal is true OR if primaryFetchOk succeeded and this phone has a student not yet on v15
+      if (forcePushAllLocal) {
+        await pushStudentsDBToCloudRegistry(localDb, true);
+      } else if (primaryFetchOk && !window.__ME_INITIAL_V15_SYNC_DONE__) {
+        window.__ME_INITIAL_V15_SYNC_DONE__ = true;
+        const allLocalKeys = Object.keys(localDb);
+        const missingFromV15 = allLocalKeys.filter(k => {
+          const locRev = Number(localDb[k] && localDb[k].adminRev) || 0;
+          const cloudRev = cloudInlineRevMap[k] || 0;
+          return !cloudRev || locRev > cloudRev;
+        });
+        if (missingFromV15.length > 0) {
+          await pushStudentsDBToCloudRegistry(localDb, false, missingFromV15);
+        }
       }
 
       if (typeof renderAppDownloadModule === 'function') renderAppDownloadModule(true);
       if (typeof updateGlobalStatsUI === 'function') updateGlobalStatsUI();
       if (typeof checkAndEnforceStudentAccessLock === 'function') checkAndEnforceStudentAccessLock();
       if (statusBadge) {
-        statusBadge.textContent = `🟢 قاعدة البيانات موحّدة على كل الأجهزة (${Object.keys(localDb).length} طالب) ✓`;
+        statusBadge.textContent = `🟢 قاعدة البيانات موحّدة على كل الهواتف (${Object.keys(localDb).length} طالب) ✓`;
       }
       if (showFeedbackToast) {
         showToast(
-          `✅ تم توحيد قاعدة بيانات المدير والاشتراكات على جميع الأجهزة (${Object.keys(localDb).length} طالب مسجل)!`,
+          `✅ تم توحيد قاعدة بيانات الإدارة (${ADMIN_MASTER_EMAIL}) والاشتراكات على جميع الهواتف (${Object.keys(localDb).length} طالب مسجل)!`,
           'success'
         );
       }
@@ -27095,16 +27586,14 @@
       const dashControls = document.getElementById('admin-dashboard-controls');
       if (!dashControls || document.getElementById('admin-erp-subtabs-bar')) return;
 
-      // Identify the 4 main sections inside #admin-dashboard-controls
+      // Identify main sections inside #admin-dashboard-controls reliably by their inner elements
       const children = Array.from(dashControls.children);
-      // children[0]: Top Summary Analytics Cards
-      // children[1]: Section A (Students Table & Controls)
-      // children[2]: Section B (Academy Name, Announcement, Salawat)
-      // children[3]: Section D (#admin-cms-section)
-      // children[4]: Section C (Quick Director Actions)
-      const analyticsGrid = children[0];
-      const secStudents = children[1];
-      const secSettings = children[2];
+      const secStudents = document.getElementById('admin-students-table-body')
+        ? document.getElementById('admin-students-table-body').closest('.rounded-3xl')
+        : children[2];
+      const secSettings = document.getElementById('admin-academy-name-input')
+        ? document.getElementById('admin-academy-name-input').closest('.rounded-3xl')
+        : children[3];
       const secCMS = document.getElementById('admin-cms-section');
       const secQuickActions = children[children.length - 1];
 
@@ -27777,12 +28266,14 @@
         `;
       }).join('');
 
-      // Bind 1-Click Fast Subscription Buttons (Instant 320-byte Single-Student Cloud Push!)
+      // Bind 1-Click Fast Subscription Buttons (Always reads fresh DB & pushes unified snapshot to all phones!)
       tbody.querySelectorAll('[data-admin-fast-sub]').forEach(btn => {
         btn.addEventListener('click', () => {
+          const freshDb = getStudentsDB();
           const uKey = btn.getAttribute('data-admin-fast-sub');
           const code = btn.getAttribute('data-sub-code');
-          const st = db[uKey];
+          const mKey = findExistingStudentKeyByGmail(freshDb, uKey) || uKey;
+          const st = freshDb[mKey];
           if (!st || !code) return;
           const cfg = computeAccessConfigFromPresetCode(code);
           const nowTs = Date.now();
@@ -27790,23 +28281,27 @@
           st.subscriptionType = cfg.subscriptionType || (code.includes('trial') ? 'trial' : 'paid');
           st.accessExpiresAt = cfg.accessExpiresAt;
           st.accessDurationLabel = cfg.accessDurationLabel;
+          st.suspensionReason = cfg.accountStatus === 'suspended' ? 'تم إيقاف الحساب من الإدارة — يرجى التواصل لتجديد الاشتراك' : '';
           st.updatedAt = nowTs;
           st.adminUpdatedAt = nowTs;
           st.adminRev = getNextAdminRevision(st.adminRev);
-          saveStudentsDB(db, true);
-          pushStudentsDBToCloudRegistry(db, true, uKey);
+          saveStudentsDB(freshDb, true);
+          pushStudentsDBToCloudRegistry(freshDb, true, mKey);
+          appendAdminAuditLog('تحديث اشتراك طالب', mKey, st.nameAr, cfg.accessDurationLabel);
           renderAppDownloadModule(true);
           checkAndEnforceStudentAccessLock();
           playChime('success');
-          showToast(`✅ تم تحديث اشتراك الطالب (${st.nameAr || uKey}) إلى: ${cfg.accessDurationLabel} وتعميمه فوراً على الفون والتابلت!`, 'success');
+          showToast(`✅ تم تحديث اشتراك (${st.nameAr || mKey}) إلى: ${cfg.accessDurationLabel} وتوحيده فوراً على كل الهواتف!`, 'success');
         });
       });
 
-      // Bind Toggle Pause / Activate Button (Instant 320-byte Single-Student Cloud Push!)
+      // Bind Toggle Pause / Activate Button
       tbody.querySelectorAll('.btn-admin-row-pause').forEach(btn => {
         btn.addEventListener('click', () => {
+          const freshDb = getStudentsDB();
           const uKey = btn.getAttribute('data-admin-toggle-pause');
-          const st = db[uKey];
+          const mKey = findExistingStudentKeyByGmail(freshDb, uKey) || uKey;
+          const st = freshDb[mKey];
           if (!st) return;
           const acc = evaluateStudentAccessState(st);
           const nowTs = Date.now();
@@ -27816,11 +28311,12 @@
             st.updatedAt = nowTs;
             st.adminUpdatedAt = nowTs;
             st.adminRev = getNextAdminRevision(st.adminRev);
-            if (st.accessExpiresAt && nowTs >= st.accessExpiresAt) {
+            if (!st.accessExpiresAt || nowTs >= st.accessExpiresAt) {
               st.accessExpiresAt = nowTs + (30 * 24 * 60 * 60 * 1000);
               st.accessDurationLabel = '💎 اشتراك شهر (30 يوماً)';
             }
-            showToast(`▶️ تم تفعيل اشتراك الطالب (${st.nameAr || uKey}) وتعميمه فوراً على الفون والتابلت!`, 'success');
+            st.suspensionReason = '';
+            showToast(`▶️ تم تفعيل اشتراك الطالب (${st.nameAr || mKey}) وتوحيده فوراً على كل الهواتف!`, 'success');
           } else {
             st.accountStatus = 'suspended';
             st.subscriptionType = 'locked';
@@ -27828,10 +28324,11 @@
             st.adminUpdatedAt = nowTs;
             st.adminRev = getNextAdminRevision(st.adminRev);
             st.accessDurationLabel = '🔒 مغلق — يلزم الاشتراك';
-            showToast(`🔒 تم إغلاق الأكاديمية عند الطالب (${st.nameAr || uKey}) فوراً على جميع الأجهزة!`, 'info');
+            st.suspensionReason = 'تم إيقاف الحساب من الإدارة — يرجى التجديد للمتابعة';
+            showToast(`🔒 تم إغلاق الأكاديمية عند الطالب (${st.nameAr || mKey}) فوراً على جميع الهواتف!`, 'info');
           }
-          saveStudentsDB(db, true);
-          pushStudentsDBToCloudRegistry(db, true, uKey);
+          saveStudentsDB(freshDb, true);
+          pushStudentsDBToCloudRegistry(freshDb, true, mKey);
           renderAppDownloadModule(true);
           checkAndEnforceStudentAccessLock();
         });
@@ -27849,37 +28346,36 @@
 
       tbody.querySelectorAll('.btn-admin-row-switch').forEach(btn => {
         btn.addEventListener('click', () => {
+          const freshDb = getStudentsDB();
           const uKey = btn.getAttribute('data-admin-switch');
-          const st = db[uKey];
+          const mKey = findExistingStudentKeyByGmail(freshDb, uKey) || uKey;
+          const st = freshDb[mKey];
           if (!st) return;
-          try { localStorage.setItem('moaz_academy_active_student_v1', uKey); } catch (e) {}
-          state.currentStudentUser = uKey;
-          state.studentNameAr = st.nameAr || uKey;
-          state.studentNameEn = st.nameEn || st.nameAr || uKey;
-          state.xp = typeof st.xp === 'number' ? st.xp : 0;
-          state.mastered = st.mastered || {};
-          state.bestQuizScore = st.bestQuizScore || 0;
+          // Keep Admin unlocked while previewing student's level & progress
           state.studentLevel = normalizeLevel(st.studentLevel || 'A1');
           selectStudentLevel(state.studentLevel, 'stay');
           updateGlobalStatsUI();
-          renderAppDownloadModule();
-          checkAndEnforceStudentAccessLock();
-          showToast(`✅ تم التبديل إلى حساب الطالب: ${state.studentNameAr}`, 'success');
+          renderAppDownloadModule(true);
+          showToast(`👁️ جاري معاينة مستوى الطالب: ${st.nameAr || mKey} (${state.studentLevel}) مع بقاء حساب الإدارة مفعّلاً`, 'success');
         });
       });
 
       tbody.querySelectorAll('.btn-admin-row-del').forEach(btn => {
         btn.addEventListener('click', () => {
+          const freshDb = getStudentsDB();
           const uKey = btn.getAttribute('data-admin-del');
-          if (!db[uKey]) return;
-          const deletedName = db[uKey].nameAr || uKey;
-          markStudentDeletedPermanently(uKey);
-          if (db[uKey].gmail) markStudentDeletedPermanently(db[uKey].gmail);
-          delete db[uKey];
-          saveStudentsDB(db, true);
-          pushStudentsDBToCloudRegistry(db, true, []);
+          const mKey = findExistingStudentKeyByGmail(freshDb, uKey) || uKey;
+          if (!freshDb[mKey]) return;
+          const deletedName = freshDb[mKey].nameAr || mKey;
+          const delTs = Date.now();
+          markStudentDeletedPermanently(mKey, delTs);
+          if (freshDb[mKey].gmail) markStudentDeletedPermanently(freshDb[mKey].gmail, delTs);
+          delete freshDb[mKey];
+          delete freshDb[uKey];
+          saveStudentsDB(freshDb, true);
+          pushStudentsDBToCloudRegistry(freshDb, true);
           renderAppDownloadModule(true);
-          showToast(`🗑️ تم حذف حساب الطالب (${deletedName}) نهائياً من الفون والتابلت وجميع الأجهزة.`, 'info');
+          showToast(`🗑️ تم حذف حساب الطالب (${deletedName}) نهائياً من جميع الهواتف والأجهزة.`, 'info');
         });
       });
     };
