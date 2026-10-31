@@ -3870,16 +3870,22 @@
                     </select>
                   </div>
                   <div>
-                    <label class="block text-xs font-extrabold text-slate-700 mb-1">تحديد مدة التشغيل (الرقم + الوحدة):</label>
+                    <label class="block text-xs font-extrabold text-slate-700 mb-1">تحديد مدة الاشتراك أو تاريخ الانتهاء:</label>
                     <div class="flex gap-1.5">
-                      <input id="admin-edit-duration-value" type="number" min="1" value="30" class="font-en w-24 px-2.5 py-2 rounded-xl border border-indigo-300 bg-white text-xs font-extrabold" placeholder="المدة" />
-                      <select id="admin-edit-duration-unit" class="flex-1 px-2.5 py-2 rounded-xl border border-indigo-300 bg-white text-xs font-extrabold">
+                      <input id="admin-edit-duration-value" type="number" min="1" value="30" class="font-en w-20 px-2 py-2 rounded-xl border border-indigo-300 bg-white text-xs font-extrabold" placeholder="المدة" />
+                      <select id="admin-edit-duration-unit" class="flex-1 px-2 py-2 rounded-xl border border-indigo-300 bg-white text-xs font-extrabold">
+                        <option value="keep_current">⏱️ الاحتفاظ بوقت الانتهاء الحالي</option>
                         <option value="unlimited">♾️ مفتوح دائماً بلا انتهاء</option>
                         <option value="minutes">دقيقة (Minutes)</option>
                         <option value="hours">ساعة (Hours)</option>
                         <option value="days">يوم (Days)</option>
                         <option value="months">شهر (Months)</option>
+                        <option value="exact_date">📅 تاريخ ووقت انتهاء محدد</option>
                       </select>
+                    </div>
+                    <div class="mt-1.5">
+                      <label for="admin-edit-exact-expiry-dt" class="block text-[10px] font-extrabold text-indigo-800 mb-0.5">📅 أو حدد تاريخ ووقت انتهاء الاشتراك بالضبط:</label>
+                      <input id="admin-edit-exact-expiry-dt" type="datetime-local" dir="ltr" class="font-en w-full px-2.5 py-1.5 rounded-xl border border-indigo-300 bg-white text-xs font-bold text-indigo-950" />
                     </div>
                   </div>
                   <div>
@@ -5885,32 +5891,95 @@
       }
     }
 
+    function getCanonicalGmailKey(rawEmail) {
+      let clean = String(rawEmail || '').trim().toLowerCase().replace(/\s+/g, '');
+      if (!clean) return '';
+      if (!clean.includes('@')) clean += '@gmail.com';
+      else if (clean.endsWith('@gmail')) clean += '.com';
+      const parts = clean.split('@');
+      const domain = parts[1] || 'gmail.com';
+      let user = parts[0] || '';
+      if (domain === 'gmail.com' || domain === 'googlemail.com') {
+        user = user.split('+')[0].replace(/\./g, '');
+        return user ? `${user}@gmail.com` : clean;
+      }
+      return `${user}@${domain}`;
+    }
+
+    function findExistingStudentKeyByGmail(db, rawEmail) {
+      if (!db || !rawEmail) return '';
+      const exact = String(rawEmail || '').trim().toLowerCase().replace(/\s+/g, '');
+      if (db[exact]) return exact;
+      const targetCanon = getCanonicalGmailKey(exact);
+      if (!targetCanon) return '';
+      const allKeys = Object.keys(db);
+      for (let i = 0; i < allKeys.length; i++) {
+        const k = allKeys[i];
+        const st = db[k];
+        if (getCanonicalGmailKey(k) === targetCanon || (st && st.gmail && getCanonicalGmailKey(st.gmail) === targetCanon)) {
+          return k;
+        }
+      }
+      return '';
+    }
+
     function mergeIncomingStudentRecord(localDb, incomingSt) {
       if (!incomingSt || !incomingSt.gmail) return false;
-      const ck = incomingSt.gmail.trim().toLowerCase();
-      if (!ck || window.__ME_DELETED_STUDENTS__[ck]) return false;
-      const existing = localDb[ck];
+      const rawKey = incomingSt.gmail.trim().toLowerCase();
+      if (!rawKey || window.__ME_DELETED_STUDENTS__[rawKey]) return false;
+      const matchedKey = findExistingStudentKeyByGmail(localDb, rawKey) || rawKey;
+      if (window.__ME_DELETED_STUDENTS__[matchedKey]) return false;
+      const existing = localDb[matchedKey];
       if (!existing) {
-        localDb[ck] = incomingSt;
+        localDb[matchedKey] = {
+          ...incomingSt,
+          gmail: matchedKey,
+          updatedAt: Number(incomingSt.updatedAt) || Date.now(),
+          adminUpdatedAt: Number(incomingSt.adminUpdatedAt) || Number(incomingSt.updatedAt) || 0
+        };
         return true;
       }
       const incUpdated = Number(incomingSt.updatedAt) || 0;
       const locUpdated = Number(existing.updatedAt) || 0;
-      if (incUpdated >= locUpdated) {
-        localDb[ck] = {
-          ...existing,
-          ...incomingSt,
-          xp: Math.max(Number(existing.xp) || 0, Number(incomingSt.xp) || 0),
-          password: incomingSt.password || existing.password || ''
-        };
-      } else {
-        localDb[ck] = {
-          ...incomingSt,
-          ...existing,
-          xp: Math.max(Number(existing.xp) || 0, Number(incomingSt.xp) || 0),
-          password: existing.password || incomingSt.password || ''
-        };
-      }
+      const incAdminUpdated = Number(incomingSt.adminUpdatedAt) || (incomingSt.accessExpiresAt !== undefined || incomingSt.accountStatus === 'suspended' ? incUpdated : 0);
+      const locAdminUpdated = Number(existing.adminUpdatedAt) || (existing.accessExpiresAt !== undefined || existing.accountStatus === 'suspended' ? locUpdated : 0);
+
+      const useIncAdmin = incAdminUpdated >= locAdminUpdated;
+      const mergedMastered = { ...(existing.mastered || {}), ...(incomingSt.mastered || {}) };
+      const mCount = Math.max(
+        Number(existing.masteredCount) || 0,
+        Number(incomingSt.masteredCount) || 0,
+        Object.keys(mergedMastered).filter(k => mergedMastered[k]).length
+      );
+
+      const base = incUpdated >= locUpdated ? { ...existing, ...incomingSt } : { ...incomingSt, ...existing };
+      localDb[matchedKey] = {
+        ...base,
+        gmail: matchedKey,
+        nameAr: (incUpdated >= locUpdated ? incomingSt.nameAr : existing.nameAr) || existing.nameAr || incomingSt.nameAr || matchedKey.split('@')[0],
+        nameEn: (incUpdated >= locUpdated ? incomingSt.nameEn : existing.nameEn) || existing.nameEn || incomingSt.nameEn || matchedKey.split('@')[0],
+        password: (incUpdated >= locUpdated ? incomingSt.password : existing.password) || existing.password || incomingSt.password || '',
+        studentLevel: normalizeLevel((incUpdated >= locUpdated ? incomingSt.studentLevel : existing.studentLevel) || existing.studentLevel || 'A1'),
+        xp: Math.max(Number(existing.xp) || 0, Number(incomingSt.xp) || 0),
+        bestQuizScore: Math.max(Number(existing.bestQuizScore) || 0, Number(incomingSt.bestQuizScore) || 0),
+        mastered: mergedMastered,
+        masteredCount: mCount,
+        loginCount: Math.max(Number(existing.loginCount) || 1, Number(incomingSt.loginCount) || 1),
+        registeredAt: existing.registeredAt || incomingSt.registeredAt || new Date().toLocaleString('sv-SE').slice(0, 16),
+        lastLoginAt: (incUpdated >= locUpdated ? incomingSt.lastLoginAt : existing.lastLoginAt) || existing.lastLoginAt || incomingSt.lastLoginAt || '',
+        accountStatus: useIncAdmin ? (incomingSt.accountStatus || existing.accountStatus || 'active') : (existing.accountStatus || incomingSt.accountStatus || 'active'),
+        accessExpiresAt: useIncAdmin
+          ? (incomingSt.accessExpiresAt !== undefined ? incomingSt.accessExpiresAt : existing.accessExpiresAt)
+          : (existing.accessExpiresAt !== undefined ? existing.accessExpiresAt : incomingSt.accessExpiresAt),
+        accessDurationLabel: useIncAdmin
+          ? (incomingSt.accessDurationLabel || existing.accessDurationLabel || 'مفتوح دائماً')
+          : (existing.accessDurationLabel || incomingSt.accessDurationLabel || 'مفتوح دائماً'),
+        suspensionReason: useIncAdmin
+          ? (incomingSt.suspensionReason !== undefined ? incomingSt.suspensionReason : (existing.suspensionReason || ''))
+          : (existing.suspensionReason !== undefined ? existing.suspensionReason : (incomingSt.suspensionReason || '')),
+        updatedAt: Math.max(locUpdated, incUpdated),
+        adminUpdatedAt: Math.max(locAdminUpdated, incAdminUpdated)
+      };
       return false;
     }
 
@@ -6021,13 +6090,29 @@
             const env = JSON.parse(ev.data);
             const rawMsg = env.message || ev.data;
             const data = typeof rawMsg === 'string' ? JSON.parse(rawMsg) : rawMsg;
-            if (data && data.app === 'ME_LEARNING_SYNC_V6') {
+            if (data && (data.app === 'ME_SYNC_V7' || data.app === 'ME_SYNC_V8' || data.app === 'ME_LEARNING_SYNC_V6')) {
               const localDb = getStudentsDB();
               let added = false;
+              if (Array.isArray(data.del)) {
+                data.del.forEach(dk => {
+                  window.__ME_DELETED_STUDENTS__[dk] = true;
+                  delete localDb[dk];
+                });
+              }
               if (data.deleted && typeof data.deleted === 'object') {
                 Object.keys(data.deleted).forEach(delKey => {
                   window.__ME_DELETED_STUDENTS__[delKey] = true;
                   delete localDb[delKey];
+                });
+              }
+              if (data.cfg && typeof data.cfg === 'object') {
+                try {
+                  if (data.cfg.defDur) localStorage.setItem('me_learning_default_student_duration_v1', data.cfg.defDur);
+                } catch (e) {}
+              }
+              if (Array.isArray(data.list) && typeof expandCompactStudentIntoDB === 'function') {
+                data.list.forEach(c => {
+                  if (expandCompactStudentIntoDB(localDb, c)) added = true;
                 });
               }
               if (data.student && data.student.gmail) {
@@ -6048,7 +6133,7 @@
               if (typeof checkAndEnforceStudentAccessLock === 'function') checkAndEnforceStudentAccessLock();
               if (added && isAdminUnlocked) {
                 playChime('success');
-                showToast('🔔 سجل طالب جديد الآن وتم إظهار حسابه فوراً في جدول تحكم المدير!', 'success');
+                showToast('🔔 تم تحديث سجل الطلاب ومزامنة الحسابات فوراً بين الأجهزة!', 'success');
               }
             }
           } catch (e) {}
@@ -6325,16 +6410,23 @@
           try { sessionStorage.setItem('moaz_academy_active_student_v1', state.currentStudentUser); } catch (e) {}
 
           const db = getStudentsDB();
-          const existing = db[state.currentStudentUser] || { gmail: state.currentStudentUser };
+          const matchedKey = findExistingStudentKeyByGmail(db, state.currentStudentUser) || state.currentStudentUser;
+          state.currentStudentUser = matchedKey;
+          const existing = db[matchedKey] || { gmail: matchedKey };
           const updatedRecord = {
             ...existing,
-            gmail: state.currentStudentUser,
-            xp: state.xp,
+            gmail: matchedKey,
+            xp: Math.max(Number(existing.xp) || 0, Number(state.xp) || 0),
             mastered: { ...(existing.mastered || {}), ...(state.mastered || {}) },
             bestQuizScore: Math.max(existing.bestQuizScore || 0, state.bestQuizScore || 0),
-            nameAr: state.studentNameAr || existing.nameAr || '',
-            nameEn: state.studentNameEn || existing.nameEn || '',
-            studentLevel: state.studentLevel,
+            nameAr: existing.nameAr || state.studentNameAr || '',
+            nameEn: existing.nameEn || state.studentNameEn || '',
+            studentLevel: state.studentLevel || existing.studentLevel || 'A1',
+            accountStatus: existing.accountStatus || 'active',
+            accessExpiresAt: existing.accessExpiresAt !== undefined ? existing.accessExpiresAt : null,
+            accessDurationLabel: existing.accessDurationLabel || 'مفتوح دائماً',
+            suspensionReason: existing.suspensionReason || '',
+            adminUpdatedAt: Number(existing.adminUpdatedAt) || 0,
             extendedMeta: extMeta || existing.extendedMeta || null,
             examCompletedMap: examMap,
             storyQuizSubmitted: storyMap,
@@ -23112,7 +23204,7 @@
         });
       }
 
-      document.getElementById('btn-auth-submit').addEventListener('click', () => {
+      document.getElementById('btn-auth-submit').addEventListener('click', async () => {
         const rawEmail = document.getElementById('auth-input-username').value;
         const gmail = normalizeGmailInput(rawEmail);
         const password = document.getElementById('auth-input-password').value.trim();
@@ -23156,10 +23248,43 @@
           }
 
           document.getElementById('auth-input-username').value = gmail;
+
+          // Pull latest cloud accounts first so we strictly enforce 1 account per Gmail across ALL devices
+          let db = getStudentsDB();
+          let existingKey = findExistingStudentKeyByGmail(db, gmail);
+          if (!existingKey) {
+            try {
+              await pullAllStudentsFromCloudRegistry(false);
+              db = getStudentsDB();
+              existingKey = findExistingStudentKeyByGmail(db, gmail);
+            } catch (e) {}
+          }
+
+          // STRICT SINGLE-ACCOUNT-PER-GMAIL CHECK: Never allow registering a second account with an already registered Gmail!
+          if (existingKey && db[existingKey]) {
+            const existingSt = db[existingKey];
+            playChime('error');
+            authFeedback.className = 'p-3.5 rounded-xl text-xs font-extrabold bg-rose-50 text-rose-800 border-2 border-rose-400 block space-y-2';
+            authFeedback.innerHTML = `
+              <div>🚫 <strong>عفواً! هذا الـ Gmail (${existingSt.gmail || existingKey}) مسجل به حساب بالفعل باسم (${existingSt.nameAr || existingKey})!</strong></div>
+              <div class="text-[11px] text-rose-700">لا يُسمح بتسجيل أكثر من حساب واحد بنفس بريد الـ Gmail. يمكنك الدخول إلى حسابك المسجل مباشرة أو استخدام بريد Gmail آخر.</div>
+              <button type="button" id="btn-auth-switch-to-login-now" class="px-3.5 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-extrabold transition">🔑 الانتقال لتسجيل الدخول بهذا الـ Gmail</button>
+            `;
+            const swBtn = document.getElementById('btn-auth-switch-to-login-now');
+            if (swBtn) {
+              swBtn.addEventListener('click', () => {
+                state.authMode = 'login';
+                refreshAuthModalUI();
+                document.getElementById('auth-input-username').value = existingSt.gmail || existingKey;
+                document.getElementById('auth-input-password').focus();
+              });
+            }
+            showToast(`🚫 هذا الـ Gmail مسجل به حساب بالفعل (${existingSt.nameAr})! لا يمكن تسجيل أكثر من حساب بنفس الـ Gmail.`, 'error');
+            return;
+          }
+
           delete window.__ME_DELETED_STUDENTS__[gmail];
-          const db = getStudentsDB();
           const nowStr = new Date().toLocaleString('sv-SE').slice(0, 16);
-          const existing = db[gmail] || {};
           const defAccess = getDefaultNewStudentAccessConfig();
 
           const newStudentRecord = {
@@ -23167,24 +23292,27 @@
             password: password,
             nameAr: nameAr,
             nameEn: nameEn,
-            xp: typeof existing.xp === 'number' ? existing.xp : state.xp,
-            mastered: existing.mastered || state.mastered || {},
-            bestQuizScore: existing.bestQuizScore || state.bestQuizScore || 0,
+            xp: 0,
+            mastered: {},
+            bestQuizScore: 0,
             studentLevel: initLv,
-            registeredAt: existing.registeredAt || nowStr,
+            registeredAt: nowStr,
             lastLoginAt: nowStr,
-            loginCount: (existing.loginCount || 0) + 1,
-            accountStatus: existing.accountStatus || defAccess.accountStatus,
-            accessExpiresAt: existing.accessExpiresAt !== undefined ? existing.accessExpiresAt : defAccess.accessExpiresAt,
-            accessDurationLabel: existing.accessDurationLabel || defAccess.accessDurationLabel,
-            suspensionReason: existing.suspensionReason || '',
+            loginCount: 1,
+            accountStatus: defAccess.accountStatus,
+            accessExpiresAt: defAccess.accessExpiresAt,
+            accessDurationLabel: defAccess.accessDurationLabel,
+            suspensionReason: '',
             gmailConfirmationSent: true,
-            updatedAt: Date.now()
+            updatedAt: Date.now(),
+            adminUpdatedAt: Date.now()
           };
 
           db[gmail] = newStudentRecord;
-          saveStudentsDB(db, true);
-          pushStudentsDBToCloudRegistry(db, newStudentRecord);
+          state.xp = 0;
+          state.mastered = {};
+          state.bestQuizScore = 0;
+          saveStudentsDB(db, false);
           try { localStorage.setItem('moaz_academy_active_student_v1', gmail); } catch (e) {}
           state.currentStudentUser = gmail;
           state.studentNameAr = nameAr;
@@ -23217,28 +23345,40 @@
             authFeedback.textContent = '⚠️ يرجى إدخال كلمة المرور الخاصة بحسابك لتسجيل الدخول.';
             return;
           }
-          const db = getStudentsDB();
+          let db = getStudentsDB();
+          let matchedKey = findExistingStudentKeyByGmail(db, gmail);
+          if (!matchedKey) {
+            try {
+              await pullAllStudentsFromCloudRegistry(false);
+              db = getStudentsDB();
+              matchedKey = findExistingStudentKeyByGmail(db, gmail);
+            } catch (e) {}
+          }
           const nowStr = new Date().toLocaleString('sv-SE').slice(0, 16);
-          if (!db[gmail]) {
+          if (!matchedKey || !db[matchedKey]) {
             playChime('error');
             authFeedback.className = 'p-3 rounded-xl text-xs font-extrabold bg-rose-50 text-rose-700 border border-rose-300 block';
             authFeedback.textContent = '⚠️ هذا الـ Gmail غير مسجل بعد! اضغط على «تسجيل طالب جديد» بالأعلى وأكمل الاسم العربي والإنجليزي وكلمة المرور.';
             return;
           }
-          if (db[gmail].password && db[gmail].password !== password) {
+          const st = db[matchedKey];
+          if (st.password && st.password !== password) {
             playChime('error');
             authFeedback.className = 'p-3 rounded-xl text-xs font-extrabold bg-rose-50 text-rose-700 border border-rose-300 block';
             authFeedback.textContent = '⚠️ كلمة المرور غير صحيحة لهذا الحساب.';
             return;
           }
-          const st = db[gmail];
           st.lastLoginAt = nowStr;
           st.loginCount = (st.loginCount || 0) + 1;
+          st.updatedAt = Date.now();
           saveStudentsDB(db);
-          try { localStorage.setItem('moaz_academy_active_student_v1', gmail); } catch (e) {}
-          state.currentStudentUser = gmail;
-          state.studentNameAr = st.nameAr || gmail.split('@')[0];
-          state.studentNameEn = st.nameEn || st.nameAr || gmail.split('@')[0];
+          try { localStorage.setItem('moaz_academy_active_student_v1', matchedKey); } catch (e) {}
+          state.currentStudentUser = matchedKey;
+          state.studentNameAr = st.nameAr || matchedKey.split('@')[0];
+          state.studentNameEn = st.nameEn || st.nameAr || matchedKey.split('@')[0];
+          state.xp = typeof st.xp === 'number' ? st.xp : 0;
+          state.mastered = st.mastered || {};
+          state.bestQuizScore = st.bestQuizScore || 0;
           restoreExtendedProgressFromStudentRecord(st);
           saveProgress();
           selectStudentLevel(state.studentLevel, 'stay');
@@ -24781,14 +24921,32 @@
       const statusSel = document.getElementById('admin-edit-account-status');
       const durValIn = document.getElementById('admin-edit-duration-value');
       const durUnitSel = document.getElementById('admin-edit-duration-unit');
+      const exactDtIn = document.getElementById('admin-edit-exact-expiry-dt');
       const noteIn = document.getElementById('admin-edit-suspension-note');
       const pillEl = document.getElementById('admin-edit-current-access-pill');
+
+      if (exactDtIn && !exactDtIn.__boundAutoSwitch) {
+        exactDtIn.__boundAutoSwitch = true;
+        exactDtIn.addEventListener('change', () => {
+          if (exactDtIn.value && durUnitSel) {
+            durUnitSel.value = 'exact_date';
+          }
+        });
+      }
 
       if (st) {
         const acc = evaluateStudentAccessState(st);
         if (statusSel) statusSel.value = st.accountStatus === 'suspended' ? 'suspended' : 'active';
         if (durUnitSel) {
-          durUnitSel.value = st.accessExpiresAt ? 'days' : 'unlimited';
+          durUnitSel.value = st.accessExpiresAt ? 'keep_current' : 'unlimited';
+        }
+        if (exactDtIn) {
+          if (st.accessExpiresAt) {
+            const dtLocal = new Date(st.accessExpiresAt - (new Date().getTimezoneOffset() * 60000)).toISOString().slice(0, 16);
+            exactDtIn.value = dtLocal;
+          } else {
+            exactDtIn.value = '';
+          }
         }
         if (durValIn && st.accessExpiresAt) {
           const remDays = Math.max(1, Math.ceil((st.accessExpiresAt - Date.now()) / (24 * 60 * 60 * 1000)));
@@ -24805,6 +24963,7 @@
         if (statusSel) statusSel.value = 'active';
         if (durUnitSel) durUnitSel.value = 'unlimited';
         if (durValIn) durValIn.value = 30;
+        if (exactDtIn) exactDtIn.value = '';
         if (noteIn) noteIn.value = '';
         if (pillEl) {
           pillEl.className = 'px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-extrabold';
@@ -24890,9 +25049,10 @@
             pill.textContent = '✅ وضع مدير أكاديمية ME Learning مفعّل';
           }
           renderAppDownloadModule();
+          pullAllStudentsFromCloudRegistry(true);
           checkAndEnforceStudentAccessLock();
           playChime('success');
-          showToast('🔓 مرحباً بك في لوحة إدارة أكاديمية ME Learning الشاملة!', 'success');
+          showToast('🔓 مرحباً بك في لوحة إدارة أكاديمية ME Learning — جاري مزامنة جميع الأجهزة!', 'success');
         } else {
           playChime('error');
           showToast('❌ الرمز السري غير صحيح! هذه البوابة مخصصة لمدير الأكاديمية فقط.', 'error');
@@ -24947,10 +25107,13 @@
           const sel = document.getElementById('admin-default-new-student-duration');
           const presetCode = (sel && sel.value !== 'paused') ? sel.value : 'unlimited';
           const cfg = computeAccessConfigFromPresetCode(presetCode);
+          const nowTs = Date.now();
           Object.keys(db).forEach(k => {
             db[k].accountStatus = 'active';
             db[k].accessExpiresAt = cfg.accessExpiresAt;
             db[k].accessDurationLabel = cfg.accessDurationLabel;
+            db[k].updatedAt = nowTs;
+            db[k].adminUpdatedAt = nowTs;
           });
           saveStudentsDB(db);
           renderAppDownloadModule();
@@ -24964,9 +25127,12 @@
       if (pauseAllBtn) {
         pauseAllBtn.addEventListener('click', () => {
           const db = getStudentsDB();
+          const nowTs = Date.now();
           Object.keys(db).forEach(k => {
             db[k].accountStatus = 'suspended';
             db[k].accessDurationLabel = 'موقوف من الإدارة';
+            db[k].updatedAt = nowTs;
+            db[k].adminUpdatedAt = nowTs;
           });
           saveStudentsDB(db);
           renderAppDownloadModule();
@@ -25054,11 +25220,36 @@
             delete db[origKey];
           }
 
-          const durComputed = computeDurationMsAndLabel(durVal, durUnit);
-          const expiresAtTimestamp = (accStatus === 'active' && durComputed.ms) ? (Date.now() + durComputed.ms) : null;
-          const durLabel = accStatus === 'suspended' ? 'موقوف من الإدارة' : durComputed.label;
+          const exactDtEl = document.getElementById('admin-edit-exact-expiry-dt');
+          const exactDtVal = exactDtEl ? exactDtEl.value : '';
+          let expiresAtTimestamp = null;
+          let durLabel = 'مفتوح دائماً بلا انتهاء';
 
+          if (accStatus === 'suspended') {
+            expiresAtTimestamp = prevRecord.accessExpiresAt || null;
+            durLabel = 'موقوف من الإدارة';
+          } else if (durUnit === 'keep_current' && prevRecord.accessExpiresAt) {
+            expiresAtTimestamp = prevRecord.accessExpiresAt;
+            durLabel = prevRecord.accessDurationLabel || `ينتهي ${new Date(prevRecord.accessExpiresAt).toLocaleString('sv-SE').slice(0, 16)}`;
+          } else if (durUnit === 'exact_date' && exactDtVal) {
+            const parsedTs = new Date(exactDtVal).getTime();
+            if (!isNaN(parsedTs)) {
+              expiresAtTimestamp = parsedTs;
+              durLabel = `حتى ${exactDtVal.replace('T', ' ')}`;
+            }
+          } else {
+            const durComputed = computeDurationMsAndLabel(durVal, durUnit);
+            expiresAtTimestamp = durComputed.ms ? (Date.now() + durComputed.ms) : null;
+            durLabel = durComputed.label;
+          }
+
+          // Check if adding a new student with an already existing Gmail
+          const existingMatchKey = findExistingStudentKeyByGmail(db, gmail);
+          if (!origKey && existingMatchKey && existingMatchKey !== gmail && db[existingMatchKey]) {
+            gmail = existingMatchKey;
+          }
           const nowStr = new Date().toLocaleString('sv-SE').slice(0, 16);
+          const nowTs = Date.now();
           db[gmail] = {
             gmail: gmail,
             nameAr: nameAr,
@@ -25074,7 +25265,9 @@
             accountStatus: accStatus,
             accessExpiresAt: expiresAtTimestamp,
             accessDurationLabel: durLabel,
-            suspensionReason: suspNote
+            suspensionReason: suspNote,
+            updatedAt: nowTs,
+            adminUpdatedAt: nowTs
           };
           saveStudentsDB(db);
 
@@ -26313,7 +26506,7 @@
         });
       } catch (e) {}
 
-      // Also save compact student directory in a 365-day cookie so even if localStorage is cleared, accounts remain visible!
+      // Also save compact student directory in a 365-day cookie including subscription expiration & adminUpdatedAt!
       try {
         const compactList = Object.keys(db).slice(0, 35).map(k => {
           const s = db[k] || {};
@@ -26324,7 +26517,12 @@
             p: s.password || '',
             l: s.studentLevel || 'A1',
             x: s.xp || 0,
-            r: s.registeredAt || ''
+            r: s.registeredAt || '',
+            st: s.accountStatus || 'active',
+            ex: s.accessExpiresAt || null,
+            dl: s.accessDurationLabel || 'مفتوح دائماً',
+            u: Number(s.updatedAt) || 0,
+            au: Number(s.adminUpdatedAt) || 0
           };
         });
         setPermanentCookie('me_students_dir_v2', JSON.stringify(compactList));
@@ -26335,10 +26533,19 @@
       }
     };
 
-    // Upgrade getStudentsDB to also recover any accounts from the 365-day cookie directory & legacy keys
+    // Upgrade getStudentsDB to deduplicate by canonical Gmail and recover accounts + subscription status from cookie directory
     const _origGetStudentsDB = getStudentsDB;
     getStudentsDB = function() {
-      const db = _origGetStudentsDB() || {};
+      const rawDb = _origGetStudentsDB() || {};
+      const db = {};
+      // Deduplicate any canonical Gmail collisions so 1 Gmail = strictly 1 Account
+      Object.keys(rawDb).forEach(k => {
+        const st = rawDb[k];
+        if (!st) return;
+        const cleanEmail = String(st.gmail || k).trim().toLowerCase();
+        if (!cleanEmail || window.__ME_DELETED_STUDENTS__[cleanEmail]) return;
+        mergeIncomingStudentRecord(db, { ...st, gmail: cleanEmail });
+      });
       try {
         const cRaw = getPermanentCookie('me_students_dir_v2');
         if (cRaw) {
@@ -26347,23 +26554,8 @@
             cList.forEach(item => {
               if (item && item.g) {
                 const ck = item.g.trim().toLowerCase();
-                if (ck && !window.__ME_DELETED_STUDENTS__[ck] && !db[ck]) {
-                  db[ck] = {
-                    gmail: ck,
-                    nameAr: item.a || ck.split('@')[0],
-                    nameEn: item.e || item.a || ck.split('@')[0],
-                    password: item.p || '',
-                    studentLevel: item.l || 'A1',
-                    xp: item.x || 0,
-                    mastered: {},
-                    bestQuizScore: 0,
-                    registeredAt: item.r || new Date().toLocaleString('sv-SE').slice(0, 16),
-                    lastLoginAt: item.r || new Date().toLocaleString('sv-SE').slice(0, 16),
-                    loginCount: 1,
-                    accountStatus: 'active',
-                    accessExpiresAt: null,
-                    accessDurationLabel: 'مفتوح دائماً بلا انتهاء'
-                  };
+                if (ck && !window.__ME_DELETED_STUDENTS__[ck]) {
+                  expandCompactStudentIntoDB(db, item);
                 }
               }
             });
@@ -26374,94 +26566,109 @@
       return db;
     };
 
-    // Upgrade Cloud Push to send compact <600-byte packets so ntfy.sh NEVER truncates or converts to attachment!
+    function toCompactStudentPacketItem(st) {
+      if (!st || !st.gmail) return null;
+      const mCount = st.mastered ? Object.keys(st.mastered).filter(k => st.mastered[k]).length : (st.masteredCount || 0);
+      return {
+        g: st.gmail.trim().toLowerCase(),
+        a: st.nameAr || '',
+        e: st.nameEn || '',
+        p: st.password || '',
+        l: st.studentLevel || 'A1',
+        x: Number(st.xp) || 0,
+        m: mCount,
+        q: Number(st.bestQuizScore) || 0,
+        r: st.registeredAt || '',
+        ll: st.lastLoginAt || '',
+        lc: Number(st.loginCount) || 1,
+        st: st.accountStatus || 'active',
+        ex: st.accessExpiresAt || null,
+        dl: st.accessDurationLabel || 'مفتوح دائماً',
+        sr: st.suspensionReason || '',
+        u: Number(st.updatedAt) || Date.now(),
+        au: Number(st.adminUpdatedAt) || 0
+      };
+    }
+
+    let __cloudPushTimer = null;
     pushStudentsDBToCloudRegistry = async function(localDb, singleStudentRecord) {
       const dbToPush = localDb || getStudentsDB();
       const statusBadge = document.getElementById('admin-cloud-sync-status-badge');
 
-      function toCompactStudent(st) {
-        if (!st || !st.gmail) return null;
-        const mCount = st.mastered ? Object.keys(st.mastered).filter(k => st.mastered[k]).length : (st.masteredCount || 0);
-        return {
-          g: st.gmail.trim().toLowerCase(),
-          a: st.nameAr || '',
-          e: st.nameEn || '',
-          p: st.password || '',
-          l: st.studentLevel || 'A1',
-          x: Number(st.xp) || 0,
-          m: mCount,
-          q: Number(st.bestQuizScore) || 0,
-          r: st.registeredAt || '',
-          ll: st.lastLoginAt || '',
-          lc: Number(st.loginCount) || 1,
-          st: st.accountStatus || 'active',
-          ex: st.accessExpiresAt || null,
-          dl: st.accessDurationLabel || 'مفتوح دائماً',
-          u: Number(st.updatedAt) || Date.now()
-        };
-      }
-
-      try {
-        const records = singleStudentRecord
-          ? [toCompactStudent(singleStudentRecord)].filter(Boolean)
-          : Object.keys(dbToPush).map(k => toCompactStudent(dbToPush[k])).filter(Boolean);
-
-        // Chunk into max 4 compact students per packet (< 1.8 KB, well below ntfy 4KB limit)
-        for (let i = 0; i < records.length; i += 4) {
-          const chunk = records.slice(i, i + 4);
-          const packet = {
-            app: 'ME_SYNC_V7',
-            t: Date.now(),
-            list: chunk,
-            del: Object.keys(window.__ME_DELETED_STUDENTS__ || {})
-          };
-          const res = await fetch(NTFY_SYNC_URL, {
-            method: 'POST',
-            body: JSON.stringify(packet)
-          });
-          if (res.ok && statusBadge) {
-            statusBadge.textContent = `🟢 متزامن سحابياً (${Object.keys(dbToPush).length} حساب) ✓`;
+      const executePush = async () => {
+        try {
+          const allRecords = Object.keys(dbToPush).map(k => toCompactStudentPacketItem(dbToPush[k])).filter(Boolean);
+          // Pack up to 16 students per single HTTP POST (~2.8 KB < 4 KB ntfy limit) so all 12+ students arrive in ONE atomic packet without HTTP 429 rate-limiting!
+          const chunkSize = 16;
+          for (let i = 0; i < Math.max(1, allRecords.length); i += chunkSize) {
+            const chunk = allRecords.slice(i, i + chunkSize);
+            const packet = {
+              app: 'ME_SYNC_V7',
+              t: Date.now(),
+              cfg: {
+                defDur: getDefaultNewStudentDurationPreset()
+              },
+              list: chunk,
+              del: Object.keys(window.__ME_DELETED_STUDENTS__ || {})
+            };
+            const res = await fetch(NTFY_SYNC_URL, {
+              method: 'POST',
+              body: JSON.stringify(packet)
+            });
+            if (res.ok && statusBadge) {
+              statusBadge.textContent = `🟢 متزامن على كل الأجهزة (${Object.keys(dbToPush).length} طالب) ✓`;
+            }
+            if (i + chunkSize < allRecords.length) {
+              await new Promise(r => setTimeout(r, 650));
+            }
           }
-        }
-      } catch (err) {}
+        } catch (err) {}
+      };
+
+      if (singleStudentRecord) {
+        await executePush();
+      } else {
+        if (__cloudPushTimer) clearTimeout(__cloudPushTimer);
+        __cloudPushTimer = setTimeout(executePush, 250);
+      }
     };
 
     function expandCompactStudentIntoDB(localDb, c) {
       if (!c || !c.g) return false;
       const ck = c.g.trim().toLowerCase();
       if (!ck || window.__ME_DELETED_STUDENTS__[ck]) return false;
-      const existing = localDb[ck];
-      const incomingObj = {
+      const incomingSt = {
         gmail: ck,
-        nameAr: c.a || (existing && existing.nameAr) || ck.split('@')[0],
-        nameEn: c.e || (existing && existing.nameEn) || c.a || ck.split('@')[0],
-        password: c.p || (existing && existing.password) || '',
-        studentLevel: normalizeLevel(c.l || (existing && existing.studentLevel) || 'A1'),
-        xp: Math.max(Number(c.x) || 0, existing ? (Number(existing.xp) || 0) : 0),
-        mastered: (existing && existing.mastered) ? existing.mastered : {},
-        masteredCount: Math.max(Number(c.m) || 0, existing && existing.mastered ? Object.keys(existing.mastered).length : 0),
-        bestQuizScore: Math.max(Number(c.q) || 0, existing ? (Number(existing.bestQuizScore) || 0) : 0),
-        registeredAt: c.r || (existing && existing.registeredAt) || new Date().toLocaleString('sv-SE').slice(0, 16),
-        lastLoginAt: c.ll || (existing && existing.lastLoginAt) || new Date().toLocaleString('sv-SE').slice(0, 16),
-        loginCount: Math.max(Number(c.lc) || 1, existing ? (Number(existing.loginCount) || 1) : 1),
-        accountStatus: c.st || (existing && existing.accountStatus) || 'active',
-        accessExpiresAt: c.ex !== undefined ? c.ex : (existing ? existing.accessExpiresAt : null),
-        accessDurationLabel: c.dl || (existing && existing.accessDurationLabel) || 'مفتوح دائماً',
-        updatedAt: Number(c.u) || Date.now()
+        nameAr: c.a || ck.split('@')[0],
+        nameEn: c.e || c.a || ck.split('@')[0],
+        password: c.p || '',
+        studentLevel: normalizeLevel(c.l || 'A1'),
+        xp: Number(c.x) || 0,
+        masteredCount: Number(c.m) || 0,
+        bestQuizScore: Number(c.q) || 0,
+        registeredAt: c.r || new Date().toLocaleString('sv-SE').slice(0, 16),
+        lastLoginAt: c.ll || c.r || new Date().toLocaleString('sv-SE').slice(0, 16),
+        loginCount: Number(c.lc) || 1,
+        accountStatus: c.st || 'active',
+        accessExpiresAt: c.ex !== undefined ? c.ex : null,
+        accessDurationLabel: c.dl || 'مفتوح دائماً',
+        suspensionReason: c.sr || '',
+        updatedAt: Number(c.u) || 0,
+        adminUpdatedAt: Number(c.au) || (c.ex || c.st === 'suspended' ? (Number(c.u) || 1) : 0)
       };
-      if (!existing) {
-        localDb[ck] = incomingObj;
-        return true;
-      }
-      localDb[ck] = { ...existing, ...incomingObj };
-      return false;
+      return mergeIncomingStudentRecord(localDb, incomingSt);
     }
 
+    let __isPullingCloud = false;
     pullAllStudentsFromCloudRegistry = async function(showFeedbackToast) {
+      if (__isPullingCloud && !showFeedbackToast) return;
+      __isPullingCloud = true;
       const statusBadge = document.getElementById('admin-cloud-sync-status-badge');
-      if (statusBadge) statusBadge.textContent = '⏳ جاري فحص ومزامنة جميع الحسابات...';
+      if (statusBadge && showFeedbackToast) statusBadge.textContent = '⏳ جاري توحيد ومزامنة الحسابات بين الأجهزة...';
       let newCount = 0;
       const localDb = getStudentsDB();
+      const cloudLatestAdminTs = {};
+      const cloudInLastPacket = new Set();
 
       // 1. Pull from IndexedDB first so any local browser account is guaranteed present
       try {
@@ -26473,7 +26680,7 @@
         }
       } catch (e) {}
 
-      // 2. Pull from Cloud Registry (supporting both ME_LEARNING_SYNC_V6 and compact ME_SYNC_V7)
+      // 2. Pull from Cloud Registry (supporting ME_SYNC_V7 / ME_SYNC_V8 / ME_LEARNING_SYNC_V6)
       try {
         const res = await fetch(`${NTFY_SYNC_URL}/json?poll=1&since=all`, { method: 'GET', cache: 'no-store' });
         if (res.ok) {
@@ -26484,15 +26691,24 @@
               const env = JSON.parse(line);
               if (env && env.event === 'message' && env.message) {
                 const data = JSON.parse(env.message);
-                if (data && data.app === 'ME_SYNC_V7') {
+                if (data && (data.app === 'ME_SYNC_V7' || data.app === 'ME_SYNC_V8')) {
                   if (Array.isArray(data.del)) {
                     data.del.forEach(dk => {
                       window.__ME_DELETED_STUDENTS__[dk] = true;
                       delete localDb[dk];
                     });
                   }
+                  if (data.cfg && data.cfg.defDur) {
+                    try { localStorage.setItem('me_learning_default_student_duration_v1', data.cfg.defDur); } catch (e) {}
+                  }
                   if (Array.isArray(data.list)) {
+                    cloudInLastPacket.clear();
                     data.list.forEach(c => {
+                      if (c && c.g) {
+                        const canonK = findExistingStudentKeyByGmail(localDb, c.g) || c.g.trim().toLowerCase();
+                        cloudInLastPacket.add(canonK);
+                        cloudLatestAdminTs[canonK] = Math.max(cloudLatestAdminTs[canonK] || 0, Number(c.au) || 0);
+                      }
                       if (expandCompactStudentIntoDB(localDb, c)) newCount++;
                     });
                   }
@@ -26522,20 +26738,38 @@
         }
       } catch (err) {}
 
-      saveStudentsDB(localDb, true);
+      // 3. Bi-Directional Full Reconciliation:
+      // If this device (e.g. Phone 1 with 12 students) has ANY student account or newer Admin subscription timestamp
+      // that wasn't in the latest cloud packet (e.g. Tablet only saw 9), push the unified full snapshot back to the cloud!
+      const allLocalKeys = Object.keys(localDb);
+      let needsReconcilePush = false;
+      for (let i = 0; i < allLocalKeys.length; i++) {
+        const k = allLocalKeys[i];
+        const st = localDb[k];
+        if (!cloudInLastPacket.has(k)) {
+          needsReconcilePush = true;
+          break;
+        }
+        if ((Number(st.adminUpdatedAt) || 0) > (cloudLatestAdminTs[k] || 0)) {
+          needsReconcilePush = true;
+          break;
+        }
+      }
+
+      saveStudentsDB(localDb, !needsReconcilePush);
       if (typeof renderAppDownloadModule === 'function') renderAppDownloadModule();
       if (typeof updateGlobalStatsUI === 'function') updateGlobalStatsUI();
+      if (typeof checkAndEnforceStudentAccessLock === 'function') checkAndEnforceStudentAccessLock();
       if (statusBadge) {
-        statusBadge.textContent = `🟢 متزامن (${Object.keys(localDb).length} حساب مسجل) ✓`;
+        statusBadge.textContent = `🟢 موحّد ومتزامن على كل الأجهزة (${Object.keys(localDb).length} طالب مسجل) ✓`;
       }
       if (showFeedbackToast) {
         showToast(
-          newCount > 0
-            ? `✅ تم استرجاع وإظهار ${newCount} حساب طالب جديد في لوحة الإدارة!`
-            : `✅ جميع الحسابات المسجلة (${Object.keys(localDb).length} حساب) ظاهرة ومحدثة في جدول الإدارة!`,
+          `✅ تم توحيد ومزامنة سجل الطلاب والاشتراكات بنجاح (${Object.keys(localDb).length} طالب مسجل على جميع الأجهزة)!`,
           'success'
         );
       }
+      __isPullingCloud = false;
     };
 
     // Transliterate Arabic -> English fallback so if a student only fills one name field, registration NEVER fails!
@@ -26606,16 +26840,7 @@
           passIn.value = '1234';
         }
 
-        // If student is in LOGIN mode ('تسجيل الدخول') but their account isn't in local DB yet,
-        // automatically register them instead of rejecting them with "هذا الـ Gmail غير مسجل بعد"!
-        const db = getStudentsDB();
-        if (state.authMode === 'login' && rawEmail && /^[a-z0-9._%+-]{2,}@gmail\.com$/i.test(rawEmail) && !db[rawEmail]) {
-          const fallbackName = (nameArIn && nameArIn.value.trim()) || rawEmail.split('@')[0];
-          if (nameArIn && !nameArIn.value.trim()) nameArIn.value = fallbackName;
-          if (nameEnIn && !nameEnIn.value.trim()) nameEnIn.value = fallbackName;
-          if (passIn && !passIn.value.trim()) passIn.value = '1234';
-          state.authMode = 'register';
-        }
+        // Do NOT auto-switch login mode to register mode, so 1 Gmail strictly equals 1 Account!
 
         // Log registration/login in Admin Audit Log after click completes
         setTimeout(() => {
@@ -27150,7 +27375,8 @@
             </td>
             <td class="p-3">
               <div>${acc.badgeHtml}</div>
-              <div class="text-[10px] text-slate-500 font-bold mt-1">المدة: ${st.accessDurationLabel || 'مفتوح دائماً'}</div>
+              <div class="text-[10px] text-slate-600 font-extrabold mt-1">المدة: ${st.accessDurationLabel || 'مفتوح دائماً'}</div>
+              ${st.accessExpiresAt ? `<div class="text-[10px] font-en font-extrabold ${Date.now() >= st.accessExpiresAt ? 'text-rose-600' : 'text-indigo-700'} mt-0.5">📅 ينتهي: ${new Date(st.accessExpiresAt).toLocaleString('sv-SE').slice(0, 16)}</div>` : ''}
             </td>
             <td class="p-3">
               <div class="font-en font-extrabold text-amber-700">${st.xp || 0} XP</div>
@@ -27193,26 +27419,32 @@
         `;
       }).join('');
 
-      // Re-bind row buttons
+      // Re-bind row buttons with adminUpdatedAt & immediate cloud push so all devices sync immediately
       tbody.querySelectorAll('.btn-admin-row-pause').forEach(btn => {
         btn.addEventListener('click', () => {
           const uKey = btn.getAttribute('data-admin-toggle-pause');
           const st = db[uKey];
           if (!st) return;
           const acc = evaluateStudentAccessState(st);
+          const nowTs = Date.now();
           if (!acc.isAllowed) {
             st.accountStatus = 'active';
-            st.updatedAt = Date.now();
-            if (st.accessExpiresAt && Date.now() >= st.accessExpiresAt) {
+            st.updatedAt = nowTs;
+            st.adminUpdatedAt = nowTs;
+            if (st.accessExpiresAt && nowTs >= st.accessExpiresAt) {
               st.accessExpiresAt = null;
               st.accessDurationLabel = 'مفتوح دائماً بلا انتهاء';
             }
+            showToast(`▶️ تم تفعيل اشتراك الطالب (${st.nameAr || uKey}) ومزامنته على جميع الأجهزة!`, 'success');
           } else {
             st.accountStatus = 'suspended';
-            st.updatedAt = Date.now();
+            st.updatedAt = nowTs;
+            st.adminUpdatedAt = nowTs;
             st.accessDurationLabel = 'موقوف من الإدارة';
+            showToast(`⏸️ تم إيقاف اشتراك الطالب (${st.nameAr || uKey}) فوراً على جميع الأجهزة!`, 'info');
           }
-          saveStudentsDB(db);
+          saveStudentsDB(db, true);
+          pushStudentsDBToCloudRegistry(db, st);
           renderAppDownloadModule();
           checkAndEnforceStudentAccessLock();
         });
@@ -27226,13 +27458,18 @@
           const st = db[uKey];
           if (!st) return;
           const cfg = computeAccessConfigFromPresetCode(code);
+          const nowTs = Date.now();
           st.accountStatus = cfg.accountStatus;
           st.accessExpiresAt = cfg.accessExpiresAt;
           st.accessDurationLabel = cfg.accessDurationLabel;
-          st.updatedAt = Date.now();
-          saveStudentsDB(db);
+          st.updatedAt = nowTs;
+          st.adminUpdatedAt = nowTs;
+          saveStudentsDB(db, true);
+          pushStudentsDBToCloudRegistry(db, st);
           renderAppDownloadModule();
           checkAndEnforceStudentAccessLock();
+          playChime('success');
+          showToast(`⏱️ تم تحديد مدة اشتراك الطالب (${st.nameAr || uKey}): ${cfg.accessDurationLabel} ومزامنتها على كل الأجهزة!`, 'success');
         });
       });
 
