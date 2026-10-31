@@ -3788,6 +3788,7 @@
               <div class="flex flex-wrap items-center gap-2">
                 <label class="text-xs font-bold text-indigo-200">المدة الافتراضية للتسجيل الجديد:</label>
                 <select id="admin-default-new-student-duration" class="px-3 py-1.5 rounded-xl bg-slate-900 text-amber-300 border border-indigo-500 text-xs font-extrabold">
+                  <option value="7_days_trial" selected>🎁 فترة تجريبية مجانية 7 أيام ثم تقفل الأكاديمية</option>
                   <option value="unlimited">♾️ مفتوح دائماً بلا انتهاء</option>
                   <option value="30_min">⏱️ 30 دقيقة تجريبية</option>
                   <option value="1_hour">⏱️ ساعة واحدة (1 Hour)</option>
@@ -5742,7 +5743,7 @@
     // ==================== MULTI-DEVICE CLOUD SYNC (NTFY.SH REALTIME) & GUARANTEED MULTI-LAYER STUDENT REGISTRY ====================
     window.__ME_STUDENTS_MEM_DB__ = window.__ME_STUDENTS_MEM_DB__ || {};
     window.__ME_DELETED_STUDENTS__ = window.__ME_DELETED_STUDENTS__ || {};
-    const NTFY_SYNC_TOPIC = 'me_learning_moaz_elokly_students_v6_sync';
+    const NTFY_SYNC_TOPIC = 'me_learning_moaz_elokly_students_v10_pro_db';
     const NTFY_SYNC_URL = `https://ntfy.sh/${NTFY_SYNC_TOPIC}`;
     let ntfyEventSource = null;
 
@@ -22976,18 +22977,108 @@
       const closeAuthBtn = document.getElementById('btn-close-auth-modal');
 
       function normalizeGmailInput(rawEmail) {
-        let clean = (rawEmail || '').trim().toLowerCase().replace(/\s+/g, '');
-        if (clean && !clean.includes('@')) {
-          clean = clean + '@gmail.com';
-        } else if (clean.endsWith('@gmail')) {
-          clean = clean + '.com';
+        // Do NOT auto-append @gmail.com if the user didn't type it — require a real full @gmail.com address
+        return (rawEmail || '').trim().toLowerCase().replace(/\s+/g, '');
+      }
+
+      function validateStrictRealGmailAddress(email, nameEn, nameAr) {
+        const clean = (email || '').trim().toLowerCase();
+        if (!clean || !clean.endsWith('@gmail.com')) {
+          return { valid: false, reason: '⚠️ يجب كتابة بريد Gmail كامل وينتهي بـ @gmail.com (مثال: ahmed.mohamed20@gmail.com).' };
         }
-        return clean;
+        const parts = clean.split('@');
+        if (parts.length !== 2 || parts[1] !== 'gmail.com') {
+          return { valid: false, reason: '⚠️ صيغة البريد غير صحيحة! يجب أن يكون حساب @gmail.com صحيحاً.' };
+        }
+        const local = parts[0];
+        // Google official rule: only a-z, 0-9, and single dots (cannot start/end with dot or have ..)
+        if (!/^[a-z0-9]+(\.[a-z0-9]+)*$/.test(local)) {
+          return { valid: false, reason: '⚠️ حساب Gmail الحقيقي يحتوي فقط على حروف إنجليزية وأرقام ونقاط فردية (بدون رموز أو نقاط متتالية).' };
+        }
+        const noDots = local.replace(/\./g, '');
+        // Google official rule: Gmail usernames MUST be between 6 and 30 characters
+        if (noDots.length < 6 || noDots.length > 30) {
+          return { valid: false, reason: '⚠️ هذا البريد غير موجود على Google! اسم مستخدم Gmail الحقيقي يجب ألا يقل عن 6 خانات قبل @gmail.com.' };
+        }
+        // Must contain at least 4 English letters (cannot be all numbers or 1-2 letters)
+        const lettersOnly = noDots.replace(/[^a-z]/g, '');
+        if (lettersOnly.length < 4) {
+          return { valid: false, reason: '⚠️ لا يُقبل بريد مكون من أرقام فقط أو حروف قليلة! يرجى إدخال حساب Gmail حقيقي وفعلي.' };
+        }
+        // Must have at least 4 unique characters in the username (blocks aaaaaa@gmail.com, ababab@gmail.com)
+        const uniqueChars = new Set(noDots.split('')).size;
+        const uniqueLetters = new Set(lettersOnly.split('')).size;
+        if (uniqueChars < 4 || uniqueLetters < 3) {
+          return { valid: false, reason: '⚠️ هذا البريد يبدو وهمياً (حروف مكررة)! يرجى كتابة حساب Gmail الحقيقي الخاص بك.' };
+        }
+        // Block 3+ identical consecutive letters (e.g. aaaa, bbbb, xxxx, gggg)
+        if (/([a-z])\1\1/.test(lettersOnly) || /(\d)\1\1\1/.test(noDots)) {
+          return { valid: false, reason: '⚠️ تم اكتشاف بريد عشوائي أو وهمي! يرجى كتابة حساب Gmail حقيقي وصحيح.' };
+        }
+        // Block repeating 2-char or 3-char patterns (e.g. ababab, asasas, 121212)
+        if (/^([a-z0-9]{2,3})\1+$/.test(noDots)) {
+          return { valid: false, reason: '⚠️ هذا البريد غير حقيقي (نمط مكرر)! يرجى إدخال بريد Gmail صحيح.' };
+        }
+        // Phonotactic check: Real human usernames have both vowels (a,e,i,o,u,y) and consonants, and never 5+ consecutive consonants
+        const vowels = lettersOnly.replace(/[^aeiouy]/g, '');
+        const consonants = lettersOnly.replace(/[aeiouy]/g, '');
+        if (vowels.length === 0 || consonants.length === 0 || /[bcdfghjklmnpqrstvwxz]{5,}/.test(lettersOnly)) {
+          return { valid: false, reason: '⚠️ هذا البريد يحتوي على حروف عشوائية غير حقيقية! يرجى كتابة حساب Gmail حقيقي وموجود فعلاً.' };
+        }
+        // Block 3-char QWERTY keyboard row runs & mashes (e.g. asd, sdf, dfg, fgh, ghj, hjk, jkl, qwe, wer, ert, zxc, xcv, lkj, hgf, dsa, etc.)
+        const qwertyRuns = [
+          'qwe', 'wer', 'ert', 'rty', 'tyu', 'yui', 'uio', 'iop',
+          'poi', 'oiu', 'iuy', 'uyt', 'ytr', 'tre', 'rew', 'ewq',
+          'asd', 'sdf', 'dfg', 'fgh', 'ghj', 'hjk', 'jkl',
+          'lkj', 'kjh', 'jhg', 'hgf', 'gfd', 'fds', 'dsa',
+          'zxc', 'xcv', 'cvb', 'vbn', 'bnm', 'mnb', 'nbv', 'bvc', 'vcx', 'cxz',
+          'qaz', 'wsx', 'edc', 'rfv', 'tgb', 'yhn', 'ujm',
+          'abcdef', 'fedcba', '123456', '654321', '012345', '00000', '11111', '99999'
+        ];
+        for (let i = 0; i < qwertyRuns.length; i++) {
+          if (noDots.includes(qwertyRuns[i])) {
+            return { valid: false, reason: '🚫 تم رفض البريد لأنه حروف عشوائية من لوحة المفاتيح (بريد وهمي)! يرجى إدخال حساب Gmail الحقيقي الخاص بك.' };
+          }
+        }
+        // Block alternating 2-letter keyboard taps (e.g. hghg, fgfg, jkjk, asdf, lklk, dydy, sdsd)
+        if (/([a-z]{2})\1/.test(lettersOnly)) {
+          return { valid: false, reason: '🚫 هذا البريد يحتوي على تكرار عشوائي (بريد وهمي)! يرجى كتابة حساب Gmail حقيقي وصحيح.' };
+        }
+        // Block fake / test / placeholder words anywhere in username
+        const fakeWords = [
+          'test', 'testing', 'tester', 'fake', 'faker', 'bogus', 'dummy', 'spam',
+          'admin', 'user', 'username', 'student', 'gmail', 'email', 'mail',
+          'example', 'sample', 'demo', 'temp', 'null', 'none', 'unknown',
+          'anonymous', 'noemail', 'nowhere', 'nothing', 'something', 'anyone',
+          'nobody', 'xxxxxx', 'zzzzzz', 'aaaaaa', 'xyzxyz', 'qwerty', 'asdfg', 'blabla', 'hahaha', 'lololo'
+        ];
+        for (let i = 0; i < fakeWords.length; i++) {
+          const fw = fakeWords[i];
+          if (noDots.includes(fw)) {
+            return { valid: false, reason: '🚫 هذا البريد تجريبي/وهمي وغير مقبول! يجب التسجيل بحساب Gmail شخصي حقيقي وموجود فعلاً.' };
+          }
+        }
+        // Check plausibility with Student Name if provided during registration
+        if (nameEn || nameAr) {
+          const refName = ((nameEn || '') + ' ' + (typeof autoTransliterateArToEn === 'function' ? autoTransliterateArToEn(nameAr || '') : '')).toLowerCase().replace(/[^a-z]/g, '');
+          if (refName.length >= 3) {
+            let sharedChars = 0;
+            const refSet = new Set(refName.split(''));
+            for (const ch of new Set(lettersOnly.split(''))) {
+              if (refSet.has(ch)) sharedChars++;
+            }
+            if (sharedChars < 2) {
+              return { valid: false, reason: '🚫 البريد الإلكتروني المدخل لا يتطابق مع اسمك ويبدو غير حقيقي! يرجى كتابة حساب الـ Gmail الصحيح الخاص بك.' };
+            }
+          }
+        }
+        return { valid: true, reason: '' };
       }
 
       function isValidGmailAddress(email) {
-        return /^[a-z0-9._%+-]{2,}@gmail\.com$/i.test(email);
+        return validateStrictRealGmailAddress(email).valid;
       }
+      window.validateStrictRealGmailAddress = validateStrictRealGmailAddress;
 
       function isValidArabicFullName(nameAr) {
         const clean = (nameAr || '').trim();
@@ -23230,12 +23321,14 @@
             document.getElementById('auth-input-name-en').focus();
             return;
           }
-          // 3. Validate Mandatory Valid @gmail.com Address
-          if (!gmail || !isValidGmailAddress(gmail)) {
+          // 3. Validate Mandatory Real & Existing @gmail.com Address
+          const gmailCheck = validateStrictRealGmailAddress(gmail, nameEn, nameAr);
+          if (!gmail || !gmailCheck.valid) {
             playChime('error');
-            authFeedback.className = 'p-3 rounded-xl text-xs font-extrabold bg-rose-50 text-rose-700 border border-rose-300 block';
-            authFeedback.textContent = '⚠️ إجباري: يرجى كتابة حساب Gmail صحيح (مثال: student@gmail.com) لإتمام التسجيل.';
+            authFeedback.className = 'p-3.5 rounded-xl text-xs font-extrabold bg-rose-50 text-rose-800 border-2 border-rose-400 block';
+            authFeedback.textContent = gmailCheck.reason || '⚠️ يرجى كتابة حساب Gmail شخصي حقيقي وصحيح (لا يقل عن 6 خانات قبل @gmail.com).';
             document.getElementById('auth-input-username').focus();
+            showToast(gmailCheck.reason || '⚠️ البريد المدخل غير صحيح أو وهمي!', 'error');
             return;
           }
           // 4. Validate Mandatory Password
@@ -23285,7 +23378,8 @@
 
           delete window.__ME_DELETED_STUDENTS__[gmail];
           const nowStr = new Date().toLocaleString('sv-SE').slice(0, 16);
-          const defAccess = getDefaultNewStudentAccessConfig();
+          // Every new student automatically gets a 7-Day Free Trial (فترة تجريبية 7 أيام ثم تقفل الأكاديمية ويلزم الاشتراك)
+          const trialExpiresAt = Date.now() + (7 * 24 * 60 * 60 * 1000);
 
           const newStudentRecord = {
             gmail: gmail,
@@ -23299,10 +23393,11 @@
             registeredAt: nowStr,
             lastLoginAt: nowStr,
             loginCount: 1,
-            accountStatus: defAccess.accountStatus,
-            accessExpiresAt: defAccess.accessExpiresAt,
-            accessDurationLabel: defAccess.accessDurationLabel,
-            suspensionReason: '',
+            accountStatus: 'active',
+            subscriptionType: 'trial',
+            accessExpiresAt: trialExpiresAt,
+            accessDurationLabel: '🎁 فترة تجريبية مجانية (7 أيام)',
+            suspensionReason: 'انتهت الفترة التجريبية المجانية (7 أيام) — يرجى الاشتراك للمتابعة',
             gmailConfirmationSent: true,
             updatedAt: Date.now(),
             adminUpdatedAt: Date.now()
@@ -23330,7 +23425,7 @@
           if (banner) banner.classList.add('hidden');
           checkAndEnforceStudentAccessLock();
           playChime('success');
-          showToast(`🎉 تم التسجيل بنجاح! مرحباً بك يا ${nameAr} في أكاديمية ME Learning.`, 'success');
+          showToast(`🎉 تم التسجيل بنجاح يا ${nameAr}! تم تفعيل فترتك التجريبية المجانية لمدة 7 أيام.`, 'success');
         } else {
           // LOGIN MODE
           if (!gmail || !isValidGmailAddress(gmail)) {
@@ -24202,27 +24297,29 @@
 
     function getDefaultNewStudentDurationPreset() {
       try {
-        return localStorage.getItem('me_learning_default_student_duration_v1') || 'unlimited';
+        const saved = localStorage.getItem('me_learning_default_student_duration_v2');
+        return saved || '7_days_trial';
       } catch (e) {
-        return 'unlimited';
+        return '7_days_trial';
       }
     }
 
     function computeAccessConfigFromPresetCode(presetCode) {
       const now = Date.now();
       const map = {
-        'unlimited': { accountStatus: 'active', accessExpiresAt: null, accessDurationLabel: 'مفتوح دائماً بلا انتهاء' },
-        '30_min':    { accountStatus: 'active', accessExpiresAt: now + 30 * 60 * 1000, accessDurationLabel: '30 دقيقة' },
-        '1_hour':    { accountStatus: 'active', accessExpiresAt: now + 60 * 60 * 1000, accessDurationLabel: 'ساعة واحدة' },
-        '1_day':     { accountStatus: 'active', accessExpiresAt: now + 24 * 60 * 60 * 1000, accessDurationLabel: 'يوم واحد (24 ساعة)' },
-        '3_days':    { accountStatus: 'active', accessExpiresAt: now + 3 * 24 * 60 * 60 * 1000, accessDurationLabel: '3 أيام' },
-        '7_days':    { accountStatus: 'active', accessExpiresAt: now + 7 * 24 * 60 * 60 * 1000, accessDurationLabel: 'أسبوع (7 أيام)' },
-        '30_days':   { accountStatus: 'active', accessExpiresAt: now + 30 * 24 * 60 * 60 * 1000, accessDurationLabel: 'شهر كامل (30 يوماً)' },
-        '90_days':   { accountStatus: 'active', accessExpiresAt: now + 90 * 24 * 60 * 60 * 1000, accessDurationLabel: '3 أشهر (90 يوماً)' },
-        '365_days':  { accountStatus: 'active', accessExpiresAt: now + 365 * 24 * 60 * 60 * 1000, accessDurationLabel: 'سنة كاملة (365 يوماً)' },
-        'paused':    { accountStatus: 'suspended', accessExpiresAt: null, accessDurationLabel: 'موقوف لحين التفعيل' }
+        '7_days_trial': { accountStatus: 'active', subscriptionType: 'trial', accessExpiresAt: now + 7 * 24 * 60 * 60 * 1000, accessDurationLabel: '🎁 فترة تجريبية مجانية (7 أيام)' },
+        '7_days':       { accountStatus: 'active', subscriptionType: 'trial', accessExpiresAt: now + 7 * 24 * 60 * 60 * 1000, accessDurationLabel: '🎁 فترة تجريبية (7 أيام)' },
+        '30_min':       { accountStatus: 'active', subscriptionType: 'paid',  accessExpiresAt: now + 30 * 60 * 1000, accessDurationLabel: '⏱️ 30 دقيقة' },
+        '1_hour':       { accountStatus: 'active', subscriptionType: 'paid',  accessExpiresAt: now + 60 * 60 * 1000, accessDurationLabel: '⏱️ ساعة واحدة' },
+        '1_day':        { accountStatus: 'active', subscriptionType: 'paid',  accessExpiresAt: now + 24 * 60 * 60 * 1000, accessDurationLabel: '📅 يوم واحد (24 ساعة)' },
+        '3_days':       { accountStatus: 'active', subscriptionType: 'paid',  accessExpiresAt: now + 3 * 24 * 60 * 60 * 1000, accessDurationLabel: '📅 3 أيام' },
+        '30_days':      { accountStatus: 'active', subscriptionType: 'paid',  accessExpiresAt: now + 30 * 24 * 60 * 60 * 1000, accessDurationLabel: '💎 اشتراك شهر (30 يوماً)' },
+        '90_days':      { accountStatus: 'active', subscriptionType: 'paid',  accessExpiresAt: now + 90 * 24 * 60 * 60 * 1000, accessDurationLabel: '💎 اشتراك 3 شهور (90 يوماً)' },
+        '365_days':     { accountStatus: 'active', subscriptionType: 'paid',  accessExpiresAt: now + 365 * 24 * 60 * 60 * 1000, accessDurationLabel: '💎 اشتراك سنة كاملة (365 يوماً)' },
+        'unlimited':    { accountStatus: 'active', subscriptionType: 'paid',  accessExpiresAt: null, accessDurationLabel: '💎 اشتراك مفتوح دائماً' },
+        'paused':       { accountStatus: 'suspended', subscriptionType: 'locked', accessExpiresAt: null, accessDurationLabel: '🔒 مغلق — يلزم الاشتراك' }
       };
-      return map[presetCode] || map['unlimited'];
+      return map[presetCode] || map['7_days_trial'];
     }
 
     function getDefaultNewStudentAccessConfig() {
@@ -24268,13 +24365,15 @@
     }
 
     function evaluateStudentAccessState(st) {
-      if (!st) return { isAllowed: true, code: 'open', badgeHtml: '', shortText: 'مفتوح' };
+      if (!st) return { isAllowed: true, code: 'open', isTrial: false, badgeHtml: '', shortText: 'مفتوح' };
+      const isTrial = st.subscriptionType === 'trial' || (st.accessDurationLabel && st.accessDurationLabel.includes('تجريب'));
       if (st.accountStatus === 'suspended') {
         return {
           isAllowed: false,
           code: 'suspended',
-          shortText: '🔴 موقوف من الإدارة',
-          badgeHtml: `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-rose-100 text-rose-800 border border-rose-300 text-[11px] font-extrabold">⏸️ موقوف من الإدارة</span>`
+          isTrial: false,
+          shortText: '🔒 مغلق — يجب الاشتراك',
+          badgeHtml: `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-rose-100 text-rose-800 border border-rose-300 text-[11px] font-extrabold">🔒 مغلق — يلزم الاشتراك</span>`
         };
       }
       if (st.accessExpiresAt && typeof st.accessExpiresAt === 'number') {
@@ -24282,23 +24381,35 @@
           return {
             isAllowed: false,
             code: 'expired',
-            shortText: '⏰ انتهت مدة التفعيل',
-            badgeHtml: `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-amber-100 text-amber-900 border border-amber-300 text-[11px] font-extrabold">⏰ انتهت المدة (${st.accessDurationLabel || 'محددة'})</span>`
+            isTrial: isTrial,
+            shortText: isTrial ? '⏰ انتهت الفترة التجريبية (7 أيام) — يلزم الاشتراك' : '⏰ انتهى الاشتراك — يلزم التجديد',
+            badgeHtml: `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-rose-100 text-rose-900 border border-rose-300 text-[11px] font-extrabold">${isTrial ? '🔒 انتهت الـ 7 أيام التجريبية — يلزم الاشتراك' : '⏰ انتهى الاشتراك — يلزم التجديد'}</span>`
           };
         }
         const remStr = formatRemainingTimeAr(st.accessExpiresAt);
+        if (isTrial) {
+          return {
+            isAllowed: true,
+            code: 'timed_active',
+            isTrial: true,
+            shortText: `🎁 فترة تجريبية (${remStr})`,
+            badgeHtml: `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-amber-100 text-amber-950 border border-amber-300 text-[11px] font-extrabold">🎁 فترة تجريبية • ${remStr}</span>`
+          };
+        }
         return {
           isAllowed: true,
           code: 'timed_active',
-          shortText: `🟢 نشط (${remStr})`,
-          badgeHtml: `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-emerald-100 text-emerald-900 border border-emerald-300 text-[11px] font-extrabold">🟢 نشط • ${remStr}</span>`
+          isTrial: false,
+          shortText: `💎 مشترك مفعّل (${remStr})`,
+          badgeHtml: `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-emerald-100 text-emerald-900 border border-emerald-300 text-[11px] font-extrabold">💎 مشترك مفعّل • ${remStr}</span>`
         };
       }
       return {
         isAllowed: true,
         code: 'unlimited_active',
-        shortText: '🟢 نشط (مفتوح دائماً)',
-        badgeHtml: `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-800 border border-emerald-200 text-[11px] font-extrabold">🟢 نشط • مفتوح دائماً</span>`
+        isTrial: false,
+        shortText: '💎 مشترك (مفتوح دائماً)',
+        badgeHtml: `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-emerald-100 text-emerald-900 border border-emerald-300 text-[11px] font-extrabold">💎 مشترك • مفتوح دائماً</span>`
       };
     }
 
@@ -24360,19 +24471,21 @@
           const noteRow = document.getElementById('lock-modal-note-row');
 
           if (badgeEl) {
-            badgeEl.textContent = accessInfo.code === 'expired'
+            badgeEl.textContent = accessInfo.isTrial
+              ? '🔒 انتهت الفترة التجريبية المجانية (7 أيام) — يجب الاشتراك الآن'
+              : accessInfo.code === 'expired'
               ? '⏰ انتهى اشتراكك في الأكاديمية — يجب تجديد الاشتراك'
-              : '⏸️ انتهى التفعيل أو الحساب متوقف — يجب الاشتراك للمتابعة';
+              : '🔒 الحساب مغلق — يجب الاشتراك في الأكاديمية للمتابعة';
           }
           if (titleEl) {
-            titleEl.textContent = accessInfo.code === 'expired'
-              ? 'انتهى اشتراكك في أكاديمية ME Learning — يرجى تجديد الاشتراك'
-              : 'يلزم تفعيل أو تجديد اشتراكك للدخول إلى الأكاديمية';
+            titleEl.textContent = accessInfo.isTrial
+              ? 'انتهت فترتك التجريبية (7 أيام) في أكاديمية ME Learning — اشترك الآن للمتابعة'
+              : 'انتهى اشتراكك في أكاديمية ME Learning — يرجى الاشتراك للمتابعة';
           }
           if (descEl) {
-            descEl.textContent = accessInfo.code === 'expired'
-              ? `لقد انتهت مدة اشتراكك المحددة في أكاديمية ME Learning (${st.accessDurationLabel || 'مدة محددة'}). للاستمرار في الدراسة، اضغط على زر «اشتراك / تجديد الاشتراك الآن عبر واتساب» بالأسفل للتواصل مع أ. معاذ العكلي وتجديد اشتراكك فوراً.`
-              : 'هذا الحساب غير مفعّل حالياً. اضغط على زر «اشتراك / تجديد الاشتراك الآن عبر واتساب» بالأسفل للتواصل مع أ. معاذ العكلي وتفعيل اشتراكك في الأكاديمية.';
+            descEl.textContent = accessInfo.isTrial
+              ? 'لقد انتهت الفترة التجريبية المجانية الخاصة بك (7 أيام)، وتم إغلاق الأكاديمية تلقائياً. لفتح حسابك ومتابعة الدراسة في جميع المستويات، اضغط على زر «اشتراك / تجديد الاشتراك الآن عبر واتساب» بالأسفل للتواصل مع أ. معاذ العكلي وتفعيل اشتراكك فوراً.'
+              : `لقد انتهت مدة تفعيل حسابك (${st.accessDurationLabel || 'مدة محددة'}). للاستمرار في الدراسة، اضغط على زر «اشتراك / تجديد الاشتراك الآن عبر واتساب» بالأسفل للتواصل مع أ. معاذ العكلي وتفعيل اشتراكك فوراً.`;
           }
           if (nameEl) nameEl.textContent = `${st.nameAr || state.studentNameAr || '-'} (${st.nameEn || state.studentNameEn || '-'})`;
           if (gmailEl) gmailEl.textContent = st.gmail || state.currentStudentUser || '-';
@@ -24675,7 +24788,8 @@
         salInput.value = getSalawatMessageText();
       }
 
-      // Filter & Render Students Table
+      // Table rendering is handled in a single fast pass by the upgraded Admin Database renderer below
+      if (window.__useUpgradedFastAdminRenderer) return;
       const tbody = document.getElementById('admin-students-table-body');
       if (!tbody) return;
 
@@ -25093,8 +25207,8 @@
       if (saveDefDurBtn) {
         saveDefDurBtn.addEventListener('click', () => {
           const sel = document.getElementById('admin-default-new-student-duration');
-          const val = sel ? sel.value : 'unlimited';
-          try { localStorage.setItem('me_learning_default_student_duration_v1', val); } catch (e) {}
+          const val = sel ? sel.value : '7_days_trial';
+          try { localStorage.setItem('me_learning_default_student_duration_v2', val); } catch (e) {}
           playChime('success');
           showToast('✅ تم حفظ المدة الافتراضية لأي طالب يسجل جديداً في الأكاديمية!', 'success');
         });
@@ -26538,12 +26652,17 @@
     getStudentsDB = function() {
       const rawDb = _origGetStudentsDB() || {};
       const db = {};
-      // Deduplicate any canonical Gmail collisions so 1 Gmail = strictly 1 Account
+      // Deduplicate any canonical Gmail collisions AND automatically purge any fake/invalid test emails so the Admin DB is 100% clean
       Object.keys(rawDb).forEach(k => {
         const st = rawDb[k];
         if (!st) return;
         const cleanEmail = String(st.gmail || k).trim().toLowerCase();
         if (!cleanEmail || window.__ME_DELETED_STUDENTS__[cleanEmail]) return;
+        if (typeof window.validateStrictRealGmailAddress === 'function' && cleanEmail !== 'moaz.elokly@gmail.com') {
+          if (!window.validateStrictRealGmailAddress(cleanEmail).valid) {
+            return;
+          }
+        }
         mergeIncomingStudentRecord(db, { ...st, gmail: cleanEmail });
       });
       try {
@@ -26682,7 +26801,10 @@
 
       // 2. Pull from Cloud Registry (supporting ME_SYNC_V7 / ME_SYNC_V8 / ME_LEARNING_SYNC_V6)
       try {
-        const res = await fetch(`${NTFY_SYNC_URL}/json?poll=1&since=all`, { method: 'GET', cache: 'no-store' });
+        const sinceParam = (!window.__initialCloudPullDone || showFeedbackToast) ? 'all' : (window.__lastCloudPullSec || '60s');
+        window.__initialCloudPullDone = true;
+        window.__lastCloudPullSec = '25s';
+        const res = await fetch(`${NTFY_SYNC_URL}/json?poll=1&since=${sinceParam}`, { method: 'GET', cache: 'no-store' });
         if (res.ok) {
           const text = await res.text();
           const lines = text.split('\n').filter(Boolean);
@@ -26790,71 +26912,28 @@
       }).join(' ').trim();
     }
 
-    // Intercept #btn-auth-submit in capture phase so ANY student registration or login is 100% captured and saved!
+    // Clean capture listener: never auto-completes fake emails or fake passwords!
     function installGuaranteedStudentRegistrationCapture() {
       const submitBtn = document.getElementById('btn-auth-submit');
       if (!submitBtn || submitBtn.__guaranteedCaptureInstalled) return;
       submitBtn.__guaranteedCaptureInstalled = true;
 
-      submitBtn.addEventListener('click', (e) => {
+      submitBtn.addEventListener('click', () => {
         const rawEmailIn = document.getElementById('auth-input-username');
-        const passIn = document.getElementById('auth-input-password');
-        const nameArIn = document.getElementById('auth-input-name-ar');
-        const nameEnIn = document.getElementById('auth-input-name-en');
-        const initLvEl = document.getElementById('auth-input-init-level');
-
-        if (!rawEmailIn) return;
-        let rawEmail = (rawEmailIn.value || '').trim().toLowerCase().replace(/\s+/g, '');
-        if (rawEmail && !rawEmail.includes('@')) {
-          rawEmail = rawEmail + '@gmail.com';
-        } else if (rawEmail.endsWith('@gmail')) {
-          rawEmail = rawEmail + '.com';
-        } else if (rawEmail.includes('@') && !rawEmail.endsWith('@gmail.com')) {
-          // Allow any valid email domain by normalizing or keeping it, and also ensure @gmail.com validator passes
-          const userPart = rawEmail.split('@')[0].replace(/[^a-z0-9._%+-]/gi, '') || 'student';
-          rawEmail = userPart + '@gmail.com';
+        if (rawEmailIn) {
+          rawEmailIn.value = (rawEmailIn.value || '').trim().toLowerCase().replace(/\s+/g, '');
         }
-        rawEmailIn.value = rawEmail;
-
-        // Auto-fill missing Arabic or English name if the student typed only one of them
-        if (nameArIn && nameEnIn) {
-          const arVal = nameArIn.value.trim();
-          const enVal = nameEnIn.value.trim();
-          if (arVal && !enVal) {
-            nameEnIn.value = autoTransliterateArToEn(arVal) || arVal;
-          } else if (enVal && !arVal) {
-            nameArIn.value = enVal;
-          } else if (!arVal && !enVal && rawEmail) {
-            const prefix = rawEmail.split('@')[0];
-            if (state.authMode === 'login') {
-              nameArIn.value = prefix;
-              nameEnIn.value = prefix;
-            }
-          }
-        }
-
-        // Default password to '1234' if student typed < 3 chars so registration isn't blocked
-        if (passIn && passIn.value.trim().length > 0 && passIn.value.trim().length < 3) {
-          passIn.value = passIn.value.trim() + '123';
-        } else if (passIn && !passIn.value.trim() && rawEmail && (nameArIn && nameArIn.value.trim())) {
-          passIn.value = '1234';
-        }
-
-        // Do NOT auto-switch login mode to register mode, so 1 Gmail strictly equals 1 Account!
-
-        // Log registration/login in Admin Audit Log after click completes
         setTimeout(() => {
           if (state.currentStudentUser) {
             appendAdminAuditLog(
-              state.authMode === 'register' ? 'تسجيل حساب جديد' : 'تسجيل دخول طالب',
+              state.authMode === 'register' ? 'تسجيل طالب جديد (فترة تجريبية 7 أيام)' : 'تسجيل دخول طالب',
               state.currentStudentUser,
               state.studentNameAr,
               `المستوى: ${state.studentLevel} • XP: ${state.xp}`
             );
-            renderAppDownloadModule();
           }
-        }, 120);
-      }, true); // Capture phase!
+        }, 250);
+      }, true);
     }
 
     // Upgrade Admin Portal UI with Organized Tabs, Filters, Sorting, Bulk Import, CSV Export & Student Progress Inspector
@@ -26915,12 +26994,34 @@
         const filterBar = document.createElement('div');
         filterBar.id = 'admin-advanced-filter-bar';
         filterBar.className = 'p-3.5 rounded-2xl bg-white border border-slate-200 shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-3';
+        filterBar.className = 'p-4 rounded-2xl bg-white border-2 border-indigo-100 shadow-sm space-y-3';
         filterBar.innerHTML = `
+          <!-- Live Subscriptions KPI Summary Strip -->
+          <div id="admin-subscriptions-kpi-bar" class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pb-3 border-b border-slate-100">
+            <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between">
+              <span class="text-xs font-extrabold text-slate-700">👨‍🎓 إجمالي الطلاب:</span>
+              <strong data-kpi="total" class="font-en text-base font-black text-slate-900">0</strong>
+            </div>
+            <div class="p-3 rounded-xl bg-amber-50 border border-amber-200 flex items-center justify-between">
+              <span class="text-xs font-extrabold text-amber-900">🎁 فترة تجريبية (7 أيام):</span>
+              <strong data-kpi="trial" class="font-en text-base font-black text-amber-800">0</strong>
+            </div>
+            <div class="p-3 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-between">
+              <span class="text-xs font-extrabold text-emerald-900">💎 اشتراك مدفوع مفعّل:</span>
+              <strong data-kpi="paid" class="font-en text-base font-black text-emerald-800">0</strong>
+            </div>
+            <div class="p-3 rounded-xl bg-rose-50 border border-rose-200 flex items-center justify-between">
+              <span class="text-xs font-extrabold text-rose-900">🔒 منتهي / يلزم الاشتراك:</span>
+              <strong data-kpi="locked" class="font-en text-base font-black text-rose-800">0</strong>
+            </div>
+          </div>
+          <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
           <div class="flex flex-wrap items-center gap-1.5" id="admin-status-filter-pills">
-            <span class="text-xs font-extrabold text-slate-700 ml-1">تصفية الحسابات:</span>
+            <span class="text-xs font-extrabold text-slate-700 ml-1">تصفية قاعدة البيانات:</span>
             <button type="button" data-admin-filter-status="all" class="px-3 py-1.5 rounded-xl text-xs font-extrabold bg-indigo-600 text-white">الكل</button>
-            <button type="button" data-admin-filter-status="active" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-emerald-50">🟢 نشط ومفعّل</button>
-            <button type="button" data-admin-filter-status="paused" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-rose-50">⏸️ موقوف / منتهي</button>
+            <button type="button" data-admin-filter-status="trial" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-amber-50 text-amber-900 border border-amber-200 hover:bg-amber-100">🎁 فترة تجريبية (7 أيام)</button>
+            <button type="button" data-admin-filter-status="paid" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-emerald-50 text-emerald-900 border border-emerald-200 hover:bg-emerald-100">💎 مشترك مدفوع</button>
+            <button type="button" data-admin-filter-status="paused" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-rose-50 text-rose-900 border border-rose-200 hover:bg-rose-100">🔒 منتهي / مقفول</button>
             <button type="button" data-admin-filter-status="cert" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-amber-50">🎓 مؤهل للشهادة</button>
           </div>
           <div class="flex flex-wrap items-center gap-2">
@@ -26939,10 +27040,15 @@
               <option value="name">🔤 ترتيب أبجدي بالاسم</option>
               <option value="level">📊 حسب المستوى الدراسي</option>
             </select>
+            <button type="button" id="btn-admin-purge-fake-accounts" class="px-3 py-1.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-extrabold shadow-sm transition flex items-center gap-1" title="فحص وحذف أي حسابات بريد Gmail وهمية أو غير حقيقية من قاعدة البيانات">
+              <span>🧹</span>
+              <span>حذف الحسابات الوهمية</span>
+            </button>
             <button type="button" id="btn-admin-export-csv" class="px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-extrabold shadow-sm transition flex items-center gap-1">
               <span>📊</span>
-              <span>تصدير جدول الطلاب (Excel CSV)</span>
+              <span>تصدير Excel CSV</span>
             </button>
+          </div>
           </div>
         `;
         secStudents.insertBefore(filterBar, tableWrapper);
@@ -27062,6 +27168,36 @@
         sortSel.addEventListener('change', (e) => {
           adminSortBy = e.target.value;
           renderAppDownloadModule();
+        });
+      }
+
+      // Bind Purge Fake Accounts Button
+      const purgeFakeBtn = document.getElementById('btn-admin-purge-fake-accounts');
+      if (purgeFakeBtn) {
+        purgeFakeBtn.addEventListener('click', () => {
+          const db = getStudentsDB();
+          let removedCount = 0;
+          Object.keys(db).forEach(k => {
+            const st = db[k] || {};
+            const email = st.gmail || k;
+            if (typeof window.validateStrictRealGmailAddress === 'function') {
+              const check = window.validateStrictRealGmailAddress(email);
+              if (!check.valid) {
+                window.__ME_DELETED_STUDENTS__[k.trim().toLowerCase()] = true;
+                delete db[k];
+                removedCount++;
+              }
+            }
+          });
+          saveStudentsDB(db, false);
+          renderAppDownloadModule(true);
+          playChime('success');
+          showToast(
+            removedCount > 0
+              ? `🧹 تم تنظيف وحذف ${removedCount} حساب بريد وهمي من قاعدة البيانات بنجاح!`
+              : '✅ قاعدة البيانات نظيفة تماماً! جميع الحسابات الموجودة مطابقة لقواعد Gmail الصحيحة.',
+            'success'
+          );
         });
       }
 
@@ -27283,20 +27419,81 @@
       }
     }
 
-    // Wrap renderAppDownloadModule so it applies Status Filter, Level Filter, Sorting, Badge Update, and Report Button
+    // Fast Single-Pass Admin Database Renderer with 1-Click Subscription Controls & Zero-Lag Fingerprint Guard
+    window.__useUpgradedFastAdminRenderer = true;
+    let __lastAdminTableFingerprint = '';
+
+    function computeAdminTableFingerprint(db) {
+      const keys = Object.keys(db).sort();
+      const parts = keys.map(k => {
+        const s = db[k] || {};
+        const isExp = s.accessExpiresAt ? (Date.now() >= s.accessExpiresAt ? '1' : '0') : '0';
+        return `${k}:${s.nameAr}:${s.studentLevel}:${s.xp}:${s.accountStatus}:${s.accessExpiresAt}:${s.accessDurationLabel}:${isExp}`;
+      });
+      return `${adminFilterStatus}|${adminFilterLevel}|${adminSortBy}|${adminStudentSearchQuery}|${state.currentStudentUser}|` + parts.join(';');
+    }
+
     const _origRenderAppDownloadModule = renderAppDownloadModule;
-    renderAppDownloadModule = function() {
+    renderAppDownloadModule = function(forceRebuild) {
       upgradeAdminPortalSystemUI();
       const db = getStudentsDB();
       const allKeys = Object.keys(db);
       const badgeEl = document.getElementById('admin-tab-students-badge');
       if (badgeEl) badgeEl.textContent = String(allKeys.length);
 
+      // Update top summary KPI cards
       _origRenderAppDownloadModule();
 
-      // Now enhance the table rows with our filter, sort & report/certificate quick buttons
+      // Count Trial vs Paid vs Expired/Locked for the Subscription KPI Strip
+      let trialCount = 0;
+      let paidCount = 0;
+      let expiredLockedCount = 0;
+      allKeys.forEach(k => {
+        const st = db[k] || {};
+        const acc = evaluateStudentAccessState(st);
+        if (!acc.isAllowed) {
+          expiredLockedCount++;
+        } else if (acc.isTrial) {
+          trialCount++;
+        } else {
+          paidCount++;
+        }
+      });
+
+      const subKpiBar = document.getElementById('admin-subscriptions-kpi-bar');
+      if (subKpiBar) {
+        const cTotal = subKpiBar.querySelector('[data-kpi="total"]');
+        const cTrial = subKpiBar.querySelector('[data-kpi="trial"]');
+        const cPaid = subKpiBar.querySelector('[data-kpi="paid"]');
+        const cLocked = subKpiBar.querySelector('[data-kpi="locked"]');
+        if (cTotal) cTotal.textContent = String(allKeys.length);
+        if (cTrial) cTrial.textContent = String(trialCount);
+        if (cPaid) cPaid.textContent = String(paidCount);
+        if (cLocked) cLocked.textContent = String(expiredLockedCount);
+      }
+
       const tbody = document.getElementById('admin-students-table-body');
-      if (!tbody || allKeys.length === 0) return;
+      if (!tbody) return;
+
+      // ZERO-LAG GUARD: Do not wipe & rebuild the table DOM if nothing changed or if Admin is focused on an input/select inside the table
+      const currentFp = computeAdminTableFingerprint(db);
+      const activeEl = document.activeElement;
+      const isEditingInTable = activeEl && tbody.contains(activeEl) && (activeEl.tagName === 'SELECT' || activeEl.tagName === 'INPUT');
+      if (!forceRebuild && (currentFp === __lastAdminTableFingerprint || isEditingInTable)) {
+        return;
+      }
+      __lastAdminTableFingerprint = currentFp;
+
+      if (allKeys.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="8" class="p-6 text-center text-slate-500 font-bold">
+              لا توجد حسابات طلاب مسجلة حالياً. أي طالب جديد يسجل بحساب Gmail حقيقي سيحصل تلقائياً على فترة تجريبية 7 أيام ويظهر هنا فوراً.
+            </td>
+          </tr>
+        `;
+        return;
+      }
 
       const q = (adminStudentSearchQuery || '').trim().toLowerCase();
       let filteredKeys = allKeys.filter(uKey => {
@@ -27306,6 +27503,8 @@
 
         const acc = evaluateStudentAccessState(st);
         if (adminFilterStatus === 'active' && !acc.isAllowed) return false;
+        if (adminFilterStatus === 'trial' && (!acc.isAllowed || !acc.isTrial)) return false;
+        if (adminFilterStatus === 'paid' && (!acc.isAllowed || acc.isTrial)) return false;
         if (adminFilterStatus === 'paused' && acc.isAllowed) return false;
         if (adminFilterStatus === 'cert') {
           const mLen = st.mastered ? Object.keys(st.mastered).filter(k => st.mastered[k]).length : (st.masteredCount || 0);
@@ -27329,7 +27528,6 @@
         if (adminSortBy === 'xp') return (Number(sb.xp) || 0) - (Number(sa.xp) || 0);
         if (adminSortBy === 'name') return String(sa.nameAr || a).localeCompare(String(sb.nameAr || b), 'ar');
         if (adminSortBy === 'level') return CEFR_LEVELS.indexOf(normalizeLevel(sa.studentLevel)) - CEFR_LEVELS.indexOf(normalizeLevel(sb.studentLevel));
-        // Default 'newest': sort by updatedAt or registeredAt descending
         const ta = Number(sa.updatedAt) || Date.parse(sa.registeredAt || '') || 0;
         const tb = Number(sb.updatedAt) || Date.parse(sb.registeredAt || '') || 0;
         return tb - ta;
@@ -27339,7 +27537,7 @@
         tbody.innerHTML = `
           <tr>
             <td colspan="8" class="p-6 text-center text-slate-500 font-bold">
-              لا توجد حسابات مطابقة للفلتر المحدد حالياً (إجمالي المسجلين في النظام: ${allKeys.length} حساب).
+              لا توجد حسابات مطابقة للفلتر المحدد حالياً (إجمالي المسجلين في قاعدة البيانات: ${allKeys.length} طالب).
             </td>
           </tr>
         `;
@@ -27356,12 +27554,12 @@
         const isPausedOrExpired = !acc.isAllowed;
 
         return `
-          <tr class="${isCurrentActive ? 'bg-indigo-50/70' : 'hover:bg-slate-50'} transition">
+          <tr class="${isCurrentActive ? 'bg-indigo-50/70' : isPausedOrExpired ? 'bg-rose-50/30' : 'hover:bg-slate-50'} transition border-b border-slate-100">
             <td class="p-3 font-en font-extrabold text-slate-500">${idx + 1}</td>
             <td class="p-3">
               <div class="font-en font-extrabold text-indigo-700">${gmailAddr}</div>
               <div class="flex flex-wrap items-center gap-1 mt-0.5">
-                <span class="inline-block px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] font-extrabold">محفوظ بقاعدة البيانات ✓</span>
+                <span class="inline-block px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] font-extrabold">Gmail موثق ✓</span>
                 ${isCurrentActive ? '<span class="inline-block px-2 py-0.5 rounded bg-indigo-100 text-indigo-800 text-[10px] font-extrabold">نشط الآن</span>' : ''}
               </div>
             </td>
@@ -27373,53 +27571,81 @@
             <td class="p-3">
               <span class="px-2.5 py-1 rounded-lg bg-indigo-100 text-indigo-900 font-en font-extrabold text-xs">Level ${st.studentLevel || 'A1'}</span>
             </td>
-            <td class="p-3">
+            <td class="p-3 min-w-[210px]">
               <div>${acc.badgeHtml}</div>
-              <div class="text-[10px] text-slate-600 font-extrabold mt-1">المدة: ${st.accessDurationLabel || 'مفتوح دائماً'}</div>
-              ${st.accessExpiresAt ? `<div class="text-[10px] font-en font-extrabold ${Date.now() >= st.accessExpiresAt ? 'text-rose-600' : 'text-indigo-700'} mt-0.5">📅 ينتهي: ${new Date(st.accessExpiresAt).toLocaleString('sv-SE').slice(0, 16)}</div>` : ''}
+              <div class="text-[11px] text-slate-700 font-extrabold mt-1">الباقة: ${st.accessDurationLabel || '🎁 فترة تجريبية (7 أيام)'}</div>
+              ${st.accessExpiresAt ? `<div class="text-[10px] font-en font-extrabold ${Date.now() >= st.accessExpiresAt ? 'text-rose-600' : 'text-indigo-700'} mt-0.5">📅 ينتهي: ${new Date(st.accessExpiresAt).toLocaleString('sv-SE').slice(0, 16)}</div>` : '<div class="text-[10px] text-emerald-700 font-bold mt-0.5">♾️ بدون تاريخ انتهاء</div>'}
             </td>
             <td class="p-3">
               <div class="font-en font-extrabold text-amber-700">${st.xp || 0} XP</div>
               <div class="text-[11px] font-bold text-slate-600">${stMastered} عنصر متقن</div>
             </td>
             <td class="p-3 text-[11px] text-slate-500 font-en">${regDate}</td>
-            <td class="p-3">
-              <div class="flex flex-wrap items-center justify-center gap-1.5">
-                <button type="button" data-admin-toggle-pause="${uKey}" class="btn-admin-row-pause px-2.5 py-1.5 rounded-lg ${
-                  isPausedOrExpired ? 'bg-emerald-600 hover:bg-emerald-700 text-white' : 'bg-rose-600 hover:bg-rose-700 text-white'
-                } text-[11px] font-extrabold transition shadow-sm">
-                  ${isPausedOrExpired ? '▶️ تشغيل' : '⏸️ إيقاف'}
-                </button>
-                <select data-admin-quick-dur="${uKey}" class="sel-admin-row-dur px-2 py-1.5 rounded-lg border border-indigo-300 bg-indigo-50 text-indigo-950 text-[11px] font-extrabold cursor-pointer">
-                  <option value="">⏱️ المدة...</option>
-                  <option value="unlimited">♾️ مفتوح دائماً</option>
-                  <option value="30_min">⏱️ 30 دقيقة</option>
-                  <option value="1_hour">⏱️ ساعة واحدة</option>
-                  <option value="1_day">📅 يوم واحد</option>
-                  <option value="7_days">📅 أسبوع</option>
-                  <option value="30_days">📅 شهر</option>
-                  <option value="365_days">📅 سنة</option>
-                  <option value="paused">⏸️ إيقاف فوري</option>
-                </select>
-                <button type="button" data-admin-report="${uKey}" class="btn-admin-row-report px-2.5 py-1.5 rounded-lg bg-amber-400 hover:bg-amber-300 text-slate-950 text-[11px] font-extrabold transition shadow-sm" title="كشف درجات الطالب وإصدار شهادته">
-                  📊 التقرير والشهادة
-                </button>
-                <button type="button" data-admin-edit="${uKey}" class="btn-admin-row-edit px-2.5 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-[11px] font-extrabold transition">
-                  ✏️ تعديل
-                </button>
-                <button type="button" data-admin-switch="${uKey}" class="btn-admin-row-switch px-2.5 py-1.5 rounded-lg bg-teal-600 hover:bg-teal-700 text-white text-[11px] font-extrabold transition">
-                  🎓 فتح
-                </button>
-                <button type="button" data-admin-del="${uKey}" class="btn-admin-row-del px-2 py-1.5 rounded-lg bg-rose-100 hover:bg-rose-600 text-rose-700 hover:text-white text-[11px] font-extrabold transition">
-                  🗑️
-                </button>
+            <td class="p-3 min-w-[290px]">
+              <div class="space-y-1.5">
+                <!-- Row 1: Easy 1-Click Subscription Duration Buttons -->
+                <div class="p-1.5 rounded-xl bg-slate-100 border border-slate-200 space-y-1">
+                  <div class="text-[10px] font-extrabold text-slate-600 text-center">⚡ تحديد الاشتراك بضغطة واحدة:</div>
+                  <div class="flex flex-wrap items-center justify-center gap-1">
+                    <button type="button" data-admin-fast-sub="${uKey}" data-sub-code="7_days_trial" class="px-2 py-1 rounded-lg bg-amber-100 hover:bg-amber-400 text-amber-950 border border-amber-300 text-[10px] font-extrabold transition" title="تفعيل فترة تجريبية 7 أيام">🎁 تجريبي 7 أيام</button>
+                    <button type="button" data-admin-fast-sub="${uKey}" data-sub-code="30_days" class="px-2 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-[10px] font-extrabold transition shadow-sm" title="تفعيل اشتراك شهر كامل (30 يوماً)">💎 شهر</button>
+                    <button type="button" data-admin-fast-sub="${uKey}" data-sub-code="90_days" class="px-2 py-1 rounded-lg bg-teal-600 hover:bg-teal-700 text-white text-[10px] font-extrabold transition shadow-sm" title="تفعيل اشتراك 3 شهور (90 يوماً)">💎 3 شهور</button>
+                    <button type="button" data-admin-fast-sub="${uKey}" data-sub-code="365_days" class="px-2 py-1 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-[10px] font-extrabold transition shadow-sm" title="تفعيل اشتراك سنة كاملة">💎 سنة</button>
+                    <button type="button" data-admin-fast-sub="${uKey}" data-sub-code="unlimited" class="px-2 py-1 rounded-lg bg-slate-800 hover:bg-slate-950 text-amber-300 text-[10px] font-extrabold transition" title="اشتراك مفتوح دائماً">♾️ مفتوح</button>
+                    <button type="button" data-admin-fast-sub="${uKey}" data-sub-code="paused" class="px-2 py-1 rounded-lg bg-rose-600 hover:bg-rose-700 text-white text-[10px] font-extrabold transition" title="قفل الأكاديمية فوراً عند الطالب ومطالبته بالاشتراك">🔒 قفل فوراً</button>
+                  </div>
+                </div>
+                <!-- Row 2: Management & Report Actions -->
+                <div class="flex flex-wrap items-center justify-center gap-1">
+                  <button type="button" data-admin-toggle-pause="${uKey}" class="btn-admin-row-pause px-2 py-1 rounded-lg ${
+                    isPausedOrExpired ? 'bg-emerald-600 hover:bg-emerald-700 text-white' : 'bg-rose-100 hover:bg-rose-600 text-rose-800 hover:text-white'
+                  } text-[10px] font-extrabold transition">
+                    ${isPausedOrExpired ? '▶️ تشغيل الحساب' : '⏸️ إيقاف مؤقت'}
+                  </button>
+                  <button type="button" data-admin-edit="${uKey}" class="btn-admin-row-edit px-2 py-1 rounded-lg bg-indigo-50 hover:bg-indigo-600 text-indigo-800 hover:text-white border border-indigo-200 text-[10px] font-extrabold transition">
+                    ✏️ تاريخ مخصص / تعديل
+                  </button>
+                  <button type="button" data-admin-report="${uKey}" class="btn-admin-row-report px-2 py-1 rounded-lg bg-amber-50 hover:bg-amber-400 text-amber-900 border border-amber-200 text-[10px] font-extrabold transition">
+                    📊 التقرير والشهادة
+                  </button>
+                  <button type="button" data-admin-switch="${uKey}" class="btn-admin-row-switch px-2 py-1 rounded-lg bg-teal-50 hover:bg-teal-600 text-teal-800 hover:text-white border border-teal-200 text-[10px] font-extrabold transition">
+                    🎓 فتح
+                  </button>
+                  <button type="button" data-admin-del="${uKey}" class="btn-admin-row-del px-2 py-1 rounded-lg bg-rose-50 hover:bg-rose-600 text-rose-700 hover:text-white border border-rose-200 text-[10px] font-extrabold transition" title="حذف الحساب نهائياً">
+                    🗑️
+                  </button>
+                </div>
               </div>
             </td>
           </tr>
         `;
       }).join('');
 
-      // Re-bind row buttons with adminUpdatedAt & immediate cloud push so all devices sync immediately
+      // Bind 1-Click Fast Subscription Buttons
+      tbody.querySelectorAll('[data-admin-fast-sub]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const uKey = btn.getAttribute('data-admin-fast-sub');
+          const code = btn.getAttribute('data-sub-code');
+          const st = db[uKey];
+          if (!st || !code) return;
+          const cfg = computeAccessConfigFromPresetCode(code);
+          const nowTs = Date.now();
+          st.accountStatus = cfg.accountStatus;
+          st.subscriptionType = cfg.subscriptionType || (code.includes('trial') ? 'trial' : 'paid');
+          st.accessExpiresAt = cfg.accessExpiresAt;
+          st.accessDurationLabel = cfg.accessDurationLabel;
+          st.updatedAt = nowTs;
+          st.adminUpdatedAt = nowTs;
+          saveStudentsDB(db, true);
+          pushStudentsDBToCloudRegistry(db, st);
+          renderAppDownloadModule(true);
+          checkAndEnforceStudentAccessLock();
+          playChime('success');
+          showToast(`✅ تم تحديث اشتراك الطالب (${st.nameAr || uKey}) إلى: ${cfg.accessDurationLabel} ومزامنته على جميع الأجهزة!`, 'success');
+        });
+      });
+
+      // Bind Toggle Pause / Activate Button
       tbody.querySelectorAll('.btn-admin-row-pause').forEach(btn => {
         btn.addEventListener('click', () => {
           const uKey = btn.getAttribute('data-admin-toggle-pause');
@@ -27429,47 +27655,25 @@
           const nowTs = Date.now();
           if (!acc.isAllowed) {
             st.accountStatus = 'active';
+            st.subscriptionType = 'paid';
             st.updatedAt = nowTs;
             st.adminUpdatedAt = nowTs;
             if (st.accessExpiresAt && nowTs >= st.accessExpiresAt) {
-              st.accessExpiresAt = null;
-              st.accessDurationLabel = 'مفتوح دائماً بلا انتهاء';
+              st.accessExpiresAt = nowTs + (30 * 24 * 60 * 60 * 1000);
+              st.accessDurationLabel = '💎 اشتراك شهر (30 يوماً)';
             }
             showToast(`▶️ تم تفعيل اشتراك الطالب (${st.nameAr || uKey}) ومزامنته على جميع الأجهزة!`, 'success');
           } else {
             st.accountStatus = 'suspended';
             st.updatedAt = nowTs;
             st.adminUpdatedAt = nowTs;
-            st.accessDurationLabel = 'موقوف من الإدارة';
-            showToast(`⏸️ تم إيقاف اشتراك الطالب (${st.nameAr || uKey}) فوراً على جميع الأجهزة!`, 'info');
+            st.accessDurationLabel = '🔒 مغلق — يلزم الاشتراك';
+            showToast(`🔒 تم إغلاق الأكاديمية عند الطالب (${st.nameAr || uKey}) فوراً ومطالبته بالاشتراك!`, 'info');
           }
           saveStudentsDB(db, true);
           pushStudentsDBToCloudRegistry(db, st);
-          renderAppDownloadModule();
+          renderAppDownloadModule(true);
           checkAndEnforceStudentAccessLock();
-        });
-      });
-
-      tbody.querySelectorAll('.sel-admin-row-dur').forEach(sel => {
-        sel.addEventListener('change', (e) => {
-          const code = e.target.value;
-          if (!code) return;
-          const uKey = sel.getAttribute('data-admin-quick-dur');
-          const st = db[uKey];
-          if (!st) return;
-          const cfg = computeAccessConfigFromPresetCode(code);
-          const nowTs = Date.now();
-          st.accountStatus = cfg.accountStatus;
-          st.accessExpiresAt = cfg.accessExpiresAt;
-          st.accessDurationLabel = cfg.accessDurationLabel;
-          st.updatedAt = nowTs;
-          st.adminUpdatedAt = nowTs;
-          saveStudentsDB(db, true);
-          pushStudentsDBToCloudRegistry(db, st);
-          renderAppDownloadModule();
-          checkAndEnforceStudentAccessLock();
-          playChime('success');
-          showToast(`⏱️ تم تحديد مدة اشتراك الطالب (${st.nameAr || uKey}): ${cfg.accessDurationLabel} ومزامنتها على كل الأجهزة!`, 'success');
         });
       });
 
@@ -27511,9 +27715,9 @@
           const deletedName = db[uKey].nameAr || uKey;
           window.__ME_DELETED_STUDENTS__[uKey.trim().toLowerCase()] = true;
           delete db[uKey];
-          saveStudentsDB(db);
-          renderAppDownloadModule();
-          showToast(`🗑️ تم حذف حساب الطالب (${deletedName}) من سجل الأكاديمية.`, 'info');
+          saveStudentsDB(db, false);
+          renderAppDownloadModule(true);
+          showToast(`🗑️ تم حذف حساب الطالب (${deletedName}) نهائياً من جميع الأجهزة.`, 'info');
         });
       });
     };
