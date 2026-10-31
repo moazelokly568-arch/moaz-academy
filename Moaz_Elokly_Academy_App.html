@@ -5743,8 +5743,72 @@
     // ==================== MULTI-DEVICE CLOUD SYNC (NTFY.SH REALTIME) & GUARANTEED MULTI-LAYER STUDENT REGISTRY ====================
     window.__ME_STUDENTS_MEM_DB__ = window.__ME_STUDENTS_MEM_DB__ || {};
     window.__ME_DELETED_STUDENTS__ = window.__ME_DELETED_STUDENTS__ || {};
+    window.__ME_ATTACHMENT_CACHE__ = window.__ME_ATTACHMENT_CACHE__ || {};
+    try {
+      const savedDelRaw = localStorage.getItem('me_learning_deleted_students_v2');
+      if (savedDelRaw) {
+        const parsedDel = JSON.parse(savedDelRaw);
+        if (parsedDel && typeof parsedDel === 'object') {
+          Object.assign(window.__ME_DELETED_STUDENTS__, parsedDel);
+        }
+      }
+    } catch (e) {}
+
+    window.__ME_MAX_ADMIN_REV__ = 1;
+    try {
+      window.__ME_MAX_ADMIN_REV__ = Math.max(1, Number(localStorage.getItem('me_learning_max_admin_rev_v2')) || 1);
+    } catch (e) {}
+
+    function noteObservedAdminRevision(rev) {
+      const r = Number(rev) || 0;
+      if (r > (window.__ME_MAX_ADMIN_REV__ || 1)) {
+        window.__ME_MAX_ADMIN_REV__ = r;
+        try { localStorage.setItem('me_learning_max_admin_rev_v2', String(r)); } catch (e) {}
+      }
+    }
+
+    function getNextAdminRevision(curRev) {
+      window.__ME_MAX_ADMIN_REV__ = Math.max(window.__ME_MAX_ADMIN_REV__ || 1, Number(curRev) || 1) + 1;
+      try { localStorage.setItem('me_learning_max_admin_rev_v2', String(window.__ME_MAX_ADMIN_REV__)); } catch (e) {}
+      return window.__ME_MAX_ADMIN_REV__;
+    }
+
+    function isExcludedOrDeletedStudentEmail(rawEmail) {
+      const clean = String(rawEmail || '').trim().toLowerCase().replace(/\s+/g, '');
+      if (!clean || clean === 'moaz.elokly@gmail.com') return true;
+      const canon = typeof getCanonicalGmailKey === 'function' ? getCanonicalGmailKey(clean) : clean;
+      return !!(window.__ME_DELETED_STUDENTS__[clean] || (canon && window.__ME_DELETED_STUDENTS__[canon]));
+    }
+
+    function markStudentDeletedPermanently(rawEmail) {
+      const clean = String(rawEmail || '').trim().toLowerCase().replace(/\s+/g, '');
+      if (!clean) return;
+      const canon = typeof getCanonicalGmailKey === 'function' ? getCanonicalGmailKey(clean) : clean;
+      window.__ME_DELETED_STUDENTS__[clean] = true;
+      if (canon) window.__ME_DELETED_STUDENTS__[canon] = true;
+      try {
+        localStorage.setItem('me_learning_deleted_students_v2', JSON.stringify(window.__ME_DELETED_STUDENTS__));
+      } catch (e) {}
+      if (typeof deleteFromPermanentIDB === 'function') {
+        deleteFromPermanentIDB('students_store', clean);
+        if (canon && canon !== clean) deleteFromPermanentIDB('students_store', canon);
+      }
+    }
+
+    function unmarkStudentDeleted(rawEmail) {
+      const clean = String(rawEmail || '').trim().toLowerCase().replace(/\s+/g, '');
+      if (!clean) return;
+      const canon = typeof getCanonicalGmailKey === 'function' ? getCanonicalGmailKey(clean) : clean;
+      delete window.__ME_DELETED_STUDENTS__[clean];
+      if (canon) delete window.__ME_DELETED_STUDENTS__[canon];
+      try {
+        localStorage.setItem('me_learning_deleted_students_v2', JSON.stringify(window.__ME_DELETED_STUDENTS__));
+      } catch (e) {}
+    }
+
     const NTFY_SYNC_TOPIC = 'me_learning_moaz_elokly_students_v11_unified_master';
     const NTFY_SYNC_URL = `https://ntfy.sh/${NTFY_SYNC_TOPIC}`;
+    const NTFY_LEGACY_V6_URL = 'https://ntfy.sh/me_learning_moaz_elokly_students_v6_sync';
     let ntfyEventSource = null;
 
     let studentSyncBroadcastChannel = null;
@@ -5796,17 +5860,20 @@
       function mergeLocalLayer(layerObj) {
         if (!layerObj || typeof layerObj !== 'object' || Array.isArray(layerObj)) return;
         Object.keys(layerObj).forEach(k => {
-          const ck = k.trim().toLowerCase();
-          if (!ck || window.__ME_DELETED_STUDENTS__[ck]) return;
           const inc = layerObj[k];
           if (!inc || typeof inc !== 'object') return;
+          const ck = String(inc.gmail || k).trim().toLowerCase();
+          if (!ck || isExcludedOrDeletedStudentEmail(ck)) return;
+          const incRev = Number(inc.adminRev) || 1;
+          noteObservedAdminRevision(incRev);
           if (!db[ck]) {
-            db[ck] = { ...inc, gmail: ck };
+            db[ck] = { ...inc, gmail: ck, adminRev: incRev };
           } else {
-            const curRev = Number(db[ck].adminRev) || 0;
-            const incRev = Number(inc.adminRev) || 0;
-            if (incRev > curRev) {
-              db[ck] = { ...db[ck], ...inc, gmail: ck };
+            const curRev = Number(db[ck].adminRev) || 1;
+            const curAdminTs = Number(db[ck].adminUpdatedAt) || 0;
+            const incAdminTs = Number(inc.adminUpdatedAt) || 0;
+            if (incRev > curRev || (incRev === curRev && incAdminTs > curAdminTs)) {
+              db[ck] = { ...db[ck], ...inc, gmail: ck, adminRev: Math.max(curRev, incRev) };
             }
           }
         });
@@ -5841,7 +5908,7 @@
           prog = progRaw ? JSON.parse(progRaw) : null;
         } catch (e) {}
 
-        if (activeUser && activeUser.includes('@') && activeUser !== 'moaz.elokly@gmail.com' && !db[activeUser] && !window.__ME_DELETED_STUDENTS__[activeUser]) {
+        if (activeUser && activeUser.includes('@') && !isExcludedOrDeletedStudentEmail(activeUser) && !findExistingStudentKeyByGmail(db, activeUser)) {
           db[activeUser] = {
             gmail: activeUser,
             nameAr: state.studentNameAr || (prog && prog.studentNameAr) || activeUser.split('@')[0],
@@ -5920,11 +5987,13 @@
 
     function mergeIncomingStudentRecord(localDb, incomingSt, isFromCloudAuthority) {
       if (!incomingSt || !incomingSt.gmail) return false;
-      const rawKey = incomingSt.gmail.trim().toLowerCase();
-      if (!rawKey || window.__ME_DELETED_STUDENTS__[rawKey]) return false;
+      const rawKey = String(incomingSt.gmail || '').trim().toLowerCase().replace(/\s+/g, '');
+      if (!rawKey || isExcludedOrDeletedStudentEmail(rawKey)) return false;
       const matchedKey = findExistingStudentKeyByGmail(localDb, rawKey) || rawKey;
-      if (window.__ME_DELETED_STUDENTS__[matchedKey]) return false;
+      if (isExcludedOrDeletedStudentEmail(matchedKey)) return false;
       const existing = localDb[matchedKey];
+      const incRev = Math.max(1, Number(incomingSt.adminRev) || 1);
+      noteObservedAdminRevision(incRev);
       if (!existing) {
         localDb[matchedKey] = {
           ...incomingSt,
@@ -5932,17 +6001,25 @@
           subscriptionType: incomingSt.subscriptionType || 'trial',
           updatedAt: Number(incomingSt.updatedAt) || Date.now(),
           adminUpdatedAt: Number(incomingSt.adminUpdatedAt) || 0,
-          adminRev: Number(incomingSt.adminRev) || 1
+          adminRev: incRev
         };
         return true;
       }
 
-      // If this record comes from the Cloud Stream (which is replayed in exact chronological server order),
-      // OR has a higher/equal adminRev, the incoming subscription & Admin settings ALWAYS win!
-      // This completely eliminates Phone vs Tablet clock-skew bugs!
-      const incRev = Number(incomingSt.adminRev) || 0;
-      const locRev = Number(existing.adminRev) || 0;
-      const useIncAdmin = isFromCloudAuthority ? (incRev >= locRev || incRev > 0) : (incRev > locRev);
+      // Strict Revision Precedence:
+      // 1. A strictly higher adminRev (incRev > locRev) ALWAYS wins on every device, regardless of device clock skew!
+      // 2. A strictly lower adminRev (incRev < locRev) NEVER overwrites a newer adminRev!
+      // 3. When adminRev is equal (incRev === locRev), compare adminUpdatedAt timestamps.
+      const locRev = Math.max(1, Number(existing.adminRev) || 1);
+      noteObservedAdminRevision(locRev);
+      const incAdminTs = Number(incomingSt.adminUpdatedAt) || 0;
+      const locAdminTs = Number(existing.adminUpdatedAt) || 0;
+      let useIncAdmin = false;
+      if (incRev > locRev) {
+        useIncAdmin = true;
+      } else if (incRev === locRev) {
+        useIncAdmin = isFromCloudAuthority ? (incAdminTs >= locAdminTs) : (incAdminTs > locAdminTs);
+      }
 
       const mergedMastered = { ...(existing.mastered || {}), ...(incomingSt.mastered || {}) };
       const mCount = Math.max(
@@ -6098,40 +6175,48 @@
               let added = false;
               if (Array.isArray(data.del)) {
                 data.del.forEach(dk => {
-                  window.__ME_DELETED_STUDENTS__[dk] = true;
+                  markStudentDeletedPermanently(dk);
+                  const mDel = findExistingStudentKeyByGmail(localDb, dk) || dk;
                   delete localDb[dk];
+                  delete localDb[mDel];
                 });
               }
               if (data.deleted && typeof data.deleted === 'object') {
                 Object.keys(data.deleted).forEach(delKey => {
-                  window.__ME_DELETED_STUDENTS__[delKey] = true;
+                  markStudentDeletedPermanently(delKey);
+                  const mDel = findExistingStudentKeyByGmail(localDb, delKey) || delKey;
                   delete localDb[delKey];
+                  delete localDb[mDel];
                 });
               }
               if (data.cfg && typeof data.cfg === 'object') {
                 try {
-                  if (data.cfg.defDur) localStorage.setItem('me_learning_default_student_duration_v1', data.cfg.defDur);
+                  if (data.cfg.defDur) localStorage.setItem('me_learning_default_student_duration_v2', data.cfg.defDur);
                 } catch (e) {}
               }
               if (Array.isArray(data.list) && typeof expandCompactStudentIntoDB === 'function') {
                 data.list.forEach(c => {
-                  if (expandCompactStudentIntoDB(localDb, c)) added = true;
+                  if (expandCompactStudentIntoDB(localDb, c, true)) added = true;
                 });
               }
               if (data.student && data.student.gmail) {
-                if (mergeIncomingStudentRecord(localDb, data.student)) added = true;
+                if (mergeIncomingStudentRecord(localDb, data.student, true)) added = true;
               }
               if (data.studentsDB && typeof data.studentsDB === 'object') {
                 Object.keys(data.studentsDB).forEach(k => {
                   const st = data.studentsDB[k];
                   if (st) {
                     st.gmail = st.gmail || k;
-                    if (mergeIncomingStudentRecord(localDb, st)) added = true;
+                    if (mergeIncomingStudentRecord(localDb, st, true)) added = true;
                   }
                 });
               }
               saveStudentsDB(localDb, true);
-              if (typeof renderAppDownloadModule === 'function') renderAppDownloadModule();
+              if (typeof renderAppDownloadModule === 'function') renderAppDownloadModule(true);
+              const statusBadge = document.getElementById('admin-cloud-sync-status-badge');
+              if (statusBadge) {
+                statusBadge.textContent = `🟢 قاعدة البيانات موحّدة لحظياً (${Object.keys(localDb).length} طالب) ✓`;
+              }
               if (typeof updateGlobalStatsUI === 'function') updateGlobalStatsUI();
               if (typeof checkAndEnforceStudentAccessLock === 'function') checkAndEnforceStudentAccessLock();
               if (added && isAdminUnlocked) {
@@ -6278,6 +6363,15 @@
       } catch (e) {}
     }
 
+    async function deleteFromPermanentIDB(storeName, key) {
+      try {
+        const db = await openPermanentIndexedDB();
+        if (!db || !key) return;
+        const tx = db.transaction(storeName, 'readwrite');
+        tx.objectStore(storeName).delete(key);
+      } catch (e) {}
+    }
+
     async function readFromPermanentIDB(storeName, key) {
       try {
         const db = await openPermanentIndexedDB();
@@ -6407,7 +6501,7 @@
           lessonMiniQuizAnswers: americanAccentState.lessonMiniQuizAnswers
         } : {};
 
-        if (state.currentStudentUser) {
+        if (state.currentStudentUser && !isExcludedOrDeletedStudentEmail(state.currentStudentUser)) {
           setPermanentCookie('me_active_student', state.currentStudentUser);
           try { localStorage.setItem('moaz_academy_active_student_v1', state.currentStudentUser); } catch (e) {}
           try { sessionStorage.setItem('moaz_academy_active_student_v1', state.currentStudentUser); } catch (e) {}
@@ -6476,7 +6570,11 @@
           const db = getStudentsDB();
           allIdbStudents.forEach(st => {
             if (st && st.gmail) {
-              mergeIncomingStudentRecord(db, st, false);
+              if (isExcludedOrDeletedStudentEmail(st.gmail)) {
+                deleteFromPermanentIDB('students_store', st.gmail);
+              } else {
+                mergeIncomingStudentRecord(db, st, false);
+              }
             }
           });
           saveStudentsDB(db, true);
@@ -23375,7 +23473,7 @@
             return;
           }
 
-          delete window.__ME_DELETED_STUDENTS__[gmail];
+          unmarkStudentDeleted(gmail);
           const nowStr = new Date().toLocaleString('sv-SE').slice(0, 16);
           // Every new student automatically gets a 7-Day Free Trial (فترة تجريبية 7 أيام ثم تقفل الأكاديمية ويلزم الاشتراك)
           const trialExpiresAt = Date.now() + (7 * 24 * 60 * 60 * 1000);
@@ -23399,14 +23497,16 @@
             suspensionReason: 'انتهت الفترة التجريبية المجانية (7 أيام) — يرجى الاشتراك للمتابعة',
             gmailConfirmationSent: true,
             updatedAt: Date.now(),
-            adminUpdatedAt: Date.now()
+            adminUpdatedAt: Date.now(),
+            adminRev: 1
           };
 
           db[gmail] = newStudentRecord;
           state.xp = 0;
           state.mastered = {};
           state.bestQuizScore = 0;
-          saveStudentsDB(db, false);
+          saveStudentsDB(db, true);
+          pushStudentsDBToCloudRegistry(db, true, gmail);
           try { localStorage.setItem('moaz_academy_active_student_v1', gmail); } catch (e) {}
           state.currentStudentUser = gmail;
           state.studentNameAr = nameAr;
@@ -24591,7 +24691,7 @@
       const syncCloudBtn = document.getElementById('btn-admin-sync-cloud-students');
       if (syncCloudBtn) {
         syncCloudBtn.addEventListener('click', () => {
-          pullAllStudentsFromCloudRegistry(true);
+          pullAllStudentsFromCloudRegistry(true, true);
         });
       }
       const importTokenBtn = document.getElementById('btn-admin-import-student-token');
@@ -24630,7 +24730,7 @@
       pullAllStudentsFromCloudRegistry(false);
       setInterval(() => {
         pullAllStudentsFromCloudRegistry(false);
-      }, 7000);
+      }, 4000);
 
       if (switchBtn) {
         switchBtn.addEventListener('click', () => {
@@ -25046,6 +25146,14 @@
           }
         });
       }
+      if (durValIn && !durValIn.__boundAutoUnitSwitch) {
+        durValIn.__boundAutoUnitSwitch = true;
+        durValIn.addEventListener('input', () => {
+          if (durUnitSel && (durUnitSel.value === 'keep_current' || durUnitSel.value === 'unlimited')) {
+            durUnitSel.value = 'days';
+          }
+        });
+      }
 
       if (st) {
         const acc = evaluateStudentAccessState(st);
@@ -25388,13 +25496,14 @@
             suspensionReason: suspNote,
             updatedAt: nowTs,
             adminUpdatedAt: nowTs,
-            adminRev: (Number(prevRecord.adminRev) || 1) + 1
+            adminRev: getNextAdminRevision(prevRecord.adminRev)
           };
+          unmarkStudentDeleted(gmail);
           saveStudentsDB(db, true);
-          pushStudentsDBToCloudRegistry(db, true);
+          pushStudentsDBToCloudRegistry(db, true, gmail);
 
-          // If this is the currently logged-in student, sync live state immediately
-          if (state.currentStudentUser === origKey || state.currentStudentUser === gmail || !state.currentStudentUser) {
+          // If this is the currently logged-in student on this device, sync live state
+          if (state.currentStudentUser && (state.currentStudentUser === origKey || state.currentStudentUser === gmail)) {
             state.currentStudentUser = gmail;
             state.studentNameAr = nameAr;
             state.studentNameEn = nameEn || nameAr;
@@ -25403,14 +25512,13 @@
             state.bestQuizScore = quiz;
             state.mastered = masteredObj;
             try { localStorage.setItem('moaz_academy_active_student_v1', gmail); } catch (e) {}
-            saveProgress();
             selectStudentLevel(lv, 'stay');
             updateGlobalStatsUI();
           }
 
           const panel = document.getElementById('admin-student-editor-panel');
           if (panel) panel.classList.add('hidden');
-          renderAppDownloadModule();
+          renderAppDownloadModule(true);
           checkAndEnforceStudentAccessLock();
           playChime('success');
           showToast(`✅ تم حفظ بيانات الطالب (${nameAr}) وحالة التفعيل (${durLabel}) بنجاح!`, 'success');
@@ -25541,12 +25649,8 @@
       }
     }
 
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initAcademyApp);
-    } else {
-      initAcademyApp();
-    }
-    window.addEventListener('load', initAcademyApp);
+    // Deferred to run after all module & admin sync upgrades below are registered
+    setTimeout(initAcademyApp, 0);
   
 
     // ============================================================================
@@ -26612,10 +26716,16 @@
       } catch (e) {}
     }
 
-    // Upgrade saveStudentsDB so EVERY student record is also written into IndexedDB + Cookie registry
+    // Upgrade saveStudentsDB so EVERY student record is written into IndexedDB + LocalStorage + Memory
     const _origSaveStudentsDB = saveStudentsDB;
     saveStudentsDB = function(db, skipCloudPush) {
       if (!db || typeof db !== 'object') return;
+      // Remove any excluded/deleted keys before saving
+      Object.keys(db).forEach(k => {
+        if (isExcludedOrDeletedStudentEmail(k)) {
+          delete db[k];
+        }
+      });
       _origSaveStudentsDB(db, true);
 
       // Persist every student into Permanent IndexedDB students_store
@@ -26623,135 +26733,137 @@
         Object.keys(db).forEach(k => {
           const st = db[k];
           if (st && (st.gmail || k)) {
-            writeToPermanentIDB('students_store', { ...st, gmail: (st.gmail || k).trim().toLowerCase() });
+            const cleanK = String(st.gmail || k).trim().toLowerCase();
+            if (!isExcludedOrDeletedStudentEmail(cleanK)) {
+              writeToPermanentIDB('students_store', { ...st, gmail: cleanK });
+            }
           }
         });
       } catch (e) {}
 
-      // Also save compact student directory in a 365-day cookie including subscription expiration & adminUpdatedAt!
-      try {
-        const compactList = Object.keys(db).slice(0, 35).map(k => {
-          const s = db[k] || {};
-          return {
-            g: s.gmail || k,
-            a: s.nameAr || '',
-            e: s.nameEn || '',
-            p: s.password || '',
-            l: s.studentLevel || 'A1',
-            x: s.xp || 0,
-            r: s.registeredAt || '',
-            st: s.accountStatus || 'active',
-            ex: s.accessExpiresAt || null,
-            dl: s.accessDurationLabel || 'مفتوح دائماً',
-            u: Number(s.updatedAt) || 0,
-            au: Number(s.adminUpdatedAt) || 0
-          };
-        });
-        setPermanentCookie('me_students_dir_v2', JSON.stringify(compactList));
-      } catch (e) {}
-
       if (!skipCloudPush) {
-        pushStudentsDBToCloudRegistry(db);
+        pushStudentsDBToCloudRegistry(db, false);
       }
     };
 
-    // Upgrade getStudentsDB to deduplicate by canonical Gmail and recover accounts + subscription status from cookie directory
+    // Upgrade getStudentsDB to deduplicate by canonical Gmail WITHOUT ever silently hiding existing student accounts
     const _origGetStudentsDB = getStudentsDB;
     getStudentsDB = function() {
       const rawDb = _origGetStudentsDB() || {};
       const db = {};
-      // Deduplicate any canonical Gmail collisions AND automatically purge any fake/invalid test emails so the Admin DB is 100% clean
       Object.keys(rawDb).forEach(k => {
         const st = rawDb[k];
-        if (!st) return;
-        const cleanEmail = String(st.gmail || k).trim().toLowerCase();
-        if (!cleanEmail || window.__ME_DELETED_STUDENTS__[cleanEmail]) return;
-        if (typeof window.validateStrictRealGmailAddress === 'function' && cleanEmail !== 'moaz.elokly@gmail.com') {
-          if (!window.validateStrictRealGmailAddress(cleanEmail).valid) {
-            return;
-          }
-        }
-        mergeIncomingStudentRecord(db, { ...st, gmail: cleanEmail });
+        if (!st || typeof st !== 'object') return;
+        const cleanEmail = String(st.gmail || k).trim().toLowerCase().replace(/\s+/g, '');
+        if (!cleanEmail || isExcludedOrDeletedStudentEmail(cleanEmail)) return;
+        mergeIncomingStudentRecord(db, { ...st, gmail: cleanEmail }, false);
       });
-      try {
-        const cRaw = getPermanentCookie('me_students_dir_v2');
-        if (cRaw) {
-          const cList = JSON.parse(cRaw);
-          if (Array.isArray(cList)) {
-            cList.forEach(item => {
-              if (item && item.g) {
-                const ck = item.g.trim().toLowerCase();
-                if (ck && !window.__ME_DELETED_STUDENTS__[ck]) {
-                  expandCompactStudentIntoDB(db, item, false);
-                }
-              }
-            });
-          }
-        }
-      } catch (e) {}
       window.__ME_STUDENTS_MEM_DB__ = db;
       return db;
     };
 
-    function toCompactStudentPacketItem(st) {
-      if (!st || !st.gmail) return null;
-      const mCount = st.mastered ? Object.keys(st.mastered).filter(k => st.mastered[k]).length : (st.masteredCount || 0);
+    function toCompactStudentPacketItem(st, fallbackKey) {
+      if (!st || typeof st !== 'object') return null;
+      const cleanEmail = String(st.gmail || fallbackKey || '').trim().toLowerCase().replace(/\s+/g, '');
+      if (!cleanEmail || isExcludedOrDeletedStudentEmail(cleanEmail)) return null;
+      const mCount = st.mastered ? Object.keys(st.mastered).filter(k => st.mastered[k]).length : (Number(st.masteredCount) || 0);
       return {
-        g: st.gmail.trim().toLowerCase(),
-        a: st.nameAr || '',
-        e: st.nameEn || '',
-        p: st.password || '',
-        l: st.studentLevel || 'A1',
+        g: cleanEmail,
+        a: String(st.nameAr || '').slice(0, 50),
+        e: String(st.nameEn || '').slice(0, 50),
+        p: String(st.password || '').slice(0, 30),
+        l: normalizeLevel(st.studentLevel || 'A1'),
         x: Number(st.xp) || 0,
         m: mCount,
         q: Number(st.bestQuizScore) || 0,
-        r: st.registeredAt || '',
-        ll: st.lastLoginAt || '',
+        r: String(st.registeredAt || '').slice(0, 16),
+        ll: String(st.lastLoginAt || '').slice(0, 16),
         lc: Number(st.loginCount) || 1,
         st: st.accountStatus || 'active',
         sub: st.subscriptionType || 'trial',
         ex: st.accessExpiresAt !== undefined ? st.accessExpiresAt : null,
-        dl: st.accessDurationLabel || '🎁 فترة تجريبية مجانية (7 أيام)',
-        sr: st.suspensionReason || '',
+        dl: String(st.accessDurationLabel || '🎁 فترة تجريبية مجانية (7 أيام)').slice(0, 60),
+        sr: st.accountStatus === 'suspended' ? String(st.suspensionReason || '').slice(0, 60) : '',
         u: Number(st.updatedAt) || Date.now(),
         au: Number(st.adminUpdatedAt) || Date.now(),
-        rev: Number(st.adminRev) || 1
+        rev: Math.max(1, Number(st.adminRev) || 1)
       };
     }
 
+    function getUtf8ByteLength(str) {
+      try {
+        return unescape(encodeURIComponent(str)).length;
+      } catch (e) {
+        return (str || '').length * 2;
+      }
+    }
+
     let __cloudPushTimer = null;
-    pushStudentsDBToCloudRegistry = async function(localDb, immediateAdminPush) {
+    pushStudentsDBToCloudRegistry = async function(localDb, immediateAdminPush, targetKeysInput) {
       const dbToPush = localDb || getStudentsDB();
       const statusBadge = document.getElementById('admin-cloud-sync-status-badge');
+
+      // Determine which student keys to push (single key for instant 320-byte delta, or array/all keys for chunked sync)
+      let keysToSerialize = [];
+      if (typeof targetKeysInput === 'string' && targetKeysInput.trim()) {
+        const mKey = findExistingStudentKeyByGmail(dbToPush, targetKeysInput) || targetKeysInput.trim().toLowerCase();
+        if (dbToPush[mKey]) keysToSerialize = [mKey];
+      } else if (Array.isArray(targetKeysInput)) {
+        keysToSerialize = targetKeysInput.filter(k => dbToPush[k]);
+      } else {
+        keysToSerialize = Object.keys(dbToPush);
+      }
 
       const executePush = async () => {
         try {
           if (statusBadge && immediateAdminPush) {
-            statusBadge.textContent = '⏳ جاري حفظ التعديل وتعميمه على كل الأجهزة...';
+            statusBadge.textContent = '⏳ جاري حفظ التعديل وتعميمه فوراً على كل الأجهزة...';
           }
-          const allRecords = Object.keys(dbToPush).map(k => toCompactStudentPacketItem(dbToPush[k])).filter(Boolean);
-          const chunkSize = 18;
-          for (let i = 0; i < Math.max(1, allRecords.length); i += chunkSize) {
-            const chunk = allRecords.slice(i, i + chunkSize);
+          const allRecords = keysToSerialize.map(k => toCompactStudentPacketItem(dbToPush[k], k)).filter(Boolean);
+          const delList = Object.keys(window.__ME_DELETED_STUDENTS__ || {}).slice(0, 40);
+
+          // Build strict <= 1,800-byte chunks (max 3 students per packet) so ntfy.sh NEVER converts any packet into attachment.bin (>4096 bytes)!
+          const chunks = [];
+          let currentChunk = [];
+          for (let i = 0; i < allRecords.length; i++) {
+            const item = allRecords[i];
+            const testChunk = [...currentChunk, item];
+            const testPacket = {
+              app: 'ME_SYNC_V8',
+              t: Date.now(),
+              cfg: { defDur: getDefaultNewStudentDurationPreset() },
+              list: testChunk,
+              del: chunks.length === 0 ? delList : []
+            };
+            if (currentChunk.length >= 3 || getUtf8ByteLength(JSON.stringify(testPacket)) > 1800) {
+              chunks.push(currentChunk);
+              currentChunk = [item];
+            } else {
+              currentChunk = testChunk;
+            }
+          }
+          if (currentChunk.length > 0 || chunks.length === 0) {
+            chunks.push(currentChunk);
+          }
+
+          for (let cIdx = 0; cIdx < chunks.length; cIdx++) {
             const packet = {
               app: 'ME_SYNC_V8',
               t: Date.now(),
-              cfg: {
-                defDur: getDefaultNewStudentDurationPreset()
-              },
-              list: chunk,
-              del: Object.keys(window.__ME_DELETED_STUDENTS__ || {})
+              cfg: { defDur: getDefaultNewStudentDurationPreset() },
+              list: chunks[cIdx],
+              del: cIdx === 0 ? delList : []
             };
+            // Strictly CORS-Simple POST (NO custom headers = zero preflight block even on file:// on mobile!)
             const res = await fetch(NTFY_SYNC_URL, {
               method: 'POST',
-              headers: { 'Cache-Control': 'no-cache' },
               body: JSON.stringify(packet)
             });
             if (res.ok && statusBadge) {
               statusBadge.textContent = `🟢 متزامن وموحّد على كل الأجهزة (${Object.keys(dbToPush).length} طالب) ✓`;
             }
-            if (i + chunkSize < allRecords.length) {
-              await new Promise(r => setTimeout(r, 500));
+            if (cIdx + 1 < chunks.length) {
+              await new Promise(r => setTimeout(r, 320));
             }
           }
         } catch (err) {}
@@ -26762,17 +26874,14 @@
         await executePush();
       } else {
         if (__cloudPushTimer) clearTimeout(__cloudPushTimer);
-        __cloudPushTimer = setTimeout(executePush, 350);
+        __cloudPushTimer = setTimeout(executePush, 300);
       }
     };
 
     function expandCompactStudentIntoDB(localDb, c, isFromCloudAuthority = true) {
       if (!c || !c.g) return false;
-      const ck = c.g.trim().toLowerCase();
-      if (!ck || window.__ME_DELETED_STUDENTS__[ck]) return false;
-      if (typeof window.validateStrictRealGmailAddress === 'function' && ck !== 'moaz.elokly@gmail.com') {
-        if (!window.validateStrictRealGmailAddress(ck).valid) return false;
-      }
+      const ck = String(c.g || '').trim().toLowerCase().replace(/\s+/g, '');
+      if (!ck || isExcludedOrDeletedStudentEmail(ck)) return false;
       const incomingSt = {
         gmail: ck,
         nameAr: c.a || ck.split('@')[0],
@@ -26792,68 +26901,139 @@
         suspensionReason: c.sr || '',
         updatedAt: Number(c.u) || Date.now(),
         adminUpdatedAt: Number(c.au) || Date.now(),
-        adminRev: Number(c.rev) || 1
+        adminRev: Math.max(1, Number(c.rev) || 1)
       };
       return mergeIncomingStudentRecord(localDb, incomingSt, isFromCloudAuthority);
     }
 
+    async function processNtfyCloudStreamLines(lines, localDb, cloudInlineRevMap, isPrimaryTopic) {
+      let addedCount = 0;
+      for (const line of lines) {
+        try {
+          const env = JSON.parse(line);
+          if (!env || env.event !== 'message') continue;
+          let data = null;
+          let isInlinePacket = false;
+
+          // Support both inline env.message (<4KB) AND env.attachment.url (recovering any >4KB 17-student packets!)
+          if (env.attachment && env.attachment.url) {
+            const attId = env.id || env.attachment.url;
+            if (window.__ME_ATTACHMENT_CACHE__[attId]) {
+              data = window.__ME_ATTACHMENT_CACHE__[attId];
+            } else {
+              try {
+                const attRes = await fetch(env.attachment.url, { method: 'GET', cache: 'no-store' });
+                if (attRes.ok) {
+                  data = await attRes.json();
+                  window.__ME_ATTACHMENT_CACHE__[attId] = data;
+                }
+              } catch (attErr) {}
+            }
+          } else if (env.message) {
+            data = typeof env.message === 'string' ? JSON.parse(env.message) : env.message;
+            isInlinePacket = true;
+          }
+
+          if (!data || typeof data !== 'object') continue;
+          if (data.app === 'ME_SYNC_V8' || data.app === 'ME_SYNC_V7' || data.app === 'ME_LEARNING_SYNC_V6') {
+            if (Array.isArray(data.del)) {
+              data.del.forEach(dk => {
+                markStudentDeletedPermanently(dk);
+                const mDel = findExistingStudentKeyByGmail(localDb, dk) || dk;
+                delete localDb[dk];
+                delete localDb[mDel];
+              });
+            }
+            if (data.deleted && typeof data.deleted === 'object') {
+              Object.keys(data.deleted).forEach(delKey => {
+                markStudentDeletedPermanently(delKey);
+                const mDel = findExistingStudentKeyByGmail(localDb, delKey) || delKey;
+                delete localDb[delKey];
+                delete localDb[mDel];
+              });
+            }
+            if (data.cfg && data.cfg.defDur) {
+              try { localStorage.setItem('me_learning_default_student_duration_v2', data.cfg.defDur); } catch (e) {}
+            }
+            if (Array.isArray(data.list)) {
+              data.list.forEach(c => {
+                if (c && c.g) {
+                  const canonK = findExistingStudentKeyByGmail(localDb, c.g) || String(c.g).trim().toLowerCase();
+                  if (isPrimaryTopic && isInlinePacket) {
+                    const cRev = Math.max(1, Number(c.rev) || 1);
+                    cloudInlineRevMap[canonK] = Math.max(cloudInlineRevMap[canonK] || 0, cRev);
+                  }
+                }
+                if (expandCompactStudentIntoDB(localDb, c, true)) addedCount++;
+              });
+            }
+            if (data.student && data.student.gmail) {
+              if (mergeIncomingStudentRecord(localDb, data.student, true)) addedCount++;
+            }
+            if (data.studentsDB && typeof data.studentsDB === 'object') {
+              Object.keys(data.studentsDB).forEach(k => {
+                const st = data.studentsDB[k];
+                if (st && typeof st === 'object') {
+                  st.gmail = st.gmail || k;
+                  if (mergeIncomingStudentRecord(localDb, st, true)) addedCount++;
+                }
+              });
+            }
+          }
+        } catch (parseErr) {}
+      }
+      return addedCount;
+    }
+
     let __isPullingCloud = false;
-    pullAllStudentsFromCloudRegistry = async function(showFeedbackToast) {
-      if (__isPullingCloud && !showFeedbackToast) return;
+    pullAllStudentsFromCloudRegistry = async function(showFeedbackToast, forcePushAllLocal) {
+      if (__isPullingCloud && !showFeedbackToast && !forcePushAllLocal) return;
       __isPullingCloud = true;
       const statusBadge = document.getElementById('admin-cloud-sync-status-badge');
-      if (statusBadge && showFeedbackToast) statusBadge.textContent = '⏳ جاري توحيد قاعدة البيانات من السحابة...';
+      if (statusBadge && showFeedbackToast) statusBadge.textContent = '⏳ جاري توحيد قاعدة البيانات والاشتراكات بين كل الأجهزة...';
       let newCount = 0;
       const localDb = getStudentsDB();
-      const cloudSeenKeys = new Set();
+      const cloudInlineRevMap = {};
 
-      // 1. Always fetch full history with cache-buster (`since=all&_t=...`) so waking phones NEVER miss an update made on the Tablet!
+      // 1. One-time recovery from legacy v6 topic so no historical student is ever missing between Phone & Tablet
+      if (!window.__ME_LEGACY_V6_CHECKED__) {
+        window.__ME_LEGACY_V6_CHECKED__ = true;
+        try {
+          const legRes = await fetch(`${NTFY_LEGACY_V6_URL}/json?poll=1&since=all&_t=${Date.now()}`, { method: 'GET', cache: 'no-store' });
+          if (legRes.ok) {
+            const legText = await legRes.text();
+            const legLines = legText.split('\n').filter(Boolean);
+            newCount += await processNtfyCloudStreamLines(legLines, localDb, cloudInlineRevMap, false);
+          }
+        } catch (e) {}
+      }
+
+      // 2. Fetch full history from primary v11 master topic (including inline <4KB packets AND any >4KB attachments!)
       try {
         const res = await fetch(`${NTFY_SYNC_URL}/json?poll=1&since=all&_t=${Date.now()}`, { method: 'GET', cache: 'no-store' });
         if (res.ok) {
           const text = await res.text();
           const lines = text.split('\n').filter(Boolean);
-          for (const line of lines) {
-            try {
-              const env = JSON.parse(line);
-              if (env && env.event === 'message' && env.message) {
-                const data = typeof env.message === 'string' ? JSON.parse(env.message) : env.message;
-                if (data && (data.app === 'ME_SYNC_V8' || data.app === 'ME_SYNC_V7')) {
-                  if (Array.isArray(data.del)) {
-                    data.del.forEach(dk => {
-                      window.__ME_DELETED_STUDENTS__[dk] = true;
-                      delete localDb[dk];
-                    });
-                  }
-                  if (data.cfg && data.cfg.defDur) {
-                    try { localStorage.setItem('me_learning_default_student_duration_v2', data.cfg.defDur); } catch (e) {}
-                  }
-                  if (Array.isArray(data.list)) {
-                    data.list.forEach(c => {
-                      if (c && c.g) {
-                        const canonK = findExistingStudentKeyByGmail(localDb, c.g) || c.g.trim().toLowerCase();
-                        cloudSeenKeys.add(canonK);
-                      }
-                      if (expandCompactStudentIntoDB(localDb, c, true)) newCount++;
-                    });
-                  }
-                }
-              }
-            } catch (parseErr) {}
-          }
+          newCount += await processNtfyCloudStreamLines(lines, localDb, cloudInlineRevMap, true);
         }
       } catch (err) {}
 
-      // 2. If this device has local accounts that were NEVER uploaded to the new v11 cloud topic yet, upload the unified DB once!
-      const localKeys = Object.keys(localDb);
-      const hasUnuploadedLocalAccounts = localKeys.some(k => !cloudSeenKeys.has(k));
+      // 3. Identify any local student on this device (e.g. 17th student on Tablet or newer adminRev) not yet stored in inline <4KB cloud packets
+      const allLocalKeys = Object.keys(localDb);
+      const keysNeedingInlineUpload = forcePushAllLocal
+        ? allLocalKeys
+        : allLocalKeys.filter(k => {
+            const locRev = Math.max(1, Number(localDb[k] && localDb[k].adminRev) || 1);
+            const cloudRev = cloudInlineRevMap[k] || 0;
+            return !cloudRev || locRev > cloudRev;
+          });
 
       saveStudentsDB(localDb, true);
-      if (hasUnuploadedLocalAccounts && localKeys.length > 0) {
-        await pushStudentsDBToCloudRegistry(localDb, true);
+      if (keysNeedingInlineUpload.length > 0) {
+        await pushStudentsDBToCloudRegistry(localDb, true, keysNeedingInlineUpload);
       }
 
-      if (typeof renderAppDownloadModule === 'function') renderAppDownloadModule(showFeedbackToast);
+      if (typeof renderAppDownloadModule === 'function') renderAppDownloadModule(true);
       if (typeof updateGlobalStatsUI === 'function') updateGlobalStatsUI();
       if (typeof checkAndEnforceStudentAccessLock === 'function') checkAndEnforceStudentAccessLock();
       if (statusBadge) {
@@ -26861,7 +27041,7 @@
       }
       if (showFeedbackToast) {
         showToast(
-          `✅ تم توحيد قاعدة بيانات المدير والاشتراكات على جميع الأجهزة (${Object.keys(localDb).length} طالب)!`,
+          `✅ تم توحيد قاعدة بيانات المدير والاشتراكات على جميع الأجهزة (${Object.keys(localDb).length} طالب مسجل)!`,
           'success'
         );
       }
@@ -27157,18 +27337,20 @@
             if (typeof window.validateStrictRealGmailAddress === 'function') {
               const check = window.validateStrictRealGmailAddress(email);
               if (!check.valid) {
-                window.__ME_DELETED_STUDENTS__[k.trim().toLowerCase()] = true;
+                markStudentDeletedPermanently(email);
+                markStudentDeletedPermanently(k);
                 delete db[k];
                 removedCount++;
               }
             }
           });
-          saveStudentsDB(db, false);
+          saveStudentsDB(db, true);
+          pushStudentsDBToCloudRegistry(db, true);
           renderAppDownloadModule(true);
           playChime('success');
           showToast(
             removedCount > 0
-              ? `🧹 تم تنظيف وحذف ${removedCount} حساب بريد وهمي من قاعدة البيانات بنجاح!`
+              ? `🧹 تم تنظيف وحذف ${removedCount} حساب بريد وهمي من جميع الأجهزة بنجاح!`
               : '✅ قاعدة البيانات نظيفة تماماً! جميع الحسابات الموجودة مطابقة لقواعد Gmail الصحيحة.',
             'success'
           );
@@ -27402,7 +27584,7 @@
       const parts = keys.map(k => {
         const s = db[k] || {};
         const isExp = s.accessExpiresAt ? (Date.now() >= s.accessExpiresAt ? '1' : '0') : '0';
-        return `${k}:${s.nameAr}:${s.studentLevel}:${s.xp}:${s.accountStatus}:${s.accessExpiresAt}:${s.accessDurationLabel}:${isExp}`;
+        return `${k}:${s.nameAr}:${s.studentLevel}:${s.xp}:${s.accountStatus}:${s.subscriptionType}:${s.accessExpiresAt}:${s.accessDurationLabel}:${isExp}:${s.adminRev || 1}`;
       });
       return `${adminFilterStatus}|${adminFilterLevel}|${adminSortBy}|${adminStudentSearchQuery}|${state.currentStudentUser}|` + parts.join(';');
     }
@@ -27595,7 +27777,7 @@
         `;
       }).join('');
 
-      // Bind 1-Click Fast Subscription Buttons
+      // Bind 1-Click Fast Subscription Buttons (Instant 320-byte Single-Student Cloud Push!)
       tbody.querySelectorAll('[data-admin-fast-sub]').forEach(btn => {
         btn.addEventListener('click', () => {
           const uKey = btn.getAttribute('data-admin-fast-sub');
@@ -27610,17 +27792,17 @@
           st.accessDurationLabel = cfg.accessDurationLabel;
           st.updatedAt = nowTs;
           st.adminUpdatedAt = nowTs;
-          st.adminRev = (Number(st.adminRev) || 1) + 1;
+          st.adminRev = getNextAdminRevision(st.adminRev);
           saveStudentsDB(db, true);
-          pushStudentsDBToCloudRegistry(db, true);
+          pushStudentsDBToCloudRegistry(db, true, uKey);
           renderAppDownloadModule(true);
           checkAndEnforceStudentAccessLock();
           playChime('success');
-          showToast(`✅ تم تحديث اشتراك الطالب (${st.nameAr || uKey}) إلى: ${cfg.accessDurationLabel} ومزامنته على جميع الأجهزة!`, 'success');
+          showToast(`✅ تم تحديث اشتراك الطالب (${st.nameAr || uKey}) إلى: ${cfg.accessDurationLabel} وتعميمه فوراً على الفون والتابلت!`, 'success');
         });
       });
 
-      // Bind Toggle Pause / Activate Button
+      // Bind Toggle Pause / Activate Button (Instant 320-byte Single-Student Cloud Push!)
       tbody.querySelectorAll('.btn-admin-row-pause').forEach(btn => {
         btn.addEventListener('click', () => {
           const uKey = btn.getAttribute('data-admin-toggle-pause');
@@ -27633,22 +27815,23 @@
             st.subscriptionType = 'paid';
             st.updatedAt = nowTs;
             st.adminUpdatedAt = nowTs;
-            st.adminRev = (Number(st.adminRev) || 1) + 1;
+            st.adminRev = getNextAdminRevision(st.adminRev);
             if (st.accessExpiresAt && nowTs >= st.accessExpiresAt) {
               st.accessExpiresAt = nowTs + (30 * 24 * 60 * 60 * 1000);
               st.accessDurationLabel = '💎 اشتراك شهر (30 يوماً)';
             }
-            showToast(`▶️ تم تفعيل اشتراك الطالب (${st.nameAr || uKey}) ومزامنته على جميع الأجهزة!`, 'success');
+            showToast(`▶️ تم تفعيل اشتراك الطالب (${st.nameAr || uKey}) وتعميمه فوراً على الفون والتابلت!`, 'success');
           } else {
             st.accountStatus = 'suspended';
+            st.subscriptionType = 'locked';
             st.updatedAt = nowTs;
             st.adminUpdatedAt = nowTs;
-            st.adminRev = (Number(st.adminRev) || 1) + 1;
+            st.adminRev = getNextAdminRevision(st.adminRev);
             st.accessDurationLabel = '🔒 مغلق — يلزم الاشتراك';
-            showToast(`🔒 تم إغلاق الأكاديمية عند الطالب (${st.nameAr || uKey}) فوراً ومطالبته بالاشتراك!`, 'info');
+            showToast(`🔒 تم إغلاق الأكاديمية عند الطالب (${st.nameAr || uKey}) فوراً على جميع الأجهزة!`, 'info');
           }
           saveStudentsDB(db, true);
-          pushStudentsDBToCloudRegistry(db, true);
+          pushStudentsDBToCloudRegistry(db, true, uKey);
           renderAppDownloadModule(true);
           checkAndEnforceStudentAccessLock();
         });
@@ -27690,11 +27873,13 @@
           const uKey = btn.getAttribute('data-admin-del');
           if (!db[uKey]) return;
           const deletedName = db[uKey].nameAr || uKey;
-          window.__ME_DELETED_STUDENTS__[uKey.trim().toLowerCase()] = true;
+          markStudentDeletedPermanently(uKey);
+          if (db[uKey].gmail) markStudentDeletedPermanently(db[uKey].gmail);
           delete db[uKey];
-          saveStudentsDB(db, false);
+          saveStudentsDB(db, true);
+          pushStudentsDBToCloudRegistry(db, true, []);
           renderAppDownloadModule(true);
-          showToast(`🗑️ تم حذف حساب الطالب (${deletedName}) نهائياً من جميع الأجهزة.`, 'info');
+          showToast(`🗑️ تم حذف حساب الطالب (${deletedName}) نهائياً من الفون والتابلت وجميع الأجهزة.`, 'info');
         });
       });
     };
