@@ -3802,7 +3802,7 @@
           </div>
 
           <!-- Section A: Full Registered Students & Gmails Table + Search + Add New Student -->
-          <div class="p-4 sm:p-5 rounded-3xl bg-slate-50 border-2 border-slate-200 space-y-4">
+          <div id="admin-students-crm-section" class="p-4 sm:p-5 rounded-3xl bg-slate-50 border-2 border-slate-200 space-y-4">
             <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
               <div>
                 <h4 class="text-base sm:text-lg font-extrabold text-slate-900">📋 سجل بيانات جميع الطلاب وحسابات الـ Gmail المسجلة في الأكاديمية</h4>
@@ -4008,7 +4008,7 @@
           </div>
 
           <!-- Section B: Edit Any Academy Setting (Academy Name, Announcement Bar, 5-Min Salawat Notification) -->
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <div id="admin-settings-section" class="grid grid-cols-1 lg:grid-cols-2 gap-4">
             <div class="p-4 sm:p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
               <h4 class="text-xs sm:text-sm font-extrabold text-slate-900">🏛️ تعديل اسم الأكاديمية وشريط الإعلان الترحيبي:</h4>
               <div class="space-y-2">
@@ -4141,7 +4141,7 @@
           </div>
 
           <!-- Section C: Quick Director Actions (Unlock Certificate, Export/Import JSON Backup) -->
-          <div class="flex flex-wrap items-center justify-between gap-3 p-4 rounded-2xl bg-indigo-950 text-white">
+          <div id="admin-quick-actions-section" class="flex flex-wrap items-center justify-between gap-3 p-4 rounded-2xl bg-indigo-950 text-white">
             <div class="space-y-0.5">
               <h4 class="text-sm font-extrabold text-amber-300">⚡ أدوات المدير السريعة (الشهادات والنسخ الاحتياطي لبيانات الطلاب)</h4>
               <p class="text-xs text-indigo-200">يمكنك اعتماد وفتح شهادة المستوى الحالي فوراً، أو تصدير/استيراد قاعدة بيانات جميع الطلاب المسجلين وحسابات الـ Gmail.</p>
@@ -5806,6 +5806,16 @@
     // ==================== OFFICIAL DEDICATED ADMIN ACCOUNT & MULTI-DEVICE CLOUD SYNC ENGINE ====================
     const ADMIN_MASTER_EMAIL = 'moazelokly568@gmail.com';
     const ADMIN_MASTER_PASSWORD = 'Moaz2542005#';
+
+    function normalizeGmailInput(rawEmail) {
+      return String(rawEmail || '').trim().toLowerCase().replace(/\s+/g, '');
+    }
+    window.normalizeGmailInput = normalizeGmailInput;
+
+    function isStudentLoggedIn() {
+      return !!(typeof state !== 'undefined' && state && state.currentStudentUser && state.studentNameAr);
+    }
+    window.isStudentLoggedIn = isStudentLoggedIn;
 
     function isOfficialAdminEmail(rawEmail) {
       const clean = String(rawEmail || '').trim().toLowerCase().replace(/\s+/g, '');
@@ -23441,6 +23451,10 @@
       function isStudentLoggedIn() {
         return !!(state.currentStudentUser && state.studentNameAr);
       }
+      window.isStudentLoggedIn = isStudentLoggedIn;
+      window.isValidGmailAddress = isValidGmailAddress;
+      window.isValidArabicFullName = isValidArabicFullName;
+      window.isValidEnglishFullName = isValidEnglishFullName;
 
       function activateOfficialAdminAccountSession(navigateToAdminTab) {
         isAdminUnlocked = true;
@@ -23488,7 +23502,7 @@
         const pill = document.getElementById('admin-status-pill');
         if (pill) {
           pill.className = 'px-3.5 py-1.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300 text-xs font-extrabold';
-          pill.textContent = `👑 حساب الإدارة النشط: ${ADMIN_MASTER_EMAIL} ✓`;
+          pill.textContent = '👑 حساب الإدارة الرسمي نشط ومفعّل ✓';
         }
 
         const lockModal = document.getElementById('student-access-lock-modal');
@@ -23508,7 +23522,7 @@
           switchTab('appdownload');
         }
         playChime('success');
-        showToast(`👑 مرحباً بك يا أ. معاذ! تم الدخول بحساب الإدارة الرسمي (${ADMIN_MASTER_EMAIL}) ومزامنة جميع الهواتف.`, 'success');
+        showToast('👑 مرحباً بك يا أ. معاذ! تم الدخول بحساب الإدارة الرسمي ومزامنة جميع الهواتف.', 'success');
       }
       window.activateOfficialAdminAccountSession = activateOfficialAdminAccountSession;
 
@@ -23590,7 +23604,7 @@
           document.getElementById('profile-name-ar').textContent = isAdm ? 'أ. معاذ العكلي (مدير الأكاديمية)' : state.studentNameAr;
           document.getElementById('profile-name-en').textContent = isAdm ? 'Director Moaz Elokly' : (state.studentNameEn || state.studentNameAr);
           document.getElementById('profile-email-display').textContent = isAdm
-            ? `📧 حساب الإدارة: ${ADMIN_MASTER_EMAIL} • صلاحية دائمة ♾️`
+            ? '👑 حساب الإدارة الرسمي المستقل • صلاحية دائمة ♾️'
             : `📧 Gmail: ${state.currentStudentUser} • المستوى: ${state.studentLevel}`;
           document.getElementById('profile-xp-stat').textContent = `${state.xp} XP`;
           const mCount = Object.keys(state.mastered).filter(k => state.mastered[k]).length;
@@ -23629,11 +23643,13 @@
           const emailInput = document.getElementById('auth-input-username');
           const passInput = document.getElementById('auth-input-password');
           if (emailInput) {
-            emailInput.value = '';
+            if (isAdm || isOfficialAdminEmail(emailInput.value)) {
+              emailInput.value = '';
+            }
             emailInput.placeholder = isAdm ? 'أدخل البريد الإلكتروني لحساب الإدارة...' : 'yourname@gmail.com';
           }
           if (passInput) {
-            passInput.value = '';
+            if (isAdm) passInput.value = '';
             passInput.placeholder = isAdm ? 'أدخل كلمة المرور السرية للإدارة...' : 'أدخل كلمة مرور قوية لحسابك (6 أحرف أو أرقام على الأقل)...';
           }
 
@@ -24016,7 +24032,7 @@
         const pill = document.getElementById('admin-status-pill');
         if (pill) {
           pill.className = 'px-3.5 py-1.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300 text-xs font-extrabold';
-          pill.textContent = `👑 حساب الإدارة النشط: ${ADMIN_MASTER_EMAIL} ✓`;
+          pill.textContent = '👑 حساب الإدارة الرسمي نشط ومفعّل ✓';
         }
       }
 
@@ -24026,11 +24042,11 @@
         refreshAuthModalUI();
         authModal.classList.remove('hidden');
       }
-      renderAppDownloadModule();
-      initPdfBookModalListeners();
-      initFiveMinuteSalawatReminder();
-      initStudentAccessControlEngine();
-      initInviteAndQrModalEngine();
+      try { initPdfBookModalListeners(); } catch (e) { console.error(e); }
+      try { initFiveMinuteSalawatReminder(); } catch (e) { console.error(e); }
+      try { initStudentAccessControlEngine(); } catch (e) { console.error(e); }
+      try { initInviteAndQrModalEngine(); } catch (e) { console.error(e); }
+      try { renderAppDownloadModule(true); } catch (e) { console.error(e); }
     }
 
     // ==================== INVITE LINK + QR CODE WITH CENTERED ACADEMY LOGO ENGINE ====================
@@ -25578,7 +25594,8 @@
         const acc = evaluateStudentAccessState(st);
         if (statusSel) statusSel.value = st.accountStatus === 'suspended' ? 'suspended' : 'active';
         if (durUnitSel) {
-          durUnitSel.value = st.accessExpiresAt ? 'keep_current' : 'unlimited';
+          const isAlreadyExpired = st.accessExpiresAt && Date.now() >= st.accessExpiresAt;
+          durUnitSel.value = isAlreadyExpired ? 'days' : (st.accessExpiresAt ? 'keep_current' : 'unlimited');
         }
         if (exactDtIn) {
           if (st.accessExpiresAt) {
@@ -25867,9 +25884,12 @@
           if (accStatus === 'suspended') {
             expiresAtTimestamp = prevRecord.accessExpiresAt || null;
             durLabel = 'موقوف من الإدارة';
-          } else if (durUnit === 'keep_current' && prevRecord.accessExpiresAt) {
+          } else if (durUnit === 'keep_current' && prevRecord.accessExpiresAt && Date.now() < prevRecord.accessExpiresAt) {
             expiresAtTimestamp = prevRecord.accessExpiresAt;
             durLabel = prevRecord.accessDurationLabel || `ينتهي ${new Date(prevRecord.accessExpiresAt).toLocaleString('sv-SE').slice(0, 16)}`;
+          } else if (durUnit === 'keep_current' && prevRecord.accessExpiresAt && Date.now() >= prevRecord.accessExpiresAt) {
+            expiresAtTimestamp = Date.now() + (30 * 24 * 60 * 60 * 1000);
+            durLabel = '💎 اشتراك شهر (30 يوماً)';
           } else if (durUnit === 'exact_date' && exactDtVal) {
             const parsedTs = new Date(exactDtVal).getTime();
             if (!isNaN(parsedTs)) {
@@ -27532,7 +27552,7 @@
       }
       if (showFeedbackToast) {
         showToast(
-          `✅ تم توحيد قاعدة بيانات الإدارة (${ADMIN_MASTER_EMAIL}) والاشتراكات على جميع الهواتف (${Object.keys(localDb).length} طالب مسجل)!`,
+          `✅ تم توحيد قاعدة بيانات الإدارة والاشتراكات على جميع الهواتف (${Object.keys(localDb).length} طالب مسجل)!`,
           'success'
         );
       }
@@ -27586,16 +27606,13 @@
       const dashControls = document.getElementById('admin-dashboard-controls');
       if (!dashControls || document.getElementById('admin-erp-subtabs-bar')) return;
 
-      // Identify main sections inside #admin-dashboard-controls reliably by their inner elements
-      const children = Array.from(dashControls.children);
-      const secStudents = document.getElementById('admin-students-table-body')
-        ? document.getElementById('admin-students-table-body').closest('.rounded-3xl')
-        : children[2];
-      const secSettings = document.getElementById('admin-academy-name-input')
-        ? document.getElementById('admin-academy-name-input').closest('.rounded-3xl')
-        : children[3];
+      // Identify main sections inside #admin-dashboard-controls reliably by their explicit IDs
+      const secStudents = document.getElementById('admin-students-crm-section')
+        || (document.getElementById('admin-students-table-body') ? document.getElementById('admin-students-table-body').closest('.rounded-3xl') : null);
+      const secSettings = document.getElementById('admin-settings-section')
+        || (document.getElementById('admin-academy-name-input') ? document.getElementById('admin-academy-name-input').closest('.grid') : null);
       const secCMS = document.getElementById('admin-cms-section');
-      const secQuickActions = children[children.length - 1];
+      const secQuickActions = document.getElementById('admin-quick-actions-section');
 
       // Create organized Admin ERP Sub-Tabs Bar right below Analytics Cards
       const adminNav = document.createElement('div');
@@ -27629,7 +27646,11 @@
         </div>
       `;
 
-      dashControls.insertBefore(adminNav, secStudents);
+      if (secStudents && secStudents.parentNode === dashControls) {
+        dashControls.insertBefore(adminNav, secStudents);
+      } else {
+        dashControls.appendChild(adminNav);
+      }
 
       // Inject Advanced Filter, Sort & Excel Export Bar inside secStudents right before the table
       const tableWrapper = secStudents.querySelector('.overflow-x-auto');
@@ -27719,7 +27740,11 @@
           </div>
         </div>
       `;
-      dashControls.insertBefore(bulkPanel, secSettings);
+      if (secSettings && secSettings.parentNode === dashControls) {
+        dashControls.insertBefore(bulkPanel, secSettings);
+      } else {
+        dashControls.appendChild(bulkPanel);
+      }
 
       // Create Audit Log Section inside Settings Tab
       const auditBox = document.createElement('div');
@@ -28073,7 +28098,7 @@
       const parts = keys.map(k => {
         const s = db[k] || {};
         const isExp = s.accessExpiresAt ? (Date.now() >= s.accessExpiresAt ? '1' : '0') : '0';
-        return `${k}:${s.nameAr}:${s.studentLevel}:${s.xp}:${s.accountStatus}:${s.subscriptionType}:${s.accessExpiresAt}:${s.accessDurationLabel}:${isExp}:${s.adminRev || 1}`;
+        return `${k}:${s.nameAr}:${s.nameEn}:${s.password}:${s.studentLevel}:${s.xp}:${s.bestQuizScore}:${s.accountStatus}:${s.subscriptionType}:${s.accessExpiresAt}:${s.accessDurationLabel}:${isExp}:${s.adminRev || 1}:${s.updatedAt || 0}`;
       });
       return `${adminFilterStatus}|${adminFilterLevel}|${adminSortBy}|${adminStudentSearchQuery}|${state.currentStudentUser}|` + parts.join(';');
     }
@@ -28353,10 +28378,11 @@
           if (!st) return;
           // Keep Admin unlocked while previewing student's level & progress
           state.studentLevel = normalizeLevel(st.studentLevel || 'A1');
-          selectStudentLevel(state.studentLevel, 'stay');
+          selectStudentLevel(state.studentLevel, 'roadmap');
           updateGlobalStatsUI();
           renderAppDownloadModule(true);
-          showToast(`👁️ جاري معاينة مستوى الطالب: ${st.nameAr || mKey} (${state.studentLevel}) مع بقاء حساب الإدارة مفعّلاً`, 'success');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+          showToast(`👁️ تم فتح ومعاينة مستوى الطالب: ${st.nameAr || mKey} (${state.studentLevel}) مع بقاء حساب الإدارة مفعّلاً`, 'success');
         });
       });
 
